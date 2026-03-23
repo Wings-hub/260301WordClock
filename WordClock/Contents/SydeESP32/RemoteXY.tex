@@ -1,0 +1,297 @@
+%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: RemoteXY $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%
+
+\chapter{\textcolor{red}{Remote XY}}
+\textcolor{red}{Sort and addapt text from noveber: }
+%241105Syde\ESP32\Contents\General
+
+
+\Mynote{Erst in Emden starten}
+
+\section{\textcolor{red}{Short Description}}
+
+\section{\textcolor{red}{Functions}}
+
+
+\section{\textcolor{red}{Installation of RemoteXY}}
+
+\subsection{\textcolor{red}{Download of RemoteXY}}
+
+\subsection{\textcolor{red}{Installation on Windows}}
+
+\subsection{\textcolor{red}{Installation (MacOS)}}
+
+\section{\textcolor{red}{Overview - First Steps}}
+
+\section{\textcolor{red}{Features}}
+
+
+
+
+
+%- RemoteXY: Arduino Control im Google PlayStore suchen
+%- Installieren:
+%
+%![Installation RemoteXY](/ESP32/Images/ESP32/RemoteXY/InstallationRemoteXY.jpg)
+%
+%- Beim Öffnen der App wird nach der Zustimmung zu den Datenschutzrichtlinien gefragt:
+%
+%![RemoteXY Zustimmung Berechtigungen](/ESP32/Images/ESP32/RemoteXY/RemoteXYZustimmungBerechtigungen.jpg)
+%
+%- Den Datenschutzrichtlinien muss zugestimmt werden. Andererseits lässt sich die App nicht öffnen
+%- Verschiedene Berechtigungen wie die Freigabe von Bluetooth werden bei der jeweiligen Verwendung abgefragt
+%- Mit der Zustimmung (Agree Button) erfolgt eine Weiterleitung zum Home Screen 
+%
+%![RemoteXY Home Screen](/ESP32/Images/ESP32/RemoteXY/RemoteXYHomeScreen.jpg)
+%
+%Hier sind folgende Optionen möglich:
+%- Über das + in der oberen rechten Ecke können neue Geräte zur Verwendung mit der App verbunden werden:
+%
+%![RemoteXY Add Device](/ESP32/Images/ESP32/RemoteXY/RemoteXYAddDevice.jpg)
+%
+%Außerdem in der oberen rechten Ecke zu finden ist ein QR-Code Leser  
+%
+%Über die drei Linien in der oberen linken Ecke können ebenfalls neue Geräte verbunden werden. Außerdem hier zu finden sind:
+%- Die Lizens zur PRO Version (kostenpflichtig: 1,09€/per Monat [jeder Zeit über die GooglePlay APP kündbar]  oder einmaliger Kauf 21€)
+%
+%![RemoteXYLicense](/ESP32/Images/ESP32/RemoteXY/RemoteXYLicense.jpg)
+%
+%- Eine Anleitung "For developers" zur Verwendung der App mit Links zu verschiedenen Tutorials und Beispielen auf der Website von RemoteXY
+%- Einstellungen
+%- Entwickler Informationen zur App
+%
+%![RemoteXY Optionen](/ESP32/Images/ESP32/RemoteXY/RemoteXYOptionen.jpg)
+%
+%\begin{center}
+%	\includegraphics[width=0.7\linewidth]{Arduino/ArdiunoIDE2/OpenTheDownloadFolder.png}
+%	\captionof{figure}{Open the Downloadf folder}
+%\end{center}
+%
+%\subsection{Installation}
+%Herunterladen der Bibliothek über GitHub:
+%https://github.com/RemoteXY/RemoteXY-Arduino-library
+%
+%Die Bibliothek stellt die Funktionalität von RemoteXY zur Verwendung in Arduino IDE-Skizzen bereit.
+%
+%Installation der Bibliothek in Arduino IDE:
+%
+%Methoden:
+%1. Bibliotheksmanager:
+%- Öffnen der IDE und Klicken auf das Sketch -Menü
+%- Bibliothek einbinden > Bibliotheken verwalten
+%- Suche mit dem Schlüsselwort RemoteXY
+%- RemoteXY Installieren.
+%
+%2. ZIP-Datei ohne Entpacken
+%- öffnen von: https://remotexy.com/en/library/ 
+%- Laden der ZIP-Datei der (neusten Version) über den Link aus der Tabelle unten auf der Website (siehe Abbildung)
+%- NICHT Entpacken der heruntergeladenen Bibliothek 
+%- SONDERN: Öffnen der Arduino IDE und navigieren zu:
+%- Sketch > Include Library 
+%- Wählen der Option Add .ZIP Library in der Dropdown-Liste
+%- Navigieren zum Speicherort der .zip-Datei und Öffnen 
+%
+%3. ZIP-Datei mit Entpacken
+%- Laden der selben ZIP-Datei 
+%- In das Bibliotheksverzeichnis des Skizzenbuchordners entpacken
+%- Den Speicherort des Skizzenbuchordners ist zu finden unter:
+%Datei > Einstellungen > Skizzenbuchspeicherort
+%
+%![Bibliothek Zip-Datei Download](/ESP32/Images/ESP32/RemoteXY/RemoteXYBibliothekDownload.png)
+%\subsection{Beschreibung der Funktionen/Methoden}
+%\subsection{Simple Example}
+%\section{Kleine Anwendung}
+%
+%
+%
+%Ursprung zur Idee
+%- Überwiegende Mehrheit der Projekte kommuniziert über serielle Schnittstellen oder winzige Displays
+%- Sensoren an schwer zugänglichen Stellen platzieren
+%- Datenauslese über Displays nahezu unmöglich
+%- Auswertung über App schön aber nicht trivial zu schreiben
+%
+%- Mikrocontroller-Anwendungen arbeiten alle auf die gleiche Weise:
+%-> Smartphone  -- Kommandos--> Mikrocontroller
+%-> Mikrocontroller --aktueller Zustand --> Smartphone
+%-> Smartphone: Visuelle Aufbereitung und Kontrollelemente zur Steuerung
+%
+%## Daten 
+%https://remotexy.com/
+%- Low-Code Plattform
+%
+%Gerüst:
+%1. Grafischer UI-Editor: läuft im Browser, dient Erstellung Smartphone Anwendung
+%2. Software-Bibliothek: Kompatibel mit verschiedenen Mikrocontrollern: Arduino Nano, Kommunikation: Bluetooth
+%3. Smartphone-App: Plattform erstellt Quellcode für Mikrocontroller, wird zsm. mit Bibliothek übersetzt
+%
+%Funktionen:
+%- Features auf Mikrocontroller Board
+%- Firmware muss UI-Elemente befüllen und auf Nutzereingaben reagrieren
+%
+%
+%
+%# Remote XY  
+%Entwickler: Evgenii Shemanuev  
+%Kontakt: E-Mailinfo@remotexy.com
+%
+%## RemoteXY Editor 
+%Unter: https://remotexy.com ist der RemoteXY Editor zu finden. Mit dem Editor lässt sich die Benutzeroberfläche designen, die über die RemoteXY App aufgerufen und gesteuert werden kann. 
+%
+%
+%## Arduino Projekt 
+%
+%Unterstützte Boards:  
+%- Arduino UNO, MEGA, Leonardo,Pro Mini, Nano, MICRO, kompatible AVR- Boards;
+%-ESP8266-Karten;
+%- **ESP32-Boards**;
+%-STM32F1-Karten;
+%-nRF51822-Karten
+%
+%Unterstützte Kommunikationsmodule:
+%- Bluetooth HC-05, HC-06 oder kompatibel;
+%- Bluetooth BLE HM-10 oder kompatibel;
+%- ESP8266 als Modem;
+%- Ethernet W5100, W5500;
+%
+%Unterstützte IDE:
+%- Arduino-IDE;
+%- FLProg-IDE;
+%
+%## Installation Arduino IDE
+%
+%Arduino IDE 2  
+%Neuste Version: Arduino IDE 2.3.3  
+%Herausgeber: Arduino SA  
+%
+%Kompatibel mit:
+%
+%- Windows: Win 10 (64-bit) or newer
+%- macOS: 10.15: “Catalina” or newer, 64-bit
+%- Linux: 64-bit
+%
+%Benötigter Speicher: 499.1 MB  
+%
+%- Download und Installationslinks für Windows, macOS und Linux sind zu  
+%finden unter:  
+%https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE
+%- Außerdem auf der Website zu finden sind weitere Installationsmethoden wie die Installation über eine ZIP-Datei und Hilfestellungen zur Installation 
+%- Je nach System auf den ersten Link gehen :Download the latest release
+%
+%![Install ArduinoIDE](/ESP32/Images/ESP32/ArduinoIDE/Installation/InstallArduinoIDE.jpg)
+%
+%- Meist oben in der rechten Ecke des Browsers ist der Stand des Downloads nachvollziehbar
+%
+%![Download Arduino Installer](/ESP32/Images/ESP32/ArduinoIDE/Installation/DownloadArduinoInstaller.png)
+%
+%- Doppelklick auf den abgeschlossenen Download
+%- Andernfalls unter den Download Dateien des Rechners nachsehen und hier mit Doppelklick die soeben gedownloadete Arduino IDE Datei öffnen
+%- Es erscheint ein Lizenz Abkommen zur Installation der Arduino IDE
+%
+%![Lizensabkommen ArduinoIDE](/ESP32/Images/ESP32/ArduinoIDE/Installation/LizensabkommenArduinoIDE.jpg)
+%
+%- Dieses Abkommen muss angenommen werden, um die IDE installieren zu können
+%- Als nächstes kann eine Entscheidung für die Installation auf einen oder alle Benutzer des Geräts getroffen werden
+%- Im nächsten Fenster wird das Zielverzeichnis und damit der Speicherort der Installation festgelegt
+%
+%![Zielverzeichnis ArduinoIDE](/ESP32/Images/ESP32/ArduinoIDE/Installation/ZielverzeichnisArduinoIDE.jpg)
+%
+%- Hier einen für den Nutzer passenden Speicherort wählen
+%- Mit dem Klick auf "Weiter" startet die Installation
+%- Sobald die Installationsprozesse Abgeschlossen sind kann die Installation mit einem Klick auf "Fertigstellen" beendet werden
+%
+%![Abgeschlossene Installation ArduinoIDE](/ESP32/Images/ESP32/ArduinoIDE/Installation/AbgeschlosseneInstallationArduinoIDE.jpg)
+%
+%- Windows hat hier eine Sicherheitsabfrage, ob der Zugriff von öffentlichenn und private Netzwerken auf die App gestattet werden soll
+%- Hier mit "Zulassen" bestätigen
+%
+%
+%
+%## RemoteXY Bibliothek 
+%
+%
+%
+%## Eigene Anwendung 
+%# Smartphone- App  
+%Mit der "RemoteXY: Arduino Control" App lassen sich die grafischen Benutzeroberflächen zur mobilen Steuerung der Controller- Boards erstellen.
+%
+%Version:  
+%4.15.06 (Aktualisiert am 10.10.2024)
+%
+%Erforderliche Android-Version:  
+%4.0 oder höher
+%
+%Downloadgröße:  
+%5MB 
+%
+%App Berechtigungen:  
+%Standort:  
+%Ungefährer Standort (netzwerkbasiert)
+%Genauer Standort (GPS- und netzwerkbasiert)
+%
+%WLAN-Verbindungsinformationen:  
+%WLAN-Verbindungen abrufen
+%
+%Fotos/Medien/Dateien:  
+%USB-Speicherinhalte lesen
+%
+%Speicher:  
+%USB-Speicherinhalte lesen
+%
+%Kamera:  
+%Bilder und Videos aufnehmen
+%
+%Sonstiges:  
+%Netzwerkverbindungen abrufen
+%mit Bluetooth-Geräten koppeln
+%Auf Bluetooth-Einstellungen zugreifen
+%Netzwerkkonnektivität ändern
+%WLAN-Verbindungen herstellen und trennen
+%Zugriff auf alle Netzwerke
+%
+%Datensicherung:  
+%Erfasste Daten:  
+%E-Mail-Adresse - optionale Personalisierung   
+%RemoteXY Account:  
+%Erstellung über Email  
+%Profil Name  
+%Profil Bild  
+%Location :  
+%Wird für Android und iOS Geräte zum Suchen und Verbinden von 	Bluetooth- und WLAN Kommunikationskanälen verwendet. Die Daten 	werden laut Entwickler nicht gesammelt oder gespeichert.
+%Google Account Name:  
+%Sammeln der Google Account Email Adresse bei Eingabe eines Aktionscodes.
+%Nutzungs- und Protokollinformationen:  
+%servicebezogene, diagnostische und Leistungsinformationen. Informationen über 	Aktivität, Protokolldateien sowie Diagnose-, Absturz-, Website- und	Leistungsprotokolle und -berichte. 
+%Kundensupport:  
+%Optionale Bereitstellung von Informationen zur Kontaktaufnahme im Kundensupport, beispielsweise E-Mail 
+%Transaktionsinformationen:  
+%Optionales bezahlen für Dienste, Informationen und Bestätigungen, wie etwa Zahlungsbelege, auch von App-Stores oder anderen Dritten, die Ihre Zahlung verarbeiten.
+%Cookies:  
+%Betreiben und Bereitstellen von Diensten, Auswahl von 	Einstellungen wie Spracheinstellungen, zum Speichern und Anpassen
+%
+%
+%Sicherheitsmaßnahmen:  
+%Daten werden bei der Übertragung verschlüsselt
+%Daten können nicht gelöscht werden
+%Der Entwickler bietet keine Möglichkeit, das Löschen deiner Daten zu beantragen
+%
+%RemoteXY is committed to ensuring that your privacy is protected. Should we ask you to provide certain information by which you can be identified 	when using this service, then you can be assured that it will only be used in accordance with this privacy statement.
+%
+%RemoteXY may change this policy from time to time by updating this page. You should check this page from time to time to ensure that you are 	happy with any changes. This policy is effective from 1st May 2017. 
+%
+%
+%
+%
+%## Konfiguration 
+%# Test  
+
+

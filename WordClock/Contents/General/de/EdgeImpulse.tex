@@ -1,0 +1,300 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad:  Wings-hub\210520PortentaH7\PortentaH7\$
+% $Name: PortentaH7$
+% $Version: 4250 $
+%
+%%%%%%%%%%%%
+
+
+\chapter{Edge Impulse}\label{EdgeImpulse}\index{Edge Impulse}
+
+
+
+Edge Impulse\index{Edge Impulse} ist eine Plattform, die den Prozess des maschinellen Lernens vereinfacht, indem sie sinnvolle Standardwerte für die Parameter wählt, die bei der Erstellung eines Modells festgelegt werden. Sie wurde 2019 von Zach Shelby und Jan Jongboom gegründet. Edge Impulse verwendet das TensorFlow-Ökosystem für das Training, die Optimierung und den Einsatz von Deep-Learning-Modellen in eingebetteten Geräten, wie z. B. Arduino Portenta H7. Das TensorFlow-Ökosystem\index{TensorFlow} bietet eine Reihe von Standards und Integrationspunkten, die für eigene Verbesserungen des Modells genutzt werden können. \cite{EdgeImpulsedocs:2021,Stal:2022}	
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Arduino/edgeimpulse}
+	\caption[Entwicklungsprozess mit Edge Impulse]{Entwicklungsprozess mit Edge Impulse \cite{EdgeImpulse:2021}}
+	\label{EdgeImpulse}
+\end{figure}
+
+
+Der Prozess, der in der Abbildung~\ref{EdgeImpulse} dargestellt ist, umfasst das Sammeln der Daten -- auch in den Endgeräten -- und das Erstellen eines Trainingsdatensatzes in der Edge Impulse Cloud. Anschließend wird das Modell trainiert. Nach Abschluss des Trainings wird das Modell anhand der bereitgestellten Testdaten getestet oder das Modell kann auch anhand einer Live-Klassifizierung validiert werden, indem die Testdaten direkt von einem Gerät geladen wird. Nachdem das Modell getestet wurde, wird es wieder auf dem Gerät eingesetzt. 
+
+Im Hintergrund generiert Edge Impulse eine Python-Implementierung des Modells unter Verwendung der Keras-APIs von TensorFlow.\Mynote{Quelle} Wenn in den Expertenmodus gewechselt wird, kann der Code bearbeitet und Änderungen an den Parametern vorgenommen werden. Die TensorFlow-Bibliotheken und APIs werden von Edge Impulse verwendet und machen es daher einfach, den eingebauten Trainingscode mit einer eigenen Logik zu erweitern. Der Trainingsprozess findet in der Cloud statt und die trainierten Modelle werden automatisch für den Einsatz auf den Mikrocontrollern optimiert.
+
+\begin{itemize}
+  \item \textbf{Format der Datenerfassung:}
+	
+        Um Daten von einem beliebigen Sensor an die Plattform Edge Impulse zu senden, müssen die Daten in einem geeigneten Datenerfassungsformat gesendet werden. Wenn die Daten im CSV- oder WAV-Format vorliegen, können sie direkt auf die Plattform Edge Impulse hochgeladen werden. Bei Bildern akzeptiert Edge-Impulse die Formate JPG und PNG. Die Bilder können in RGB oder in Graustufen vorliegen. Es gibt auch eine Option für die Konvertierung des eingegebenen Bildes in Graustufen. 
+        
+  \item \textbf{Image Processing Block:} 
+  
+        In diesem Verarbeitungsblock wird eine Vorverarbeitung und Normalisierung der Bilddaten vorgenommen. Darüber hinaus kann auch die Farbtiefe reduziert werden. Nachdem das Eingabebild geladen wurde, ist dieser Verarbeitungsblock für die Extraktion von Merkmalen aus dem Bild zuständig.
+
+  \item \textbf{Machine Learning-Block:} 
+  
+        In diesem Block kann zwischen Klassifizierung und Objekterkennung gewählt werden. 
+        
+        Das Objekterkennungsmodell ist ein vortrainiertes Modell und wir können dieses vortrainierte Modell verwenden und eine Feinabstimmung vornehmen, um die gewünschten Ergebnisse zu erzielen. Dieses bereits trainierte Modell basiert auf der MobileNetV2-SSD FPN-lite Architektur, die für mobile und eingebettete Bildverarbeitungsanwendungen entwickelt wurde. Dieses Modell wurde für Bilder mit einer Auflösung von $320 \times 320$ trainiert.
+        
+  \item \textbf{Vorteile:}
+
+    \begin{itemize}
+	  \item Mehrere Geräte können mit der Plattform verbunden werden. Sogar ein Mobiltelefon kann als Gerät verwendet werden.
+	  \item	Es existieren mehrere Optionen zum Hochladen unserer Eingabedaten von verschiedenen Geräten.
+	  \item	Die Drag-and-Drop-Benutzeroberfläche ist benutzerfreundlich für Schulungen und Tests. Letztlich ist es möglich, ein Modell mit wenig bis gar keinem Programmieraufwand zu entwickeln und einzusetzen.
+    \end{itemize}
+	
+  \item  \textbf{Nachteile:}
+    \begin{itemize}
+	  \item	Eine Feinanpassung des Modells ist schwierig.
+	  \item	Fragen der Datensicherheit sind nicht eindeutig prüfbar.
+    \end{itemize}
+\end{itemize}
+
+
+\textcolor{red}
+{
+	\begin{itemize}
+		\item Einschränkngen von Edge Impulse - 30 Minunten Trainigszeit pro Tag
+		\item Aufruf
+		\item Konfiguration
+		\item WAs sind Blöcke
+		\item Screenshot und Beschreibung
+	\end{itemize}
+}
+
+\section{Anmeldung}
+
+
+
+Zunächst müssen wir uns auf der Edge Impulse-Webseite \url{https://www.edgeimpulse.com/} anmelden 
+
+\section{Anlegen eines Projekts} \label{EdgeImpulseNewProject}
+
+und ein neues Projekt namens \FILE{Face\_detector} erstellen.
+
+\section{Auswahl der Daten}
+
+Rufen Sie nun die Edge Impulse-Website auf und klicken Sie auf Datenerfassung.  In der Abbildung \ref{EdgeImpulseDataAcquisition} sehen wir, dass alle unsere Bilder mit zwei Beschriftungen aus der OpenMV-IDE in die Edge Impulse-Plattform exportiert wurden. Diese teilt den Datensatz automatisch in Trainings- und Testdaten auf. Hier wurden 487 Elemente in Trainingsdaten und 51 Elemente in Testdaten unterteilt.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/DataAcquisition}
+	\caption{Datenerfassung in Edge Impulse}
+	\label{EdgeImpulseDataAcquisition}
+\end{figure}
+
+
+\section{Datenumwandlung}
+
+Klicken Sie nun auf Impulsdesign und legen Sie die Bildbreite und -höhe im Feld Bilddaten fest, fügen Sie den Verarbeitungsblock hinzu, der in diesem Fall ein Bild ist, und wenden Sie das Transferlernen an, wie in der Abbildung \ref{EdgeImpulseDesignEdgeImpulse} gezeigt. Klicken Sie anschließend auf Impuls speichern.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/ImpulseDesign}
+	\caption{Design des Edge Impulse}
+	\label{EdgeImpulseDesignEdgeImpulse}
+\end{figure}
+
+Klicken Sie nun auf die Registerkarte Bild auf der linken Seite des Bildschirms, wählen Sie die Farbtiefe Graustufen und klicken Sie auf Parameter speichern, wie in der Abbildung \ref{EdgeImpulseParameter} gezeigt.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/Parameters}
+	\caption{Parameter speichern}
+	\label{EdgeImpulseParameter}
+\end{figure}
+
+Klicken Sie nun auf Features generieren. Hier sehen Sie die Anzahl der Elemente im Trainingsdatensatz und die Anzahl der Klassen wie in der Abbildung \ref{EdgeImpulseFeature} dargestellt.  Klicken Sie auf Merkmale generieren. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/GenerateFeatures}
+	\caption{Merkmale generieren}
+	\label{EdgeImpulseFeature}
+\end{figure}
+
+Nachdem der Prozess abgeschlossen ist, können wir den Merkmalsexplorer sehen, der die Merkmale des von uns hinzugefügten Datensatzes enthält, und wir können sehen, dass es einen klaren Unterschied zwischen den Merkmalen eines Gesichts und eines Stifts gibt, wie in der Abbildung \ref{EdgeImpulseExplorer} dargestellt.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/FeatureExplorer}
+	\caption{Merkmal Explorer}
+	\label{EdgeImpulseExplorer}
+\end{figure}
+
+
+	
+\subsection{Kennzeichnung von Daten}
+
+Nachdem unsere Daten hochgeladen wurden, müssen wir sie nun beschriften. Dazu gehen wir auf die Option \glqq Labelling Queue\grqq{} in der Datenerfassung und beginnen mit dem Zeichnen eines Begrenzungsrahmens um das Objekt und beschriften es. In unserer Datenbank haben wir zwei verschiedene Objekte, nämlich Flächen und Stifte. Wir zeichnen also manuell einen Begrenzungsrahmen um das Objekt und beschriften ihn für alle Bilder im Datensatz. \ref{ImageLabelling}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/labelface}
+	\caption{Beschriftung eines Bildes }
+	\label{ImageLabelling}
+\end{figure}
+
+
+
+
+\section{Training Data}
+
+Klicken Sie nun auf Transfer-Lernen und wählen Sie die Anzahl der Trainingszyklen (in diesem Fall 50). Dann wählen wir das Architekturmodell für das neuronale Faltungsnetzwerkmodell, das wir hier mit MobilenetV2 ausgewählt haben.
+Wir können auch das Python-Skript bearbeiten, um das Modell zu trainieren, indem wir auf die Einstellungen des neuronalen Netzwerks klicken und die Option zum Keras(Experten)-Modus wechseln auswählen, wie in Abbildung \ref{EdgeImpulseNN} gezeigt. Das Modell verwendet den Adam-Optimierer und den Adadelta-Optimierer.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/EditProgram}
+	\caption{Neuronales Netzwerk-Programm bearbeiten}
+	\label{EdgeImpulseNN}
+\end{figure}
+
+
+
+Klicken Sie nun auf Training starten. Nachdem der Trainingsprozess abgeschlossen ist, sehen wir, dass die Ausgabegenauigkeit 100 \% und der Verlustprozentsatz 0 beträgt, wie in der Abbildung \ref{EdgeImpulseOutput} dargestellt.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/Modeloutput}
+	\caption{Ausgabe des Modells}
+	\label{EdgeImpulseOutput}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/Deployment}
+	\caption{Einsatz auf dem Arduino Board}
+	\label{EdgeImpulseDeployment}
+\end{figure}
+
+
+\textbf{Hochladen des Datensatzes in Edge Impulse:}
+
+Zunächst müssen wir uns im Edge Impulse-Portal anmelden und ein Projekt namens Face\_detection erstellen. Um unseren Bilddatensatz hochzuladen, müssen wir zum Edge Impulse-Dashboard gehen, auf Daten erfassen klicken und Daten hochladen auswählen. Um den Datensatz der vom Arduino Vision Shield aufgenommenen Bilder hochzuladen, müssen wir es mit der Edge Impulse-Plattform verbinden. Dies wird im nächsten Abschnitt beschrieben.
+
+
+	
+
+\section{Umwandlung von Daten}
+
+\subsection{Die Gestaltung des Impulses}
+
+\textbf{Vorverarbeitung von Bildern:}
+
+Um den Impuls zu entwerfen, klicken Sie auf Impulsdesign und stellen Sie dann die Bildbreite und -höhe auf $320\times 320$ ein, da das vortrainierte Objekterkennungsmodell nur mit Bildern dieser Größe funktioniert \cite{EdgeImpulse:2021}. Der Bildvorverarbeitungsblock nimmt das Eingabebild auf und kann es optional in Graustufen umwandeln und die Daten dann in ein Merkmalsfeld umwandeln.  Dann klicken wir auf den Lernblock und wählen Objekterkennung. Klicken Sie dann auf Impuls speichern, wie in der Abbildung \ref{EdgeImpulseCreate} gezeigt.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/createimpulse}
+	\caption{Impulse schaffen}
+	\label{EdgeImpulseCreate}
+\end{figure}
+
+\subsection{Konfigurieren des Bildverarbeitungsblocks} 
+
+Um den Verarbeitungsblock zu konfigurieren, klicken Sie im Menü auf der linken Seite auf Bilder. Dies zeigt uns die Rohdaten oben auf dem Bildschirm und die Ergebnisse des Verarbeitungsschritts rechts. Wir können auch die Optionen verwenden, um zwischen den Modi \glqq RGB\grqq{} und \glqq Grayscale\grqq{} zu wechseln. Klicken Sie dann auf Parameter speichern, wie in Abbildung \ref{EdgeImpulseSave} gezeigt. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/saveparameters}
+	\caption{Parameter speichern}
+	\label{EdgeImpulseSave}
+\end{figure}
+
+Klicken Sie dann oben auf die Option \glqq generate features\grqq{} und dann auf \glqq generate features\grqq{}. In der Abbildung \ref{EdgeImpulseGenerateFeature} ist zu sehen, dass die aus dem Datensatz der Bilder, die aus Stiften und Gesichtern bestehen, generierten Merkmale leicht zu erkennen sind.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/featuregenerate}
+	\caption{Merkmale generieren}
+	\label{EdgeImpulseGenerateFeature}
+\end{figure}
+
+\section{Data training}
+
+\textbf{Konfigurieren des Transfer-Learning-Modells:}
+
+In diesem Fall verwenden wir den Transfer-Learning-Block, da es einfacher ist, ein bereits trainiertes Modell zu verwenden, indem nur die oberen Schichten eines neuronalen Netzes beibehalten werden, und wir das Modell dann in kurzer Zeit trainieren können. Um das Transfer-Learning-Modell zu konfigurieren, klicken Sie auf Objekterkennung. Hier können wir die Lernrate einstellen, in unserem Fall haben wir sie auf 0,15 und die Anzahl der Trainingszyklen auf 25 eingestellt. Dann wählen wir das Basismodell aus, in unserem Fall MobileNetV2\index{MobileNetV2}, und klicken dann auf Training starten.  Nachdem der Trainingsprozess abgeschlossen ist, können wir in der Abbildung \ref{EdgeImpulseCompletedTraining} sehen, dass die Genauigkeit 87\% beträgt.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/Trainedmodel}
+	\caption{Abgeschlossenes Training}
+	\label{EdgeImpulseCompletedTraining}
+\end{figure}
+
+
+Der gewählte Datensartz muss nun in Edge Impulse hochgeladen werden. Dazu muss man sich an dem Portal anmelden und ein Projekt mit dem Namen \glqq Face\_Detection\grqq{} anlegen. Im Dashboard von Edge Impulse muss der Button \glqq Enter Data\grqq{} betätigt werden; diese werden dann hochgeladen. 
+
+
+
+\section{Verbinden des Arduino-Board mit Edge Impulse}\label{EdgeImpulseArduinoConnect}
+
+Um mit dem Vision Shield Bilder zu machen, müssen wir unser Gerät mit dem Edge Impulse-Portal verbinden und dann mit der Aufnahme von Bildern beginnen. Dazu müssen wir die folgende Software installieren.
+
+\begin{itemize}
+	\item \textbf{Arduino CLI:} Wir müssen das Arduino CLI\index{Arduino CLI}\index{CLI!Arduino} \Mynote{Was ist eine CLI-Datei} von der Website \url{https://arduino.github.io/arduino-cli/latest/installation/} herunterladen und die heruntergeladene zip-Datei mit der Bezeichnung \FILE{arduino-cli\_0.18.3\_Windows\_64bit} entpacken und den Pfad der Datei mit der Bezeichnung \path{C:\Users\Shoeb\Downloads\arduino-cli_0.18.3_Windows_64bit.zip\} kopieren. Dann müssen wir diesen Pfad in der Liste der Umgebungsvariablen auf unserem Computer hinzufügen. Nachdem wir den Pfad hinzugefügt haben, müssen wir die Eingabeaufforderung öffnen und Arduino-cli eingeben und die Eingabetaste drücken, um es zu installieren. Nachdem die Installation abgeschlossen ist, geben Sie arduino-cli board list in die Eingabeaufforderung ein. Das angeschlossene Gerät wird als Arduino Portenta H7 mit Portnummer und Typ angezeigt, wie in Abbildung \ref{ArduinoInstallation} dargestellt.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{Arduino/arduino-cli}
+			\caption{Installation von Arduino-CLI  }
+			\label{ArduinoInstallation}
+		\end{figure}
+		\Mynote{CLI: https://www.arduino.cc/pro/cli https://www.dev-insider.de/alternativen-zur-arduino-ide-a-959541/, https://www.cnx-software.com/2018/08/26/arduino-cli-arduino-command-line-interface/,https://arduino.stackexchange.com/questions/56767/what-are-the-benefits-or-advantages-of-arduino-cli}
+		\Mynote{Wie stelle ich den ursprünglichen Zustand wieder her?}
+		\item \textbf{Edge Impulse CLI:} \index{Edge Impulse CLI}\index{CLI!Edge Impulse} Zunächst müssen wir Python 3 installieren und Node.js Version 14.17 oder höher von der Website \url{https://nodejs.org/en/} herunterladen. Die heruntergeladene Windows-Installationsdatei wird als \FILE{node-v14.17.4-x64.msi} bezeichnet. Öffnen Sie diese Windows-Installationsdatei, um mit der Installation zu beginnen. Klicken Sie auf \glqq Installation\grqq, wie in der Abbildung \ref{InstallationNode.js} gezeigt, und der Installationspfad lautet \path{C:\ProgrammDaten\Microsoft\Windows\Startmenü\Programme\Node.js}. Nachdem die Installation abgeschlossen ist, müssen wir die Eingabeaufforderung öffnen und \SHELL{npm install -g edge-impulse-cli --force} eingeben, um es zu installieren.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{Arduino/nodejs}
+			\caption{Installation von Node.js }
+			\label{InstallationNode.js}
+		\end{figure}
+		
+		
+	\end{itemize}
+	
+	
+	Nach der Installation dieser beiden Softwares müssen wir den Arduino Portenta H7 mit Edge Impulse verbinden. Dazu müssen wir die neueste Edge Impulse-Firmware von der Website \url{https://docs.edgeimpulse.com/docs/arduino-portenta-h7} herunterladen. Die heruntergeladene Datei trägt den Namen \FILE{arduino-portenta-h7-preview.zip}. Wir müssen diese Datei entpacken und das Flash-Skript für Windows öffnen, das sich in dem Ordner \FILE{flash\_windows.bat} befindet. Nach dem Flashen müssen wir die Reset-Taste einmal drücken, um die neue Firmware zu starten. Nun müssen wir die Eingabeaufforderung öffnen und \SHELL{edge-impulse-daemon} eingeben. Daraufhin werden wir aufgefordert, uns mit unserer Edge Impulse ID und unserem Passwort in der Eingabeaufforderung anzumelden. Nachdem die Anmeldung erfolgreich war, müssen wir das Gerät benennen, hier habe ich es \glqq Arduino Portenta H7\grqq{} genannt, wie in der Abbildung \ref{ArduinoBoardEdgeImpulse} gezeigt.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{Arduino/edgecli}
+		\caption{Verbindung zwischen Arduino Portenta H7 und Edge Impulse }
+		\label{ArduinoBoardEdgeImpulse}
+	\end{figure}
+	
+	
+	Um zu überprüfen, ob das Board verbunden ist, gehen Sie auf die Edge Impulse-Website und klicken Sie auf Geräte. Dort sehen Sie, dass unser Gerät wie in der Abbildung 9.19 dargestellt verbunden ist. Auf diese Weise haben wir unser Board erfolgreich mit der Edge Impulse-Plattform verbunden und können nun mit dem Training des Modells beginnen.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{Arduino/connectededge}
+		\caption{Verbindung eines Arduino-Boards mit Edge Impulse}
+		\label{ArduinoConnectedEdgeImpulse}
+	\end{figure}
+	
+\section{Prüfung des Modells}
+
+Um das Modell zu testen, müssen wir auf die Option \glqq model testing\grqq{} und dann auf \glqq classify all\grqq{} klicken. Hier wurden die Bilder des Datensatzes automatisch in Trainings- und Testbilder unterteilt. In diesem Fall hat das Modell die Eingabebilder in Trainingsbilder mit 388 Bildern und Testbilder mit 98 Bildern unterteilt. Die Testbilder werden dann verwendet, um zu überprüfen, wie gut das Modell funktioniert. Wie aus der Abbildung \ref{EdgeImpulseTestingModel} hervorgeht, erreichte das Modell eine Genauigkeit von 87,1 \%.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/testmodel}
+	\caption{Prüfung des Modells}
+	\label{EdgeImpulseTestingModel}
+\end{figure}
+
+

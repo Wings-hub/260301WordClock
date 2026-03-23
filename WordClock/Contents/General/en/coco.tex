@@ -1,0 +1,252 @@
+%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2021-05-14 $
+% $Pfad: GitLab/Bilderkennung/Projects/Inahlt/General $
+% $Dateiname: coco
+% $Version: 4620 $
+%
+%%%%%%
+
+
+\subsection{Common Objects in Context - COCO}
+
+
+The dataset \ac{coco} is labelled and provides data for training supervised computer vision models that are able to identify common objects in the dataset. Of course, these models are still far from perfect. Therefore, the dataset \ac{coco} provides a benchmark for evaluating the periodic improvement of these models through computer vision research.\cite{Lin:2014,Coco:2021}
+
+\bigskip
+
+\begin{itemize}
+    \item Object recognition
+     \begin{itemize}
+       \item The dataset \ac{coco} contains $\approx$ 330,000 images.
+       \item The dataset \ac{coco} contains $\approx$ 1,500,000 annotations for objects.
+       \item The data set \ac{coco} contains 80 categories.
+       \item The pictures each have five headings.
+       \item The images have a medium resolution of $640 \times 480$ pixels.
+     \end{itemize}  
+  \item Semantic segmentation
+    \begin{itemize}
+        \item Panoptic segmentation requires models for drawing boundaries between objects in semantic segmentation.
+    \end{itemize}
+
+  \item Key recognition
+    \begin{itemize}
+      \item The images contain 250,000 people labelled with the corresponding keys.
+    \end{itemize}
+\end{itemize}
+
+
+
+
+Due to the size and frequent use of the dataset, there are many tools, for example COCO-annotator and COCOapi, to access the data.
+
+
+Actually, the dataset \ac{coco} consists of several, each made for a specific machine learning task. The first task is to determine surrounding rectangles for objects. That is, objects are identified and the coordinates of the surrounding rectangle are determined. The extended task is object segmentation. Here, objects are also identified, but in addition, instead of the surrounding rectangles, polygons are drawn to delimit the objects. The third classical task is cloth segmentation. The model should perform object segmentation, but not on individual objects, but on continuous background patterns such as grass or sky.
+
+
+\bigskip
+
+The annotations are stored in JSON format. The JSON format is a dictionary with key-value pairs in curly brackets. It can also contain lists, ordered collections of elements within curly braces, or dictionaries nested within them.
+
+\begin{code}
+\begin{lstlisting}[language=python]
+{
+  "info": {...},
+  "licenses": {...},
+  "images": {...},
+  "categories": {...},
+  "annotations": {...}
+}    
+\end{lstlisting}
+\caption{Information of the data set \ac{coco}}
+\end{code}
+
+
+
+\subsubsection{Section ``Info''}
+
+The dictionary for the \PYTHON{info} section contains metadata about the record. For the official record \ac{coco} it is the following information:
+
+
+\begin{code}
+\begin{lstlisting}[language=python]
+{
+    "description": "COCO 2017 Dataset",
+    "url": "http://cocodataset.org",
+    "version": "1.0",
+    "year": 2017,
+    "contributor": "COCO Consortium",
+    "date_created": "2017/09/01"
+}
+\end{lstlisting}
+\caption{Metainformation of the dataset \ac{coco}}
+\end{code}
+
+As can be seen, only basic information is included, with the url value pointing to the official website of the dataset. This is common for machine learning datasets to point to their websites for additional information. For example, there you can find information on how and when the data was collected.
+
+\bigskip
+
+
+In the section ``licenses'' you will find links to licenses for images in the dataset with the following structure:
+
+\begin{code}
+\begin{lstlisting}[language=python]
+[
+{
+    "url": "http://creativecommons.org/licenses/by-nc-sa/2.0/", 
+    "id": 1, 
+    "name": "Attribution-NonCommercial-ShareAlike License"
+},
+{
+    "url": "http://creativecommons.org/licenses/by-nc/2.0/", 
+    "id": 2, 
+    "name": "Attribution-NonCommercial License"
+},
+...
+]
+\end{lstlisting}
+\caption{Licence information of the data set \ac{coco}}
+\end{code}
+
+\bigskip
+
+
+\bigskip
+
+This dictionary ``images'' is probably the second most important and contains metadata about the images.
+
+The images dictionary contains the field id. In this field the licence of the image is given. The full text is given in the URL. When using the images, it must be ensured that no licence infringement occurs. If in doubt, do not use them. This also means, however, that when creating one's own data set, one assigns an appropriate licence to each image. 
+
+
+\begin{code}
+\begin{lstlisting}[language=python]
+{
+    "license": 3,
+    "file_name": "000000391895.jpg",
+    "coco_url": "http://images.cocodataset.org/train2017/000000391895.jpg",
+    "height": 360,
+    "width": 640,
+    "date_captured": "2013-11-14 11:18:45",
+    "flickr_url": "http://farm9.staticflickr.com/8186/8119368305_4e622c8349_z.jpg",
+    "id": 391895
+}
+\end{lstlisting}
+\caption{Image information of the dataset \ac{coco}}
+\end{code}
+
+
+The most important field is the id field. This is the number used in the annotations section to identify the image. So, for example, if you want to identify the annotations for the given image file, you have to check the value of the id field for the corresponding image document in the images section and then cross-reference it in the annotations section.
+
+In the official record \ac{coco}, the value of the id field is the same as the name \FILE{file\_name} after removing the leading zeros. If one uses a custom record \ac{coco}, this may not necessarily be the case. 
+
+
+
+\subsubsection{Section ``Categories''}
+
+The categories section is a little different from the other sections. It is designed for the task of object recognition and segmentation and for the task of substance segmentation.
+
+For object recognition and object segmentation, the information is obtained according to the listing~\ref{cocoObject}
+
+\begin{code}
+    \begin{lstlisting}[language=python]
+[
+{"supercategory": "person", "id": 1, "name": "person"},
+{"supercategory": "vehicle", "id": 2, "name": "bicycle"},
+{"supercategory": "vehicle", "id": 3, "name": "car"},
+...
+{"supercategory": "indoor", "id": 90, "name": "toothbrush"}
+]
+\end{lstlisting}
+
+\caption{Class information of the dataset \ac{coco}}\label{cocoObject}
+\end{code}
+
+In the section, the lists contain the categories of objects that can be recognised on images. Each category has a unique number id and it should be in the range [1, number of categories]. Categories are also grouped into supercategories that can be used in programs to recognise, for example, vehicles in general, when you don't care if it is a bicycle, a car or a truck.
+
+\bigskip
+
+There are separate lists for substance segmentation, see Listing~\ref{cocoStuff}
+
+\begin{code}
+\begin{lstlisting}[language=python]
+[
+{"supercategory": "textile", "id": 92, "name": "banner"},
+{"supercategory": "textile", "id": 93, "name": "blanket"},
+...
+{"supercategory": "other", "id": 183, "name": "other"}
+]
+\end{lstlisting}
+\caption{Substance information of the dataset \ac{coco}}\label{cocoStuff}
+\end{code}
+
+The number of categories in this section start high to avoid conflicts with object segmentation, as these tasks can be performed together in the panoptic segmentation task. The values from 92 to 182 represent the well-defined background material, while the value 183 represents all other background textures that do not have their own classes.
+
+\bigskip
+
+The annotations section is the most important section of the dataset, containing important information for the specific dataset for each task.
+
+\begin{code}
+    \begin{lstlisting}[language=python]
+{
+    "segmentation":
+    [[
+    239.97,
+    260.24,
+    222.04,
+    ...
+    ]],
+    "area": 2765.1486500000005,
+    "iscrowd": 0,
+    "image_id": 558840,
+    "bbox":
+    [
+    199.84,
+    200.46,
+    77.71,
+    70.88
+    ],
+    "category_id": 58,
+    "id": 156
+}
+\end{lstlisting}
+\caption{Annotations of the dataset \ac{coco}}\label{cocoAnnotation}
+\end{code}
+
+The fields according to the listing~\ref{cocoAnnotation} haben folgende Bedeutung.
+
+\begin{description}
+  \item[``segmentation'':] This is a list of segmentation masks for pixels; this is a flattened list of pairs, so you should take the first and second values (x and y in the image), then the third and fourth, and so on, to get coordinates; note that these are not image indices, as they are floating point numbers --- they are created and compressed from the pixel coordinates by tools like COCO-annotator.
+
+  \item [``area'':] This corresponds to the number of pixels within a segmentation mask.
+
+  \item [´`iscrowd`'':] This is a flag indicating whether the caption applies to a single object (value 0) or to several objects close to each other (value 1); for fill segmentation, this field is always 0 and is ignored.
+
+  \item [``image\_id'':] The id field corresponds to the number of the id field from the images dictionary; warning: this value should be used to cross-reference the image with other dictionaries, i.e. not the  field id.
+
+  \item [``bbox'':] The heading contains the surrounding rectangles or bounding box, i.e. the coordinates in the form of the x and y coordinates of the upper left corner, as well as the width and height of the rectangle around the object; it is very useful for extracting individual objects from images, as in many languages such as Python this can be done by accessing the image array as; 
+  
+  \PYTHON{cropped\_object = image[bbox[0]:bbox[0] + bbox[2], bbox[1]:bbox[1] + bbox[3]]}
+  
+  \item [``category\_id'':] The field contains the class of the object, corresponding to the field id from the section ``categories''
+
+  \item [``{}id'':] The number is the unique identifier for the annotation; note that this is only the ID of the annotation, so it does not refer to the respective image in other dictionaries.
+
+  \medskip
+   
+  When working with crowd images (``iscrowd'': 1), the ``segmentation'' part may be a little different:
+
+  \begin{lstlisting}
+"segmentation":
+{
+  "counts": [179,27,392,41,..,55,20],
+  "size": [426,640]
+}
+  \end{lstlisting}
+
+  \bigskip
+
+  This is because with a large number of pixels, explicitly listing all the pixels that create a segmentation mask would take a lot of space. Instead, the dataset \ac{coco} uses a custom compression \ac{rle}, which is very efficient because segmentation masks are binary and \ac{rle} for only zeros and ones can reduce the size many times.
+
+\end{description}
+

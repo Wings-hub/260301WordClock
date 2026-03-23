@@ -1,0 +1,39 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Automatisierung/Skript/Produktspezifikation/Powerpoint/AMF.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+
+
+
+\section{Datensatz UTKFace}\label{DatasetUTKFace}
+
+\index{\TRANS{Datensatz}{Dataset}!UTKFace}
+
+Falls eine Gesichtserkennung durchgeführt werden soll, ist der Datensatz UTKFace ein guter Ansatz. \cite{Zhang:2017}
+Der Datensatz UTKFace ist ein Datensatz mit einer großen Altersspanne (0 bis 116 Jahre alt), der aus über 20.000 Einzelbildern von Gesichtern besteht. Auf jedem Bild ist jeweils nur ein Gesicht dargestellt. Die Bilder sind ausgerichtet und entsprechend beschnitten. Dabei sind verschiedenen Posen und Gesichtsausdrücke vertreten. Aufgrund der nicht einheitlichen Beleuchtung und Auflösung bei der Aufnahme ist die Qualität unterschiedlich. Die Größe der Bilder beträgt dagegen einheitlich $200\times 200$-Pixel. In der  Abbildung \ref{UTKFace} sind Beispielbilder aus dem UTKFace-Datensatz dargestellt. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/sampldata}
+	\caption{Beispielbilder aus dem Datensatz UTKFace}
+	\label{UTKFace}
+\end{figure}
+
+Die Bilder sind durch ihren Namen gelabelt. Das Format ist \PYTHON{[age]\_[gender]\_[race]\_[date\&time].jpg}. Dabei gilt:
+
+\begin{description}
+	\item[[age]] ist eine ganze Zahl zwischen 0 und 116.
+	\item[[gender]] ist das Geschlecht  mittels  0 für Männer  und 1 für Frauen kodiert.
+	\item[[race]] ist eine ganze Zahl zwischen 0 und 4, und bezeichnet Weiß, Schwarz, Asien, Indien und andere, zum Beispiel  Hispanoamerikanisch, Latino, Mittlerer Osten.
+    \item [[date\&time]] gibt die Datum an, an dem das Bild hinzugefügt wurde. Das Format ist \PYTHON{yyyymmddHHMMSSFFF}.
+\end{description}
+

@@ -1,0 +1,198 @@
+\section{Data Transmission to a Drive System}After the Hypatia board reads the measured strain gauge values and adjusts them for better data quality, the next step is to apply the transformed tensile and compressive loads to the drive system.
+The circuit (see figure \ref{fig:HTACircuit}) converts a digital command into a bidirectional motor drive. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/HTACircuit}
+	\caption[Drive System Circuit HTA]{Drive System Circuit HTA}
+	\label{fig:HTACircuit}
+\end{figure}
+
+An MCP4725 \ac{DAC} \cite{OnSemiconductor:2011}, powered at \(+5\,\mathrm{V}\) (VDD) with GND at ground, generates the control voltage: its I\textsuperscript{2}C lines (SCL/SDA) accept the command word from the Hypatia board and VOUT feeds the signal node through \(R_7 = 10\,\text{k}\Omega\). Two the LM358 stages then condition and amplify this node. The first stage (U1A) buffers a reference derived from a \(+5\,\mathrm{V}\) divider \((R_1 = 15\,\text{k}\Omega,\; R_2 = 1.5\,\text{k}\Omega,\; R_3 = 270\,\Omega)\) with feedback \(R_4 = 10\,\text{k}\Omega\). The DAC output is summed via \(R_5 = 10\,\text{k}\Omega\), while \(C_1 = 0.1\,\mu\mathrm{F}\) to ground and \(R_6 = 68\,\text{k}\Omega\) provide simple filtering and bias. The second stage (U1B), running from \(\pm 12\,\mathrm{V}\) rails, amplifies the conditioned signal with feedback \(R_8 = 68\,\text{k}\Omega\) and delivers the drive at its output.
+
+This drive system is controlled by an H-bridge built from complementary transistor pairs (Q5/Q6 and Q7/Q8) with \(1.0\,\text{k}\Omega\) base resistors (R13--R16) and flyback diodes (D5--D8), supplied from \(+12\,\mathrm{V}\). Together, these stages translate the DAC’s voltage into motor current and enable bidirectional operation.
+
+\subsection{Serial Communication Protocol I\textsuperscript{2}C}
+The Hypatia board interfaces with the MCP4725 \ac{DAC} over an \ac{I2C}, a two-wire bus carrying bidirectional on a \ac{SDA} pin and a \ac{SCL} pin. Because the data line can be shared among multiple devices, each transaction begins with a start condition (S) and ends with a stop condition (P) (see figure \ref{fig:I2C}), with both lines idle high between transfers. Communication is initiated by pulling \ac{SDA} low while \ac{SCL} is high. Thereafter, data may change only when \ac{SCL} is low. Using seven-bit addressing, the protocol accommodates up to 127 devices, and the first byte sent by the master includes a bit that specifies the transfer direction \cite[see][360]{Tooley:2015}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/StrainGauge/I2C}
+	\caption[I²C Bus Transaction showing how first Address and then Data is placed on the Bus]{I²C Bus Transaction showing how first Address and then Data is placed on the Bus \cite[360]{Tooley:2015}}
+	\label{fig:I2C}
+\end{figure}
+
+Addresses are transmitted most-significant-bit first. To determine the \ac{DAC} value, relate the decimal code to the 0–3.3V output range:
+
+\[ V_{\text{out}} = Digital code \times \frac{3.3}{4096} \]
+
+
+Rearranging gives:
+
+\[ Digital code = V_{\text{out}} \times \frac{4096}{3.3} \]
+
+
+Therefore, for a target of 1.5V, the required digital code is:
+
+\[ Digital code = 1.5 \times \frac{4096}{3.3} = 1861
+ \]
+
+The decimal value is used for clarity, the DAC receives the binary representation, here 11101000101 \cite[see][360-361]{Tooley:2015}. 
+
+\subsection{Digital to Analog Conversion}
+A \ac{DAC} is required to control the motor, since switching it only on and off with digital values is undesirable and would cause the motor to not work fluently. Instead, the motor should receive a continuous, non-interrupted analog signal. The \ac{DAC} receives \ac{I2C} data packets as described above. These binary values are converted into a continuous output whose amplitude corresponds to the applied voltage (see \ref{fig:DACExample}) \cite[see][106]{Bolton:2019}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/DAC/DACExample}
+	\caption[Analog Output produced by MCP4725]{Analog Output produced by MCP4725}
+	\label{fig:DACExample}
+\end{figure}
+
+That amplitude can be calculated. A converter’s analogue output is the weighted sum of the binary word’s non-zero bits. For example, the input 0010 yields twice the output of 0001. For the 12-bit MCP4725, the state 111111111111 corresponds to the maximum set by the DAC’s 5V interface \cite[see][106]{Bolton:2019}. Recalling the earlier 1.5V example with the binary word 11101000101 (decimal 1861), the DAC’s output on a 5V scale is obtained by re-using that code and evaluating
+
+\[
+V_{\text{out}} = \frac{1861}{4096}\cdot 5.0\,\mathrm{V} \approx 2.272\,\mathrm{V}
+\]
+
+This procedure simply rescales the previously used denary value from the 3.3V context to the 5V range while keeping the same digital code.
+
+\subsection{Amplification}
+To achieve a motor voltage range of ±12 V, the next step is to amplify these values using an LM358, a single-supply dual operational amplifier. It operates from 3.0 V to 32 V, its common-mode input range includes the negative supply, removing the need for external biasing components in many cases and its output voltage range also includes the negative power-supply rail. \cite[see][1]{OnSemiconductor:2011}.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.48\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{../../../Images/Syde/HTA/OpAmp/OpAmpPinOut}
+		\caption{General Operational Amplifier Pin Connections}
+		\label{fig:DACExampleA}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{0.48\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{../../../Images/Syde/HTA/OpAmp/LM358PinConnections}
+		\caption{LM358 Pin Connections}
+		\label{fig:DACExampleB}
+	\end{subfigure}
+	\caption{Side-by-side View of general Operational Amplifier and LM358 Pin Connections}
+	\label{fig:DACExampleSideBySide}
+\end{figure}
+
+The Pin out comparison shows that the LM358 is a dual operational amplifier: it integrates two independent op-amp channels in a single package. Each channel has its own non-inverting input, inverting input, and output, while the two channels share the supply pins. The amplifiers can be used independently or cascaded (the output of the first feeding the input of the second) within the circuit. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/DACCircuit}
+	\caption[Analog Signal integrated in Amplifier Circuit]{Analog Signal integrated in Amplifier Circuit}
+	\label{fig:DACCircuit}
+\end{figure}
+
+This circuit illustrates how the DAC’s output is integrated into the amplifier chain in three steps. 
+First, a voltage divider from \(+5\,\mathrm{V}\) generates a local reference that is buffered by LM358 channel~A. 
+With \(R_1=15\,\text{k}\Omega\), \(R_2=1.5\,\text{k}\Omega\), and \(R_3=270\,\Omega\) (series to ground), the tap used in the schematic is the node between \(R_1\) and \(R_2\). 
+The divider voltage at that node is
+\[
+V_{\text{ref}} = 5.0\,\mathrm{V}\cdot 
+\frac{R_2+R_3}{R_1+R_2+R_3}
+= 5.0\,\mathrm{V}\cdot 
+\frac{1.5\,\text{k}\Omega+270\,\Omega}{15\,\text{k}\Omega+1.5\,\text{k}\Omega+270\,\Omega}
+\approx 0.528\,\mathrm{V}.
+\]
+LM358 A is configured as unity-gain buffer \cite[see][88]{Hüning:2014}. Its output is fed back to its inverting input, so the buffered \(V_{\text{ref}}\) appears at its output. 
+This buffered reference is then brought to the summing node through \(R_5=10\,\text{k}\Omega\).
+
+Second, the MCP4725 DAC (powered from \(+5\,\mathrm{V}\), VSS at ground) delivers its analogue command at \(\mathrm{VOUT}\) to the same summing node via \(R_7=10\,\text{k}\Omega\). 
+A small capacitor \(C_1=0.1\,\mu\mathrm{F}\) to ground (with \(R_6=68\,\text{k}\Omega\)) provides local bypassing/conditioning at that node.
+
+Third, LM358 channel B receives the conditioned node at its non-inverting input. Its inverting input is tied back to the output through \(R_8=68\,\text{k}\Omega\). 
+
+With the LM358 supplied from \(-12\,\mathrm{V}\) (pin~4) and \(+12\,\mathrm{V}\) (pin~8), this output is intended to swing around \(0\,\mathrm{V}\) and serve as the system’s \(\pm 10\,\mathrm{V}\) control signal.
+
+
+\paragraph{Bypass capacitor}
+The Capacitor of $0.1\,\mu\mathrm{F}\ $ is a bypass capacitor. These small-value capacitors are used as a local power source. By providing a short, low-impedance path, it sidesteps the not wanted resistance and inductance, present in the paths with a relatively distant power supply \cite[see][139]{Cook:2010}.
+
+With the control path delivering a clean ±10 V signal at the LM358 output, the next question is how to apply this command to the motors. An operational amplifier can provide voltage, but only a small output current of typically 40mA \cite[4]{OnSemiconductor:2011}. A DC motor, by contrast, demands substantially higher current during start-up and transients. The TT DC gearbox motor used here, for example, requires a continuous no-load current of 150 mA. Driving the motor directly from the amplifier would therefore lead to current limiting. One solution is a discrete H-bridge placed between the analogue command and the motor supply.
+
+\subsection{Transistor H-Bridge}
+An H-bridge consists of two complementary half-bridges that set the two motor terminals to opposite rails. A high level on one side turns its NPN device on and its PNP device off, pulling that motor node toward \(0\,\mathrm{V}\). A low level on the opposite side turns its PNP device on and its NPN device off, driving that node toward \(+12\,\mathrm{V}\). With the left input low and the right input high, current flows from left to right through the motor and it rotates in one direction.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/HBridgeDirection}
+	\caption[H-Bridge Circuit with +10V supply from LM358]{H-Bridge Circuit with +10V supply from LM358}
+	\label{fig:HBridgeDirection}
+\end{figure}
+
+Reversing the input polarities (left high, right low) swaps the rails at the motor terminals, reverses the current, and the motor spins the other way. If both inputs are high (both NPNs on) or both are low (both PNPs on), both motor terminals are forced to the same rail, so the differential voltage across the motor is near zero and the drive is effectively braked or idle \cite[see][169-172]{Cook:2010}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/HBridgeDirectionB}
+	\caption[H-Bridge Circuit with -10V supply from LM358]{H-Bridge Circuit with -10V supply from LM358}
+	\label{fig:HBridgeDirection}
+\end{figure}
+
+\paragraph{PNP and NPN Transistors}
+A transistor is a semiconductor, current-operated device that can provide current gain, voltage amplification, and power gain. Its operation relies on the flow of electric charge within a layered semiconductor structure. Two common types are PNP and NPN, distinguished by how the p-type and n-type regions are arranged (see figure \ref{fig:PNPandNPN}). 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/Drive/PNPandNPN}
+	\caption[PNP and NPN Semiconductor Layers in Transistor]{PNP and NPN Semiconductor Layers in Transistor \cite[195]{Agrawal:2008}}
+	\label{fig:PNPandNPN}
+\end{figure}
+
+In both cases the central, very thin region is the base (B), while the outer regions are the emitter (E) and collector (C) (see figure \ref{fig:TransistorTypes}). In the circuit symbols, the arrow on the emitter shows the direction of conventional current \cite[195]{Agrawal:2008}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/Drive/TransistorTypes}
+	\caption[PNP and NPN Transistor Circuit Symbol]{PNP and NPN Transistor Circuit Symbol \cite[195]{Agrawal:2008}}
+	\label{fig:TransistorTypes}
+\end{figure}
+
+\paragraph{Current-Limiting Resistor}
+The four Resistors (R13-R16) protect the transistor’s base by limiting voltage and current. Its values are low enough to allow sufficient base current to fully switch on the Transistors, yet high enough to prevent excessive current that could damage the base leads. In this role, they function as current-limiting resistors \cite[see][161]{Cook:2010}.
+
+\paragraph{Diode-Based Transistor Protection}
+Like the resistors, diodes (D5–D8) protect the H-bridge transistors. A spinning motor stores considerable energy; when a transistor switches off, the voltage across the motor can rise and reverse polarity as the electromagnetic field collapses. The diode provides a robust path for these high voltages to return to the battery or circulate within the motor. Without it, the motor voltage could force its way through the transistor to ground and damage it. In this role, the diode is called a flyback diode \cite[see][162]{Cook:2010}.
+
+\subsection{Closed-Loop Control Based on Encoder Feedback}
+
+To close the loop and obtain feedback on wheel speed, optical encoders are installed on both wheels of the HTA system. This arrangement also preserves the option to implement two signal paths and independently controlled motors later on. In the current configuration, reading both encoders is expected to yield the same velocity on each side.
+
+\paragraph{Optical Encoders}
+The LM393 speed sensor used in this demonstrator functions as an incremental optical encoder. This encoder provides a digital output as a result of angular displacement. In the incremental form it detects changes in rotation relative to a datum position. As the shaft turns, a patterned wheel produces an alternating light--dark pattern that is read by an LED and a photo-detector (see figure \ref{fig:EncoderDiscAndLED}). This generates a train of equally spaced pulses, with the number of pulses proportional to the rotation angle. Hence, the angular position since the datum can be obtained by counting pulses, and the resolution is set by the number of slots on the wheel (for example, with 20 slots per revolution the resolution is \(360^\circ/20 = 18^\circ\)) \cite[see][45-46]{Bolton:2019}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../../../Images/Syde/HTA/Encoder/EncoderDiscAndLED}
+	\caption[Incremental Encoder Setup]{Incremental Encoder Setup \cite[46]{Bolton:2019}}
+	\label{fig:EncoderDiscAndLED}
+\end{figure}
+
+\paragraph{Reading the encoder signal.}
+The wheel carries a slotted disc with \emph{20 slots}. Each rising edge means the disc moved by one slot. By counting these edges, the cumulative tick count \(N(t)\) is obtained. Let \(\mathrm{TPR}\) be the effective ticks per revolution. Because we count only the rising
+edges of the single channel, here \(\mathrm{TPR}=20\).
+Over time \(\Delta t\), \(\Delta N\) new ticks are counted, giving the tick
+frequency
+\[
+f_{\text{ticks}} \;=\; \frac{\Delta N}{\Delta t}\quad[\text{ticks/s}].
+\]
+Angular speed follows from the encoder scale factor,
+\[
+\omega \;=\; \frac{2\pi}{\mathrm{TPR}}\,f_{\text{ticks}}\quad[\mathrm{rad/s}],
+\]
+and the linear (tangential) speed uses the wheel circumference \(C=\pi D\) with
+\(D=\SI{0.067}{m}\) \cite[see][256]{Burton:1890}:
+\[
+v \;=\; \frac{C}{\mathrm{TPR}}\,f_{\text{ticks}}
+\;=\; \frac{\pi D}{\mathrm{TPR}}\,f_{\text{ticks}}\quad[\mathrm{m/s}],
+\qquad
+v_{\mathrm{mm/s}} \;=\; 1000\,v.
+\]
+This calculation provides the linear velocity in $mm/s$ of the External Force system compared to ground. To improve encoder feedback in the demonstrator, the slotted disc was redesigned with a diameter increased by 3 mm. The larger disc reaches farther into the sensor’s active region, so each slot and bar engages the optical path more fully. As a result, the transitions between light and dark are clearer, the pulse train is more consistent, and the encoder readings become more reliable. 
+
+\newpage

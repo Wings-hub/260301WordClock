@@ -1,0 +1,66 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Automatisierung/Skript/Produktspezifikation/Powerpoint/AMF.tex $
+% $Version: 4250 $
+%
+%%%%%%%%%%%%
+
+
+%todo http://vis-www.cs.umass.edu/lfw/ Labeled Faces in the Wild \cite{Huang:2014}
+
+\section{Models}
+
+When installing NVidia's jetson-inference\index{jetson-inference} project, the utility offers a large selection of pre-trained deep learning models for download. Among them are well-known ones like the AlexNet{AlexNet} from 2012 as well as various so-called \ac{resnets}. Also included are SSD-Mobilenet-V2\index{SSD-Mobilenet-V2}, which recognises 90 objects from apples to toothbrushes, and DeepScene\index{DeepScene} from the University of Freiburg for recognising objects in road traffic. 
+
+To download more models, the Model Downloader can be called up:
+
+\medskip
+
+\SHELL{\$ cd jetson-inference/tools} \newline 
+\SHELL{\$ ./download-models.sh} 
+
+\medskip
+
+The models  GoogleNet and ResNet-18, which are based on the ImageNet\index{ImageNet} image database, are automatically downloaded in the build step. The table~\ref{Database:TrainedModel} lists all models that are available in the jetson-inference project. The first column of the table is the name of the structure of the model. \cite{Alom:2018}. The second column contains the passing parameter for the \PYTHON{--network} argument of the \FILE{imagenet-camera.py} program.
+
+\medskip
+
+\begin{table}
+    \centering
+    \begin{tabular}[h]{lcr}
+        \textbf{Network}              & \textbf{CLI argument} & \textbf{NetworkType enum} \\ \hline
+        AlexNet\index{AlexNet}        & alexnet               & ALEXNET \\
+        GoogleNet\index{GoogleNet}    & googlenet             & GOOGLENET \\
+        GoogleNet-12                  & googlenet-12          & GOOGLENET\_12 \\
+        ResNet-18\index{ResNets}      & resnet-18             & RESNET\_18 \\
+        ResNet-50                     & resnet-50             & RESNET\_50 \\
+        ResNet-101                    & resnet-101            & RESNET\_101 \\
+        ResNet-152                    & resnet-152            & RESNET\_152 \\
+        VGG-16\index{VGG}             & vgg-16                & VGG-16 \\
+        VGG-19                        & vgg-19                & VGG-19 \\
+        Inception-v4\index{Inception} & inception-v4          & INCEPTION\_V4 \\
+    \end{tabular}
+    \caption{Pre-trained models of the project jetson-inference}\label{Database:TrainedModell}
+\end{table}
+
+
+
+
+
+%todo \input{../Inhalt/JetsonNano/MobileNet}
+
+%todo \input{../Inhalt/General/FaceNet}
+
+%
+%Detect-COCO-Airplane coco-airplain Flugzeuge
+%Detect-COCO-Bottle coco-bottle Flaschen
+%Detect-COCO-Chair coco-chair Stühle
+%Detect-COCO-Dog coco-dogs Hunde
+%ped-100 pednet Fußgänger
+%multiped-500 multiped Fußgänger und Gepäck
+
+%network=googlenet?
+%ResNet-18
+

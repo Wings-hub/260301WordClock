@@ -1,0 +1,158 @@
+%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-18 11:15:45Z $
+% $Pfad: WuSt/Skript/Produktspezifikation/powerpoint/ImageProcessing.tex $
+% $Version: 4620 $
+%
+%%%%%%
+
+\chapter{Secure Shell (SSH)}
+\label{chap:SSH}
+
+
+SSH is the abbreviation for Secure Shell. Secure Shell can be used to establish secure network connections to other devices, such as from a PC to a web server or from a PC to a microcomputer like the Raspberry Pi. SSH enables mutual authentication and encrypted data transmission, so that sensitive data such as passwords or user names cannot be acquired by unauthorized persons. Secure Shell offers a high level of security.
+
+The command line in Windows Power Shell provides full access to the file system and all functions of the computer. 
+Secure Shell functions include login to remote computers, interactive and non-interactive execution of commands, and copying files between different computers on a network. SSH provides cryptographically secured communication over the insecure network, reliable mutual authentication, encryption of all traffic based on a password or public/private key login methods for this purpose. Note however, that SSH does not give access to the raspberry Pi's graphical UI, only the command line. If this is desired, skip this chapter and refer to \autoref{chap:VNC} instead.
+
+\section{Switching on and enabling SSH}
+
+SSH allows access to the Raspberry Pi even if it is not equipped with a keyboard, mouse and monitor.
+is equipped. For this, the Raspberry Pi must be connected to the network via Ethernet or WLAN. For this to work, it is also very important that the device you want to use to access the Raspberry Pi is connected to the same Ethernet/WLAN as the Raspberry Pi.
+
+\subsection{installing SSH}
+
+Current versions of Raspberry Pi OS or even most alternative Linux distributions come with an SSH server out of the box. This only needs to be activated. If an older version of Raspberry Pi OS or a distribution without a pre-installed SSH server is used, this can be installed quickly. In a terminal on the Raspberry Pi the following must be entered:
+
+\medskip
+
+
+\SHELL{sudo apt-get install ssh}
+
+\medskip
+
+Then the SSH server must be started. This command is entered for this purpose:
+
+\medskip
+
+\SHELL{sudo /etc/init.d/ssh start}
+
+\medskip
+
+This process can be automated:
+
+\medskip
+
+\SHELL{sudo update-rc.d ssh defaults}
+
+\medskip
+
+After this input, permanent access via SSH to the Raspberry Pi is possible.
+
+\subsection{enabling SSH}
+
+
+\subsubsection{file \glqq ssh\grqq{}}
+
+The first option is to deposit an empty file \glqq ssh\grqq{} in the root directory. After the next boot, ssh is also automatically enabled.
+
+\subsubsection{system settings}
+
+If the Raspberry Pi is running the default distribution Raspberry Pi OS, ssh access can be enabled via the system settings. To do this, open \glqq Settings - Raspberry Pi Configuration\grqq from the Start menu, go to the \glqq Interfaces\grqq{} tab and set the \glqq SSH\grqq{} item.
+must be set to \glqq Enabled\grqq{}. After confirmation, ssh is also permanently available.
+
+\subsubsection{terminal}
+
+If you are working on the Raspberry Pi at the terminal level, enable SSH access via the Raspberry Pi OS configuration program. To open this, enter this command:
+
+\medskip
+
+\SHELL{sudo raspi-config}
+
+\medskip
+
+
+Using the arrow keys on the keyboard, the menu item \glqq Interfacing Options\grqq{} can be opened. There
+the item \glqq ssh\grqq{} can be activated. Now the system must be restarted:
+
+\medskip
+
+\SHELL{sudo reboot}
+
+\subsection {Accessing the Raspberry Pi with Windows Power Shell}
+
+After connecting the Raspberry with a LAN cable or via WLAN, Windows Power Shell is called by pressing the Windows and X key simultaneously. Now a selection page appears. Here you can choose to run Windows Power Shell as administrator. Now wait until your PC is ready; it can take up to 10 seconds. Then enter the following command:
+
+\medskip
+
+\SHELL{ssh <username>@<IPaddress>}
+
+\medskip
+
+In our case we would enter:
+
+\medskip
+
+\SHELL{ssh pi@172.20.10.4}
+
+\medskip
+
+If you don't know the IP address of your specific Raspberry Pi, see \autoref{sec:user&IP}. If a time out occurs when entering the command in Windows Power Shell, double check that the Raspberry Pi is actually turned on. If the issue persists, refer to \autoref{sec:changeIP}. If there are no errors, there should be a message asking you to confirm that you want to connect. Just type \FILE{yes} and hit enter. You will then be prompted to enter the password of the Raspberry Pi, which by default is \FILE{raspberry}. Note that you won't be able to see what you type in the terminal, just hit enter when you think you've entered the password correctly. You can check if the connection was successful by entering the following command:
+
+\medskip
+
+\SHELL{sudo raspi-config}
+
+\medskip
+
+If the Raspberry Pi Software Configuration Tool appears, that means your device is successfully connected. The connection can be ended by entering \FILE{exit} in the terminal, or if you want to shut the Raspberry Pi down you can enter:
+
+\medskip
+
+\SHELL{sudo shutdown now}
+
+\medskip
+
+Now all you need to use the Raspberry Pi is to connect it to a power source. It should connect to any previously used WLAN-networks that it has access to automatically, and as long as your device is connected to the same network, you can access it by repeating these instructions.
+
+
+
+\subsection{Solving "Time out"-issue}
+\label{sec:changeIP}
+\Mynote{Needs to be tested and modified}
+
+This chapter now describes how to change the IP address of your PC so that it connects to the Raspberry Pi. You can do this step if you get a time out when connecting.
+
+\begin{notes}
+	\item Manually changing the IP address and subnet mask may cause your computer to stop connecting to other things like Ethernet. In this case you have to follow the steps below and at the end you have to select again "Obtain IP address automatically" instead of "Use the following IP address" and confirm this selection.
+\end{notes}
+
+Firstly, go to the network and internet settings. Here they select the item Ethernet. Then they click on the item Change adapter options. Now a new window appears, in which the different network connections are listed. Then select the Ethernet connection and click on it. Now a new window opens. Here they select now under Windows 10 Internet protocol version 4 (TCP/IPv4). Now click on Properties and another window opens. Here they can select the item "Use the following IP address" and enter the IP address. Afterwards they press TAB. Windows will now add the rest, like the subnet mask, automatically Now confirm the entries. In our case the IP address of the Raspberry is 192.168.0.5, to connect to your PC you have to enter an IP address similar to this e.g.: 192.168.0.10 where the last number is important. In this case 10. 5 would not work because it is already used by the Pi.
+
+
+\subsection{Username and IP address}
+\label{sec:user&IP}
+
+For SSH-access the username and password of the Raspberry Pi must be known. By default, the username is \glqq pi\grqq{} and the password is
+\glqq raspberry\grqq.
+
+
+
+The user password can be changed in different ways, for example in the configuration menu 
+in the item \glqq Change password for the current user\grqq{}. On the graphical user interface 
+user password can also be changed in the configuration menu.
+
+
+
+\bigskip
+
+To use SSH, the IP address of the Rapsberry Pi must be known. With the terminal command
+
+\medskip
+
+\SHELL{hostname -I}
+
+\medskip
+
+the IP address is output.

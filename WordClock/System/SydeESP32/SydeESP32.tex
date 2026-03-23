@@ -1,0 +1,266 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-02-24 14:30:26Z $
+% $Pfad: System/Syde/SydeESP32.tex $
+% $Version: 1792 $
+%
+% !TeX encoding = utf8
+% !TeX root = NiclaVision
+% !TeX TXS-program:bibliography = txs:///bibtex
+%
+%
+%%%%%%%%%%%%%%%
+
+% ! TeX TXS-SCRIPT = foobar
+% //Trigger = ?load-this-file
+% app.load("/tmp/test/test.tex");
+% app.load("/tmp/test/a.tex");
+% TXS-SCRIPT-END
+%%%
+%
+% Auswahl der Sprache
+% Die nicht gewünschte Sprache muss auskommentiert werden:
+%\def\isGerman{1}
+\def\isEnglish{1}
+%
+%%%%%%%%%%%%%%%
+
+\documentclass[10pt,a4paper,bibliography=totoc]{scrbook}
+
+
+\input{../../General/packages}
+
+%\usepackage{fontawesome}
+
+\input{../../General/commands}
+\input{../../General/tikzdefs}
+
+\input{../../General/acronyms}
+\input{../../General/Hyphenations}%
+
+\bibliography{../../../MLbib/Jetson} 
+
+%\renewcommand{\Ausblenden}[1]{#1}
+
+\begin{document}
+    
+   
+\InputLanguage{Contents/SydeESP32/}{Titlepage}
+
+%Inhaltsverzeichnis
+\tableofcontents
+\newpage
+
+\listoffigures
+\newpage
+
+%\addcontentsline{toc}{chapter}{\TRANS{Liste der Programme}{List of Listings}}
+%\lstlistoflistings
+\listofcodes
+\cleardoublepage
+
+% Ist in acronyms/Acronymlist aufgegangen
+%\input{../contents/JetsonNano/Symbollist}
+%\newpage
+
+\InputLanguage{Contents/General/}{Acronymlist}
+\newpage
+
+  
+%\Ausblenden
+{
+\input{todo}
+
+%\input{../contents/General/LensCalibrationTool}
+}
+
+
+%\Ausblenden %okay
+{
+
+\part{Tools}
+
+  \part{Arduino IDE}
+  
+  
+  \InputLanguage{Contents/General/}{ArduinoIDE2Installation}    
+  
+  \InputLanguage{Contents/General/}{ArduinoIDE2Win}    
+  
+  \InputLanguage{Contents/General/}{ArduinoIDE2Mac}    
+  
+  \InputLanguage{Contents/General/}{ArduinoIDE2}  
+  
+  \part{Hypatia Initialisieren}  
+  
+  \input{../../contents/SydeESP32/ArduinoIDEConfHypatia}
+
+  \input{../../contents/SydeESP32/ESP32ConfHypatia}
+
+  \input{../../Contents/SydeESS/SydeCloud}
+
+}
+
+
+    
+\part{Syde's Hypatia}
+	
+  \input{../../contents/SydeESP32/HypatiaBoard}
+  
+  \input{../../contents/SydeESP32/Hardware}
+
+
+
+%  \input{../../contents/general/JSTConnector}
+
+%  \input{../../contents/general/Battery}
+  
+%  \input{../../contents/SydeESP32/HardwareShield}
+%  
+%  \input{../../contents/SydeESP32/HardwareLTE}
+%
+%\input{../../Contents/Nano33BLESense/Nano33BLESense}
+%
+%\input{../../Contents/Nano33BLESense/TinyMLKit}
+%
+%\input{../../Contents/General/LEDPower}
+%
+%\input{../../Contents/General/LEDBuiltIn}
+%
+%\input{../../Contents/General/LEDRGB}
+%
+%\input{../../Contents/General/PushButton}
+
+
+
+\part{Spannungsversorgung}
+
+
+
+
+
+\part{Hypatia IoT}
+\input{../../Contents/SydeESP32/Wifi}
+
+\input{../../Contents/SydeESP32/BLE}
+
+\input{../../Contents/SydeESP32/SigFox}
+
+\input{../../Contents/SydeESP32/LoRa}
+
+
+\begin{comment}
+
+
+
+\part{Syde's ESP32 - Externe  Sensoren und Aktoren}
+
+\input{../../Contents/General/LEDExternal}
+
+\input{../../Contents/General/LEDRGBExternal}
+
+\input{../../Contents/General/RTC}
+
+
+\end{comment}
+
+
+
+\begin{comment}
+
+
+          
+\part{\TRANS{Kommunikation}{Communication}}
+
+  \InputLanguage{Contents/General/}{LoRaWan}
+
+  
+  \chapter{SigFox}
+  
+  \input{../../Contents/General/BlueTooth}
+
+  \input{../../Contents/General/ArduinoSerial}  
+
+  \input{../../Contents/General/I2C}
+
+  \input{../../Contents/General/SPI}
+
+
+\InputLanguage{Contents/General/}{ParallelPort}
+
+\InputLanguage{Contents/General/}{SerialCommunication}
+
+\chapter{Sensor ``Trap'' - Pheromons}
+
+
+\chapter{LTE}
+
+\chapter{WiFi}
+
+\chapter{UART}
+
+
+\chapter{Configuration using Json}
+
+\chapter{Leaf-Wetness-Sensor}
+
+\chapter{Sensor Rain Gauge (PLV) - Niederschlag}  
+
+\chapter{Sensor Volotile Chemstry}
+
+\chapter{Sensor CO\textsubscript{2}}
+
+\chapter{Sensor Pressure}
+
+\chapter{Sensor }
+
+\chapter{EcoSensorSystem}
+
+%tenuta casadei suvereto
+
+
+\chapter{Anemometer}
+
+\chapter{Power Management}
+
+\chapter{Connecting Solar Panel}
+
+\chapter{MicroPython}
+
+
+%  \input{../../Contents/General/JSTConnector}
+
+  \input{../../Contents/General/Grove}
+
+}
+
+
+\end{comment}
+
+
+
+
+%\begin{comment}
+
+\part{\TRANS{Anhang}{Appendix}}
+
+  \input{../../contents/SydeESP32/MateriallistESP32}
+    
+%\end{comment}    
+
+
+
+%\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+\printbibliography[
+  heading=bibintoc,
+  title={\TRANS{Literaturverzeichnis}{Literature}}
+]
+
+\newpage
+
+%\addcontentsline{toc}{chapter}{\TRANS{Stichwortverzeichnis}{Index}}
+\printindex
+
+
+\end{document}

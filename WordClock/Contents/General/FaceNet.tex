@@ -1,0 +1,31 @@
+%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2021-05-14 $
+% $Pfad: GitLab/MLEdgeComputer/ $
+% $Dateiname: FaceNet
+% $Version: 4620 $
+%
+%%%%%%
+
+%todo Hier ist viel zu tun: Keine Quellen
+% nicht ausführlich genug
+
+\section{FaceNet}
+
+\cite{Schroff:2015}
+
+%facenet-120\cite{Schroff:2015}
+
+FaceNet lernt eine Abbildung von Gesichtsbildern auf einem kompakten euklidischen Raum, in dem Abstände direkt einem Maß für die Ähnlichkeit von Gesichtern entsprechen. Sobald dies geschehen ist, sind Aufgaben wie Gesichtserkennung, -verifizierung und -clusterung mit Standardtechniken (unter Verwendung der FaceNet-Einbettungen als Merkmale) einfach zu erledigen.
+Verwendet ein Deep CNN, das trainiert wird, um die Einbettung selbst zu optimieren, anstatt die Ausgabe einer dazwischenliegenden Engpassschicht zu verwenden. Das Training erfolgt mit Triplets: ein Bild eines Gesichts ("Anker"), ein weiteres Bild desselben Gesichts ("positives Exemplar") und ein Bild eines anderen Gesichts ("negatives Exemplar"). Der Hauptvorteil liegt in der Repräsentationseffizienz: Mit nur 128 Byte pro Gesicht kann eine Spitzenleistung erzielt werden (Rekordgenauigkeit von 99,63 \% bei LFW, 95,12 \% bei Youtube Faces DB).
+
+siehe \url{../../MLbib/CNN/class10_FaceNet.pdf}
+
+
+
+FaceNet ist ein tiefes Faltungsneuronales Netzwerk, das von Google-Forschern entwickelt und um 2015 eingeführt wurde, um die Hürden bei der Gesichtserkennung und -verifizierung effektiv zu lösen. Der FaceNet-Algorithmus transformiert das Gesichtsbild in einen 128-dimensionalen euklidischen Raum, ähnlich wie beim Word Embedding[9]. Das so erstellte FaceNet-Modell wird auf Triplett-Verlust trainiert, um die Ähnlichkeiten und Unterschiede auf dem bereitgestellten Bilddatensatz zu erfassen. Die vom Modell erzeugten Einbettungen mit 128 Dimensionen können verwendet werden, um Gesichter auf sehr effektive und präzise Weise zu clustern. Durch die Verwendung von FaceNet-Embeddings als Merkmalsvektoren könnten nach der Erstellung des Vektorraums Funktionalitäten wie Gesichtserkennung und -verifikation implementiert werden[10]. Kurz gesagt, die Abstände für die ähnlichen Bilder würden viel näher sein als die zufälligen nicht ähnlichen Bilder. Die allgemeine Blockdarstellung des FaceNet-Ansatzes der Gesichtserkennung ist in Abb.1 dargestellt.
+
+siehe \url{../../MLbib/CNN/10.1109ICACCS.2019.8728466.pdf}
+
+Eingabeformat? Farben? Pixelauflösung?

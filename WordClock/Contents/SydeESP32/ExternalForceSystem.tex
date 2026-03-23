@@ -1,0 +1,91 @@
+\subsection{External Force Module}
+The demonstrator is as well as the HTA system, built around a Hypatia board. It drives a dual H-bridge module (L298N) for two DC motors equipped with the same optical encoders as above. The control signals for the motor driver are PWM for speed and the logic lines IN1–IN4 for directions and received wirelessly via ESP-NOW from the dedicated remote controller. Once paired, the two boards remain in continuous contact: the controller transmits duty-cycle and polarity commands, and the demonstrator returns the encoder-measured wheel speeds for feedback.
+
+Power is split to suit the loads. The Hypatia controller is supplied from a 5V power bank, while the motor power stage on the L298N module is fed by a 6V source realized as four 1.5V cells in series. A single on/off switch interrupts both supplies, allowing the entire unit to be powered up or down together. An indicator LED shows the power state (on/off) and thus the presence of supply voltage at a glance.
+
+In this configuration, the Hypatia board acts as the central node: it accepts the ESP-NOW commands, generates PWM and direction signals for the L298N, and reads the two wheel encoders. The result is a compact external-force module that can be driven remotely, with speed feedback available from both wheels and clean separation between logic power (5 V) and motor power (6 V). To better understand the system’s functions, the sections below explain the working system of PWM and ESP-NOW.
+
+
+\subsubsection{Pulse Width Modulation}
+\ac{PWM} is a technique used to control the power delivered to a load by rapidly alternating the electrical signal between fully on and fully off states. In this approach, the PWM signal resembles a square wave, with the high portion representing the time the power is on (also known as the pulse width PW), and the low portion representing the time it’s off. By adjusting the pulse width—lengthening it to deliver more power or shortening it to deliver less—PWM can effectively manage the amount of power supplied to a device. This switching occurs within a defined cycle called the PWM period T, which includes both the on and off times. The precision of PWM control depends on its resolution, which defines how many discrete steps can fit into one period; higher resolution means finer control. The duty cycle DC, a key term in PWM, quantifies the ratio of the on-time to the total period, expressed as a percentage. For instance, a 0\% duty cycle means the load is always off, while a 100\% duty cycle means it is always on. A duty cycle DC (\%) may be calculated as shown in following Equation:
+
+\begin{equation}
+	DC = \frac{PW}{T} \cdot 100\% 
+	\label{eq:dutyCycle}
+\end{equation} 
+
+PWM’s effectiveness lies in how the power to the load is determined by the ratio of the pulse width (the ON time) to the total period of the signal. For example, if the duty cycle is 80\%, it means the load receives power 80\% of the time and is off for the remaining 20\%. A higher duty cycle leads to more power being delivered, while a lower duty cycle reduces it. In this context, PWM frequency is also essential being the inverse of the period \ref{eq:freqPWM}, so shorter periods lead to higher frequencies. This frequency should be high enough that the load (such as a motor or light) cannot respond to the individual on-off pulses but instead perceives an average power level that’s smoother and closer to a continuous signal.
+
+\begin{equation}
+	f = \frac{1}{T}
+	\label{eq:freqPWM}
+\end{equation} 
+
+The PWM waveform typically appears as a series of rectangular pulses \ref{fig:PWM}. The ratio of on-time to the total period determines how much energy is transferred to the load. This high-frequency switching is a key advantage because, despite rapidly alternating between on and off states, the energy loss in the switches themselves is kept very low. When the switch is off, there’s essentially no current flow and thus minimal power loss. When it’s on and delivering power, there’s almost no voltage drop across the switch itself, so the power loss is again negligible. This efficient power transfer ensures that PWM remains an excellent choice for many control and power applications.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/Drive/PWM}
+	\caption[PWM for voltage
+	control: (a) Duty Cycle $50\%$,(b) Duty Cycle $25\%$]{(a) Duty Cycle $50\%$,(b) Duty Cycle $25\%$ \cite[see][98]{Bolton:2019}}
+	\label{fig:PWM}
+\end{figure}
+
+\paragraph{ESP Now}
+
+ESP-NOW is an Espressif protocol for connectionless Wi-Fi exchange. Payloads are carried inside specific action frames, allowing one device to send data directly to another without establishing a traditional Wi-Fi connection. Security is provided by CCMP, which combines counter (CTR) encryption with a CBC-MAC for message authentication, which can be read out from the ESP32 based Hypatia Boards. Any change to the plaintext disrupts the authenticated ciphertext without the key. ESP-NOW can operate alongside Wi-Fi and Bluetooth LE and is supported across different ESP device families \cite[see][170]{Karuppusamy:2022}.
+
+The protocol supports flexible topologies—unicast, broadcast, one-to-many, and many-to-many, and can also be used as a stand-alone helper for network setup, diagnostics, and firmware updates. ESP-NOW defines two roles based on data flow: an initiator (sender) and a responder (receiver). In typical IoT scenarios, switches, sensors, or displays act as initiators, while lights and sockets act as responders. By default, ESP-NOW provides a bit rate of 1 Mbps, which is sufficient for real-time control traffic in the proposed system while keeping resource usage low \cite[see][170]{Karuppusamy:2022}.
+
+In the demonstrator, both the External Force system and the controller act as sender and receiver. The controller reads the joysticks, forms PWM duty cycles and motor polarity commands, and transmits these to the External Force system to drive the two DC motors. In return, the External Force system reports the measured linear velocity, which the controller receives and displays. This two-way exchange keeps command and feedback in sync: the controller provides speed and direction, while the External Force system provides telemetry for on-screen visualization.
+
+\subsubsection{Enclosure}
+ 
+In the External Force system the hardware sits in a three-part enclosure. All electronic modules are fastened to a main baseboard \ref{fig:ExtForceMontage} with M3 screws that thread into metal inserts. The inserts are embedded in raised bosses, which set the mounting height and create a rigid, repeatable support. In the center area there are eight raised pads that locate and align the Hypatia Board and the L298N MotorDriver2. A row of four holes, together with two small raised rectangles, forms the mounting pattern for the caster (swivel) wheel, keeping it positively seated and aligned.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/CAD/ExtForceMontage}
+	\caption[Montage Board of the External Force System]{Montage Board of the External Force System}
+	\label{fig:ExtForceMontage}
+\end{figure}
+
+Here the cross shaped holes are as well the locations of the optical encoders, mounted the same way as in the HTA system.
+The two motors are mounted by stabilizers on both sides, so the motor bodies are positively located and securely supported \ref{fig:MotorAttachment}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.2\linewidth]{../../../Images/Syde/HTA/CAD/MotorAttachment}
+	\caption[Mounting stabilizers for DC Motors]{Mounting stabilizers for DC Motors}
+	\label{fig:MotorAttachment}
+\end{figure}
+
+The mounting board is fastened to a cover with four screws, one in each corner (see corner holes\ref{fig:ExtForceMontage}). The cover provides dedicated space for a battery holder accommodating four 1.5 V cells, as well as room for the 5 V power bank. 
+This arrangement secures the electronics and power supplies in a compact, protected stack while keeping access to the mounting points straightforward. The dimensions of the External Force system are visualized in figure \ref{fig:ExtForceTop}. 
+
+Figure {fig:ExtForceCoverOverview} shows the cover with its functional features labeled. At (a) sits the hanger for the traction/compression rod that links the External Force unit to the HTA system. Point (b) marks the mounting location of the main on/off switch, while (c) indicates the position of the status LED. Features (d) and (g) are longitudinal slots that receive the tabs of the battery lid so the cell compartment can be closed and secured. At (e), small locating studs (“nubs”) position the 5 V power bank precisely and prevent it from shifting. Finally, (f) identifies through-holes with hexagonal recesses on the underside; nuts are heat-set into these recesses so the battery holder can be bolted to the cover from above with a robust, flush fit.
+
+\begin{figure}[H]
+	\centering
+	% enforce equal visual height for both subfigures
+	\newlength{\SubFigEqualH}
+	\setlength{\SubFigEqualH}{4.2cm}
+	
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\SubFigEqualH,keepaspectratio]{../../../Images/Syde/HTA/CAD/ExtForceTop}
+		\caption{Cover of the External Force System: Interior Hardware View}
+		\label{fig:ExtForceTop}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\SubFigEqualH,keepaspectratio]{../../../Images/Syde/HTA/CAD/ExtForceCover}
+		\caption{Cover of the External Force System: Section View}
+		\label{fig:ExtForceCoverSection}
+	\end{subfigure}
+	
+	\caption{External Force System: Cover Overview}
+	\label{fig:ExtForceCoverOverview}
+\end{figure}
+
+

@@ -1,0 +1,320 @@
+%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-18 11:15:45Z $
+% $Pfad: WuSt/Skript/Produktspezifikation/powerpoint/ImageProcessing.tex $
+% $Version: 4620 $
+%
+%%%%%%
+
+%todo Der Text muss komplett überarbeitet werden. Er stammt aus dem Link
+
+% todo https://www.datacamp.com/community/tutorials/virtual-environment-in-python
+
+
+
+\chapter{Virtuelle Umgebungen in Python}
+
+
+Bei der Erstellung von Software ist es ein schwieriges Unterfangen, eine wohldefinierte Entwicklungsumgebung zu haben. Bei der Softwareentwicklung mit Python wird man unterstützt. Hier kann eine virtuelle Umgebung eingerichtet werden. Sie sorgt dafür, auch wenn einzelne Software-Pakete auf dem Rechner aktualisiert werden, dass stets die definierten Paketversionen verwendet werden. 
+
+
+%\url{https://docs.python.org/3/tutorial/venv.html}
+
+
+\section{Paket \FILE{python3-venv} für virtuelle Umgebungen}
+
+Auf einem PC-System ist dies mit der Werkzeug \FILE{conda} möglich. Leider kann es auf einem Jetson Nano nicht verwendet werden. Hier hilft das Paket \FILE{python3-venv}, das wie folgt installiert werden kann:
+
+\medskip
+	
+\SHELL{sudo apt install -y python3-venv}
+
+\medskip
+
+Der folgende Befehl erstellt einen Ordner \FILE{python-envs}, falls er noch nicht vorhanden ist, und eine neue virtuelle Umgebung 
+in \FILE{/home/msr/python-envs/env} mit dem Namen \FILE{env}:
+
+\medskip
+
+\SHELL{python3 -m venv \textapprox/python-envs/env}
+
+\medskip
+
+Nach diesen beiden Schritten kann die virtuelle Umgebung verwendet werden. Dazu muss sie aktiviert werden:
+\medskip
+
+\SHELL{source \textapprox/python-envs/env/bin/activate}
+
+\medskip
+
+Das Terminal zeigt an, dass die Umgebung aktiv ist, indem der Name der Umgebung \FILE{(env)} vor dem Benutzernamen anzeigt wird. Um die Umgebung zu deaktivieren, führen Sie einfach den  Befehl \FILE{deactivate} aus.
+
+Jetzt können einzelne Pakete installiert werden. Damit man die installierten Pakete verwalten kann, sollte zusätzlich das Paket \FILE{wheel} installiert werden; dies wird für die Installation vieler nachfolgender Pakete benötigt.
+
+\medskip
+
+\SHELL{pip3 install wheel}
+
+\medskip
+
+
+Für jedes größere Projekt sollte eine neue virtuelle Umgebung geschaffen werden. So können bestimmt Paketversion installiert werden. Falls eine Aktualisierung eines Pakets Probleme bereitet, so kann die die virtuelle Umgebung einfach gelöscht werden. Dies ist einfacher als eine Neuinstallation des gesamten Systems.
+
+
+\section{Environments}
+\label{sec:environments}
+Hinsichtlich der verwendeten Environments wird hier auf zwei unterschiedliche Technologien zurückgegriffen. Neben der für die Python-Entwicklung verwendeten \ac{ide} \emph{JetBrains PyCharm}\footnote{\url{https://www.jetbrains.com/de-de/pycharm/}} werden sogenannte \acp{venv} verwendet. Ein \ac{venv} ermöglicht eine projektabhängige Kapselung des Python Interpreters und dessen installierte Pakete, um eine saubere und reproduzierbare Entwicklungsumgebung zu ermöglichen \cite{Jaworski:2019}. Die benötigten Python Softwarepakete können dann mit dem Paketverwaltungsprogramm \ac{pip} aus dem \ac{pypi} bezogen und innerhalb der separaten Umgebung installiert werden.
+
+\subsection{Erzeugen eines Python VENV}
+
+Ein \ac{venv} kann mit dem Python-Interpreter erzeugt werden. Unter Windows sind die benötigten Pakete dafür bereits installiert, unter Ubuntu muss jedoch noch eine Abhängigkeit installiert werden (\cref{src:python3venv1}).
+
+\begin{lstlisting}[language=MyBash, caption={Installation von VENV in Ubuntu}, label={src:python3venv1}]
+	$ sudo apt install -y python3-venv
+\end{lstlisting}
+
+Im Anschluss kann an einem beliebigen Ort ein neues Environment erstellt werden. In diesem Beispiel wird dies im aktuellen Verzeichnis im Ordner \mytt{myenv} erzeugt (\cref{src:python3venv2}).
+
+\begin{lstlisting}[language=MyBash, otherkeywords = {python}, caption={Erstellen eines Python VENV}, label={src:python3venv2}]
+	$ python -m venv myenv
+\end{lstlisting}
+
+Das erzeugte \ac{venv} muss nun für die lokale Nutzung aktiviert werden. Hierbei ist zu beachten, dass dies mit jeder neu geöffneten Powershell/Terminal Instanz erneut durchgeführt werden muss. Die Befehle unterscheiden sich dabei unter Linux und Windows, da jeweils ein unterschiedliches Skript aufgerufen werden muss (\cref{src:python3venv3}).
+
+\begin{lstlisting}[language=MyBash, otherkeywords = {python}, caption={Aktivieren eines Python VENV}, label={src:python3venv3}]
+	$ ./myvenv/bin/activate # Linux
+	PS> .\myvenv\Scripts\activate.ps1 # Windows Powershell
+\end{lstlisting}
+
+
+
+
+\section{Paket \FILE{pipenv} für virtuelle Umgebungen}
+
+Das Paket \FILE{pipenv} ermöglicht die Schaffung einer virtuellen Umgebung. Es eine pip-Datei, die bei der Verwaltung des Pakets hilft und einfach installiert oder entfernt werden kann. Nach der Installation von \FILE{pipenv} können die Werkzeuge \FILE{pip} und \FILE{virtualenv} zusammen verwendet werden, um eine 
+virtuelle Umgebung zu schaffen, die Datei  \FILE{pipfile} funktioniert als Ersatz für die Datei \FILE{requirement.txt}, die die Paketversion entsprechend dem gegebenen Projekt verfolgt.
+
+Falls ein Rechner mit dem Betriebssystem Windows genutzt wird, so ist das Werkzeug \FILE{Git Bash} als Terminal zu benutzen. Für das Betriebssystem macOS steht das Programm \FILE{Homebrew} zur Verfügung. Linux-Anwender nutzen das Paketverwaltungswerkzeug  \FILE{LinuxBrew}.
+
+Für die Erstellung einer virtuellen Umgebung mit dem Paket \FILE{pipenv} muss zunächst ein Verzeichnis für das neue Projekt \FILE{MyProject} erstellt werden.
+
+\medskip
+
+\SHELL{mkdir MyProject}
+
+\medskip
+
+In dieses Verzeichnis muss nun gewechselt werden:
+
+\medskip
+
+\SHELL{cd MyProject}
+
+\medskip
+
+Im Betriebssystem Windows kann nun das Paket \FILE{pipenv} installiert werden.
+
+\medskip
+
+\PYTHON{pip install pipenv}
+
+\medskip
+
+Dagegen können Linux-/macOS-Benutzer den folgenden Befehl verwenden, um das Paket \FILE{pipenv} nach der Installation von \FILE{LinuxBrew} zu installieren.
+
+\medskip
+
+\PYTHON{brew install pipenv}
+
+\medskip
+
+
+Nun kann eine neue virtuelle Umgebung für das Projekt mit dem folgenden Befehl angelegt werden:
+
+\medskip
+
+\PYTHON{pipenv shell}
+
+\medskip
+
+Der Befehl erzeugt eine neue virtuelle Umgebung \FILE{virtualenv} und eine pip-Datei \FILE{Pipfile} für das Projekt. Nach der Installation des Pakets \FILE{virtualenv} können nun die erforderlichen Pakete für das Projekt in der virtuellen Umgebung installiert werden. In dem folgenden Befehl die Pakete \FILE{requests} und \FILE{flask} installiert.
+	
+
+\medskip
+
+\PYTHON{pipenv install requests}
+
+\PYTHON{pipenv install flask}
+
+\medskip
+
+Die Befehl meldet, dass die Datei \FILE{Pipfile} entsprechend geändert wurde. Für die Deinstallation des Pakets kann der folgende Befehl verwendet werden.
+
+\medskip
+
+\PYTHON{pipenv uninstall flask}
+
+\medskip
+
+Um außerhalb des Pakets arbeiten zu können, muss die virtuelle Umgebung deaktiviert werden:
+
+\medskip
+
+\SHELL{exit}
+
+\medskip
+
+
+Die virtuelle Umgebung kann dann wieder mit dem Befehl 
+
+\medskip
+
+
+\SHELL{source MyProject/bin/activate}
+
+\medskip
+
+aktiviert werden.
+
+
+
+
+\section{Programm \FILE{Anaconda Prompt-It} für virtuelle Umgebungen}
+
+Das Programm \FILE{Anaconda Prompt-It} ist ein Werkzeug, das mit der Installtion einer Anaconda-Distribution installiert wird. Es ermöglicht die Verwendung einer Befehlszeile zur Erstellung von Pythonprogrammen. Die Abbildung~\ref{env:conda}  zeigt, welche Informationen man erhält, falls man das Kommando \SHELL{conda} aufruft.
+
+\bigskip
+
+\begin{figure}
+	\GRAPHICSC{0.4}{1.0}{Images/Environment/Env4}	
+	
+	\caption{Hilfetext für conda}
+	
+	\label{env:conda}  
+\end{figure}
+
+\bigskip
+
+Mit der Installation von Anaconda steht eine einfach Möglichkeit zur Verfügung eine virtuelle Umgebung zu definieren. Der Befehl
+
+\SHELL{conda create -n MyProject python = 3.7}
+
+	
+erzeugt eine neue virtuelle Umgebung mit dem Namen \FILE{MyProject}, die die spezifische Python-Version von 3.7 verwendet. Nach der Erstellung der virtuellen Umgebung kann diese aktiviert werden:
+
+\medskip
+
+\PYTHON{conda activate MyProject}
+
+\medskip
+
+Die verwendete Umgebung wird in der Befehlszeile in Klammern angegeben: SHELL{(MyProject) C:\textbackslash}. Nach der Aktivierung können die notwendigen Pakete installiert werden.  Zum Beispiel wird das Paket \FILE{numpy} installiert.
+
+    \medskip
+     
+    \PYTHON{conda install -n MyProject numpy}
+     
+  \medskip
+     
+Alternativ kann auch der Paketmanager innerhalb der virtuellen Umgebung verwendet werden.
+     
+     \medskip
+     
+     \PYTHON{pip install numpy}
+     
+\medskip
+     
+Zur Dokumentation können alle installierten Pakete innerhalb einer virtuellen Umgebung angezeigt werden. Dazu dient der folgende Befehl, wobei die Abbildung~\ref{env:list} eine mögliche Ausgabe zeigt:
+     
+     \medskip
+     
+     \PYTHON{conda list}
+     
+\medskip
+     
+     
+%todo eigene Datei einfügen     
+  	\begin{figure}
+  	\GRAPHICSC{0.6}{1.0}{Images/Environment/Env6}	
+  	
+  	\caption{Liste der installierten Pakete}
+  	
+  	\label{env:list}  
+  \end{figure}
+
+Falls man eine andere virtuelle Umgebung verwenden möchte, muss die aktuelle deaktiviert werden:
+
+  \medskip
+
+\PYTHON{conda deactivate}
+
+\medskip
+
+     
+     
+Ebenfalls können alle angelegten virtuellen Umgebungen angezeigt werden. Dies erleichtert ihre Verwaltung.
+Die Abbildung~\ref{env:envlist} zeigt eine mögliche Ausgabe.
+
+\medskip
+     
+\PYTHON{conda env list}
+
+\medskip
+
+\begin{figure}
+	\GRAPHICSC{0.6}{1.0}{Images/Environment/Env7}	
+	
+	\caption{Liste aller angelegten virtuellen Umgebungen}
+	\label{env:envlist}  
+\end{figure}
+
+ 
+Schließlich kann auch eine virtuelle Umgebung entfernen. Der folgende Befehl entfernt die virtuelle Umgebung \FILE{MyProject} mit all ihren Paketen. 
+ 
+  \medskip
+   
+  \PYTHON{conda env remove -n myenv}
+  
+
+\section{Programm \FILE{Anaconda Navigator} für virtuelle Umgebungen}
+
+Falls eine grafische Oberfläche bevorzugt wird, kann das Werkzeug \FILE{Anaconda Navigator-It} verwendet. Damit kann man in \FILE{Anaconda} Pakete starten und verwalten.
+
+Nach dem Start des Programms kann man gemäß Abbildung~\ref{env:Navigator} in die Aufgabe \glqq Environments\grqq {} wechseln, wobei stets die virtuelle Umgebung \FILE{base} angezeigt wird. Sie ist die Standardeinstellung.  
+
+\begin{figure}
+	\GRAPHICSC{0.3}{1.0}{Images/Environment/Env10}	
+	
+	\caption{Anaconda Navigator: Aufruf des Bereichs für die virtuellen Umgebungen}
+	
+	\label{env:Navigator}  
+\end{figure}
+
+In diesem Dialog kann man das Schaltfeld \glqq Erstellen\grqq{} betätigen. Dann müssen die erforderlichen Angaben eingegeben werden,  um eine neue virtuelle Umgebung namens \FILE{new-env} zu erstellen, siehe Abbildung~\ref{env:new}. 
+
+\begin{figure}
+	\GRAPHICSC{0.3}{1.0}{Images/Environment/Env11}	
+	
+	\caption{Anaconda Navigator: Erstellung einer virtuellen Umgebung}
+	
+	\label{env:new}  
+\end{figure}
+
+
+Danach kann man sich alle installierten Pakete anzeigen lassen und neue installieren.
+Zur Aktivierung der virtuellen Umgebung muss die entsprechende Umgebung ausgewählt werden.
+
+%Nun  Wählen Sie 'new-env' im Home-Verzeichnis, so dass das Starten einer Anwendung spezifisch für diese bestimmte virtuelle Umgebung ist. 
+%
+%  	\begin{figure}
+%	\GRAPHICSC{0.3}{1.0}{Images/Environment/Env13}	
+%	
+%	\caption{Anaconda Navigator: Erstellung einer virtuellen Umgebung}
+%	
+%	\label{fig:env13}  
+%\end{figure}
+%
+%\end{enumerate}
+     
+    

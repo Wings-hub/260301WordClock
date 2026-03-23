@@ -1,0 +1,205 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad:  $
+% $Datei: Optimization.tex
+% $Version: 4250 $
+%
+% !TeX spellcheck = en_GB/de_DE
+%
+%%%%%%%%%%%%
+
+
+\chapter{Wie kann das Training auf der VM beschleunigt werden?}
+
+Es kann zusätzliche Hardware eingesetzt werden:
+
+\begin{itemize}
+  \item GPU 
+    \begin{itemize}
+      \item starke Parallelisierung möglich, vorgesehene Aufgabe parallele Berechnung der Pixel; dies kann auch für generellere parallele Berechnungen ausgenutzt werden 
+	  \item Implementierung mit CUDA möglich (TensorFlow, OpenCV)
+     \end{itemize}
+  \item Beschleunigerkarten
+    \begin{itemize}
+	  \item Zusätzliche Rechenleistung
+	  \item Z.B. 1 Intel\textsuperscript{\textregistered}  Movidius\textsuperscript{\texttrademark} VPU (TensorFlow und Caffe Support)
+    \end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+  \item Mehrere Kerne oder CPUs können genutzt werden
+    \begin{itemize}
+	  \item Einzelner Trainingsdurchlauf kann beschleunigt werden 
+	  \item Parallele Ausführung einzelner Berechnungen
+	  \item Parallele Ausführung mehrerer Durchläufe
+	  \item Tuning der Hyperparameter
+    \end{itemize}	
+  \item Effiziente Berechnung/ Programmierung
+    \begin{itemize}
+     \item Frameworks nutzen anstatt \glqq das Rad neu zu erfinden\grqq
+    \end{itemize}
+  \item Auswertung beschleunigen: Pruning, Weight Clustering, $\ldots$
+  \item Frameworks für paralleles oder verteiltes Training, zum Beispiel OpenMP
+  \item Multiple Kernel learning
+  \item Multithreading
+  \item Multitprocessing
+  \item Cluster aus mehreren PCs
+\end{itemize}
+
+\section{Computer Cluster}
+
+\begin{itemize}
+  \item Verbund mehrerer Computer über gemeinsame Hardware- und Softwarestruktur  können Aufgaben parallel ausführen
+  \item Speichermanagement muss beachtet werden
+  \item Passende Bibliotheken/ Frameworks notwendig
+  \item ABER: Dafür müssen mehrere Computer für die zu bearbeitende Aufgabe zeitgleich zur Verfügung stehen
+\end{itemize}
+
+\section{Multiple Kernel Learning}
+
+
+\begin{itemize}
+	\item Kernel: Funktion, die nicht-lineare Zusammenhänge in höherdimensionalem Raum linear abbilden kann
+	\item Mehrere Kernel kombinieren, beste Kombination auswählen
+	\item Lineare Berechnungen oft schneller
+	\item Kernel können parallel berechnet werden
+	\item Herausforderung: Optimierung
+	\item ABER: Insgesamt eher langsamer als schnelle
+	\item ABER: Andere Berechnung/ Darstellung der Zusammenhänge als Neuronales Netz
+\end{itemize}
+
+\section{Multithreading}
+
+\begin{itemize}
+  \item Viele Operationen (Berechnungen mehrerer Neuronen in einer Schicht) können parallel ausgeführt werden
+  \item Sequentielle Ausführung nutzt die Hardware nicht vollständig aus, z.B. mehrere Kerne verfügbar, die mehrere Aufgaben parallel bearbeiten können
+  \item TensorFlow
+    \begin{itemize}
+      \item Per default wird Multithreading genutzt (komplette CPU wird genutzt)
+      \item \PYTHON{inter\_op\_parallelism\_threads}: maximale Anzahl von Operatoren, die parallel ausgeführt werden
+      \item \PYTHON{intra\_op\_parallelism\_threads}: maximale Anzahl von Threads, die zur Ausführung einzelner Operatoren verwendet werden
+    \end{itemize}	
+\end{itemize}
+
+
+Eigene Versuche:
+
+Training mit TensorFlow
+
+\begin{itemize}
+  \item CIFAR10
+  \item Einfaches CNN
+  \item 2501 Trainingsdaten
+  \item 501 Testdaten
+  \item 1 Epoche
+\end{itemize}
+
+\begin{fiugre}
+  \centering
+  \includegraphics{Optimization/test1}
+  \caption{Zeitmessungen für verschiedene Konfigurationen von Multithreading}
+\end{figure}	
+
+\begin{fiugre}
+	\centering
+	\includegraphics{Optimization/test2
+	\caption{Genauigkeitsmessungen für verschiedene Konfigurationen von Multithreading}
+\end{figure}	
+
+\begin{fiugre}
+	\centering
+	\includegraphics{Optimization/test3}
+	\caption{Verlustmessungen für verschiedene Konfigurationen von Multithreading}
+\end{figure}	
+
+
+\begin{itemize}
+  \item TensorFlow Default-Einstellungen nicht immer optimal, vgl. TENSORTUNER \url{https://arxiv.org/pdf/1812.01665.pdf}
+  \item Standard:
+    \begin{itemize}
+      \item \PYTHON{inter-op} auf feste Nummer, meist 2, gesetzt 
+      \item \PYTHON{intra-op} auf Anzahl der (logischen) Prozessoren/ Kerne
+    \end{itemize}
+  \item Optimierungsproblem
+  \item Abwägen $\rightarrow$ Wie groß ist der Zeitaufwand der Optimierung gegenüber der erreichten Zeitersparnis im Training
+\end{itemize}
+
+\section{Multiprocessing}
+
+\begin{itemize}
+  \item Ein Prozess besteht aus mehreren Threads
+  \item Multiprocessing-Modul in Python
+  \item Beim Multiprocessing muss auch die Verteilung der Daten/ Speicher bedacht werden
+  \item Realisierung in TensorFlow durch paralleles Training mehrerer Netze (verschiedene Hyperparameter) vorstellbar
+\end{itemize}
+
+
+\section{MKL-DNN}
+
+\begin{itemize}
+  \item Intel Math Kernel Library for Deep Neural Networks
+  \item Optimiert für Intel-Prozessoren 
+  \item TensorFlow nutzt 2 verschiedene CPU-Backends:
+    \begin{itemize}
+      \item Eigen library
+      \item MKL-DNN
+    \end{itemize}
+  \item Installation von TensorFlow mit MKL-DNN über Conda
+  \item Default ist Eigen, liefert aber oft nicht die beste Performance (sowohl Training als auch Auswertung) 
+\end{itemize}
+
+\section{Fazit}
+
+\begin{itemize}
+  \item TensorFlow nutzt per default alle Kerne und Multithreading
+  
+        $\rightarrow$ Parallele Ausführung des Trainings in TensorFlow ohne zusätzlichen Aufwand
+  \item Multithreading kann optimiert werden; Modifikation sehr simpel, Optimierung u.U. zeitaufwändig und vom zu trainierenden Modell abhängig
+  \item Für Intel-Prozessoren MKL-DNN
+  \item Andere Ansätze erfordern weitere Hardware oder mehr Zeitaufwand in der Programmierung
+\end{itemize}
+
+\section{Virtuelle Maschine}
+
+\begin{itemize}
+  \item Server des MSR-Labors
+     
+        $\rightarrow$ Hardware steht zur Verfügung
+  \item Alles nutzbar, keine Konflikte mit anderen Verwendern
+\end{itemize}
+
+Verfügbare Hardware
+
+%todo: Angaben korrigieren:
+\begin{itemize}
+  \item Intel® Xeon® Prozessor E5-2670 v2
+  \item Prozessorgeschwindigkeit: 2.5 GHz
+  \item Prozessor-Sockets: 2
+  \item Kerne je Prozessor: 10
+  \item  20 physische Kerne, 40 logische Prozessoren
+  \item Storage-Kapazität viele TB’s, 
+  \item Arbeitsspeicher ~130 GB
+\end{itemize}
+	
+	
+\begin{itemize}
+  \item Welches OS? 
+    \begin{itemize}
+      \item In ML und Entwicklung Linux verbreitet, kostenlos
+      \item Ubuntu benutzerfreundlich
+    \end{itemize}
+  \item Kann das OS alle Kerne nutzen?
+     \begin{itemize}
+      \item Ubuntu 64-bit unterstützt bis zu 64 Kerne
+    \end{itemize}
+  \item Stehen mehrere Server zur Verfügung: Alle nutzen?
+    \begin{itemize}
+      \item Cluster
+      \item verbunden über 10 Gbit Netzwerk
+      \item Zusätzlicher Aufwand; nötige Kompetenz?
+    \end{itemize}
+\end{itemize}
+	

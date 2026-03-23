@@ -1,0 +1,122 @@
+%%%
+%
+% $Autor: Wings $
+% $Datum: 2021-05-14 $
+% $Pfad: GitLab/MLEdgeComputer $
+% $Dateiname:  JSTConnector
+% $Version: 4620 $
+%
+% !TeX spellcheck = de_DE/GB
+% !TeX program = pdflatex
+% !BIB program = biber/bibtex
+% !TeX encoding = utf8
+%
+%%%
+
+\chapter{Steckverbinder vom Typ JST}
+
+% https://en.wikipedia.org/wiki/JST_connector
+
+\section{Steckverbinder-Serie}
+
+JST-Steckverbinder sind elektrische Steckverbinder, die nach den ursprünglich von der J.S.T. Mfg. Co. (Japan Solderless Terminal) entwickelten Designstandards gefertigt werden \cite{JST:2016}. JST stellt zahlreiche Serien (Familien) und Rasterma\ss e (Abstand von Pin zu Pin) von Steckverbindern her.
+
+
+JST fertigt eine große Anzahl von Steckverbinder-Serien (Familien). Die Leiterplattensteckverbinder (Draht-zu-Platine) sind in Ausführungen mit oberem (vertikalem) oder seitlichem (horizontalem) Einlass sowie als THT- (Through-Hole Technology) oder SMT- (Surface-Mount Technology) Varianten erhältlich \cite{JST:2020}. 
+
+Diese Beschreibung bezieht sich ausschließlich auf die mechanische Struktur und das elektrische Verhalten. Die Pinbelegung ist nicht standardisiert.
+
+Achtung: Der Begriff ``JST'' wird manchmal fälschlicherweise als umgangssprachlicher Ausdruck verwendet, der jeden kleinen wei\ss en elektrischen Steckverbinder bezeichnet, der auf Printed Circuit Board (PCB) montiert ist.
+
+
+
+
+\section{JST VH}
+
+%\URL{https://www.jst-mfg.com/product/index.php?series=262}
+
+Die technischen Daten der JST VH-Serie sind in diesem Abschnitt angegeben. Sie stammen aus dem Datenblatt der Serie \cite{JST:2021}. 
+
+\subsection{Product Profile}
+
+
+\begin{tabular}{l|l}
+	\centering
+  Parameter & Profile \\ \hline
+  Serie   & VH-Stecker \\ \hline
+  Kategorie & Crimp-Steckverbinder (Wire-to-Board-Typ) \\ \hline
+  Typ     & Crimpausführung, Kompakttyp, \\ 
+           & Mit Sperrvorrichtung\\
+           &  Abtrennbarer Typ \\ \hline
+  Merkmal  & Mit sicherer Verriegelung\\ 
+\end{tabular}
+\captionof{table}{Product Profile}
+\subsection{Spezifikation}
+
+
+\begin{tabular}{l|l}
+	\centering
+  Parameter      & Spezifikation \\ \hline   	
+  Stiftabstand        & 3.96mm \\ \hline
+  Stiftreihen       & 1 \\ \hline
+  Strombelastbarkeit & 10A (AWG\#16) \\ \hline
+  Spannungsfestigkeit & 250V\\ \hline
+  
+ Leiterplattenmontagerichtung & Obereintritt, Seiteneintritt 
+\end{tabular}  
+\captionof{table}{Spezifikation}
+
+\begin{center}
+    \includegraphics[width=0.6\textwidth]{JSTConnectors/JSTVH}
+    \captionof{figure}{JST connector type VH}
+    \footnotesize \textbf{Reference:} \URL{https://www.jst-mfg.com/product/index.php?series=262}
+    
+\end{center}
+
+
+\section{JST PH}
+
+In diesem Abschnitt werden die technischen Daten der JST PH-Serie angegeben. Sie sind dem Datenblatt der Serie entnommen \cite{JST:2022}. 
+%https://www.jst-mfg.com/product/index.php?series=199
+
+\subsection{Product Profile}
+
+\begin{center}
+\begin{tabular}{l|l}
+   Parameter & Profile \\ \hline
+  Serie   & PH-Stecker \\ \hline
+  Kategorie & Crimp-Steckverbinder (Wire-to-Board-Typ)\\ \hline
+  Typ    & Crimp-Stil, Dünn-Typ \\
+           & Trennbarer Typ \\
+\end{tabular}
+\captionof{table}{Product Profile}
+\end{center}
+\subsection{Spezifikation}
+
+\begin{center}
+\begin{tabular}{l|l}
+	\centering
+  Parameter      & Spezifikation \\ \hline	
+  Stiftabstand  & 2.0mm  \\ \hline
+  Strombelastbarkeit & 2A (AWG\#24) \\ \hline
+  Spannungsfestigkeit & 100V \\ \hline
+  Leiterplattenmontagerichtung & Obereintritt, Seiteneintritt \\ 
+\end{tabular}
+\captionof{table}{Spezifikation}
+\end{center}
+\begin{center}
+    \includegraphics[width=0.6\textwidth]{JSTConnectors/JSTPH}
+    \captionof{figure}{JST connector type VH } 
+    \footnotesize \textbf{Reference:} \cite{JST:2022}
+\end{center}
+
+\subsection{JST PHR-2}
+
+Eine Variante der Steckverbinderserie ist der Typ JST PHR-2, der 2 Stifte hat. Abbildung \ref{JST-2022} zeigt einen JST PHR-2 Steckverbinder.
+
+\begin{center}
+    \includegraphics[width=0.5\textwidth]{JSTConnectors/PHR-2.jpg}
+    \captionof{figure}{JST-Stecker Typ PHR-2 }\label{JST-2022}
+    \footnotesize \textbf{Reference:} \cite{JST:2022}
+\end{center}
+

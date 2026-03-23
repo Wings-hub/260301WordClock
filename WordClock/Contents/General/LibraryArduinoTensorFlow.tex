@@ -1,0 +1,237 @@
+%%%
+%
+% $Autor: Malena Wilken $
+% $Date: 2026-01-20 $
+% $File: FlowchartDeployment.tex$
+% $Version: 1 $
+% !TeX spellcheck = en_US
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+
+\chapter{Library TensorFlow Lite Micro}
+\label{TensorFlowLiteMicroInstall}
+
+The repository TensorFlow Lite Micro Arduino Examples, which can be found under this link: \URL{https://github.com/tensorflow/tflite-micro-arduino-examples/tree/main} provides an implementation of the TensorFlow Lite Micro inference engine adapted for the Arduino platform. It contains the necessary code and example sketches that demonstrate how to integrate and run TensorFlow Lite Micro models on compatible Arduino boards, most notably the Arduino Nano 33 BLE Sense. The repository is organized to include multiple example applications that exercise the core inference functionality in contexts such as basic model evaluation, keyword recognition, and other TinyML workloads. It is distributed under the Apache-2.0 license and, as an archived project, remains available as a reference implementation for developers wishing to evaluate TensorFlow Lite Micro on embedded systems with constrained memory and processing resources \cite{ArduinoTensorFlow:2025}. 
+
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=7cm]{TinyML/tfliteMicroClone}
+%	\caption[TensorFlow Lite Micro Arduino Examples Repository ]{Clone the TensorFlow Lite Micro Arduino Examples Repository \cite{TensorFlow:2025}}
+%	\label{fig:tfliteMicroClone}
+%\end{figure}
+
+
+\section{Installation}
+To use the in-development version of the library, it can be obtained directly from the GitHub repository and integrated manually into the Arduino development environment. The repository must be cloned into the directory used by the Arduino IDE to store third-party libraries. Depending on the operating system, this directory is typically located at \FILE{~/Arduino/libraries} on Linux, \FILE{~/Documents/Arduino/libraries} on macOS, and \FILE{My Documents\textbackslash Arduino\textbackslash Libraries} on Windows. Once placed in the appropriate location, the library becomes available to the Arduino IDE and can be included in sketches like any other installed library \cite{ArduinoTensorFlow:2025}. If no libraries have previously been installed via the Arduino IDE, the corresponding libraries directory may not yet exist on the system. In such cases, installing any library through the Arduino Library Manager can serve as an effective initial step, as it automatically creates the required folder structure. Once this directory has been generated, additional libraries can be added manually by inserting the desired repository into the newly created libraries folder.
+
+\section{Functions}\label{FunctionsTensorFlow}
+
+The following sections provide a structured explanation of the central code components used in the Arduino-based TensorFlow Lite for Microcontrollers application. Each subsection highlights a specific functional building block of the TinyML workflow, ranging from model integration and memory management to inference execution and result handling. More information to code examples and deeper insights to the librariy can be found on this web page: \URL{https://github.com/tinyMLx/arduino-library}
+
+
+\paragraph{Includes}
+
+This section includes the core header files required to integrate TensorFlow Lite for Microcontrollers into the Arduino sketch. These files provide access to the TinyML runtime, define the supported model schema version, and expose the data structures needed to interpret and validate a compiled TensorFlow Lite model.
+
+\begin{itemize}
+	\item \FILE{TensorFlowLite.h} 
+	
+	This header serves as the primary entry point for TensorFlow Lite for Microcontrollers. It provides the fundamental definitions and includes necessary to use the TinyML inference engine on resource-constrained embedded systems.
+	
+	\item \FILE{tensorflow/lite/version.h} 
+	
+	This file defines the TensorFlow Lite schema version supported by the runtime. It is used to verify that the embedded model was generated with a compatible TensorFlow Lite version before inference is executed.
+	
+	\item \FILE{tensorflow/lite/schema/schema\_generated.h} 
+	
+	This header exposes the data structures representing the TensorFlow Lite model schema. It enables the interpreter to map the serialized model stored in memory into an accessible and type-safe representation without additional parsing overhead.
+\end{itemize}
+
+
+\paragraph{Error Reporting Infrastructure}
+
+
+This section introduces the lightweight error reporting mechanism used by TensorFlow Lite for Microcontrollers. It enables diagnostic messages to be generated during model initialization and inference while remaining suitable for memory-constrained embedded platforms such as the Arduino Nano 33 BLE Sense.
+
+\begin{itemize}
+	\item \FILE{tensorflow/lite/micro/micro\_error\_reporter.h} 
+	
+	This header provides the implementation of a minimal error reporter designed for microcontroller environments. It allows TensorFlow Lite to emit formatted debug and error messages without relying on dynamic memory allocation or standard I/O facilities.
+	
+	\item \PYTHON{tflite::MicroErrorReporter} 
+	
+	This class implements the error reporting interface for embedded targets. An instance of this reporter is typically created in the setup phase and is responsible for handling all runtime error messages generated by the TensorFlow Lite interpreter.
+	
+	\item \PYTHON{tflite::ErrorReporter*} 
+	
+	This pointer abstracts the error reporting mechanism from the rest of the application. By referencing the reporter through this interface, TensorFlow Lite components can remain decoupled from the concrete reporting implementation, improving portability and modularity.
+\end{itemize}
+
+
+
+\paragraph{Operator Resolver Setup}
+
+This section defines how TensorFlow Lite operations required by the model are registered and made available to the inference engine. The operator resolver is responsible for mapping the operators used in the compiled model to their corresponding runtime implementations on the microcontroller.
+
+\begin{itemize}
+	\item \FILE{tensorflow/lite/micro/all\_ops\_resolver.h} 
+	
+	This header provides a resolver that includes implementations for all TensorFlow Lite Micro operators. It simplifies development by ensuring that any operator used by the model is available at runtime, at the cost of increased code size.
+	
+	\item \PYTHON{tflite::AllOpsResolver} 
+	
+	This class instantiates a comprehensive operator registry for the interpreter. It is commonly used during prototyping and educational examples, as it avoids the need to manually register only the specific operators required by the model.
+\end{itemize}
+
+
+\paragraph{Tensor Arena Definition}
+
+This section defines the static memory region used by TensorFlow Lite for Microcontrollers to store all tensors, intermediate buffers, and activation data required during model execution. The tensor arena is a central component of the TinyML runtime and must be carefully sized to fit both the model and the available system memory.
+
+\begin{itemize}
+	\item \PYTHON{tensor\_arena} 
+	
+	This statically allocated byte array serves as the sole memory pool for TensorFlow Lite during inference. All input tensors, output tensors, and intermediate computation buffers are allocated from this region at runtime.
+	
+	\item \PYTHON{kTensorArenaSize} 
+	
+	This constant defines the total size of the tensor arena in bytes. It must be large enough to accommodate the model’s memory requirements; insufficient sizing will cause tensor allocation to fail during initialization.
+\end{itemize}
+
+
+\paragraph{Model Mapping and Validation}
+
+This section is responsible for loading the compiled TensorFlow Lite model into a usable data structure and verifying its compatibility with the TensorFlow Lite Micro runtime. The validation step ensures that the model schema matches the version supported by the deployed library, preventing undefined behavior during inference.
+
+\begin{itemize}
+	\item \PYTHON{tflite::GetModel(g\_model)} 
+	
+	This function maps the serialized TensorFlow Lite model, stored as a byte array in program memory, into a structured \texttt{Model} object. The operation is and does not involve copying or parsing the model data.
+	
+	\item \PYTHON{TFLITE\_SCHEMA\_VERSION} 
+	
+	This constant defines the TensorFlow Lite schema version supported by the runtime. It is used to compare against the version embedded in the model to ensure binary compatibility before inference is executed.
+\end{itemize}
+
+\paragraph{MicroInterpreter Construction}
+
+This section describes the creation of the TensorFlow Lite Micro interpreter, which is responsible for coordinating model execution on the microcontroller. The interpreter binds together the model, the operator resolver, the tensor arena, and the error reporting infrastructure into a single execution context.
+
+\begin{itemize}
+	\item \PYTHON{tflite::MicroInterpreter} 
+	
+	This class implements the core inference engine for TensorFlow Lite on microcontrollers. It manages tensor allocation within the tensor arena, invokes registered operators in the correct order, and executes the model during each inference cycle.
+\end{itemize}
+
+
+\paragraph{Tensor Allocation}
+
+This section covers the memory allocation step required before model inference can be executed. During this phase, TensorFlow Lite assigns memory from the tensor arena to all input, output, and intermediate tensors defined by the model.
+
+\begin{itemize}
+	\item \PYTHON{interpreter->AllocateTensors()} 
+	
+	This function triggers the allocation of all tensors required by the model using the pre-defined tensor arena. It must be called after the interpreter is constructed and before any inference is performed; a failure at this stage might indicate insufficient memory.
+\end{itemize}
+
+
+\paragraph{Input and Output Tensor Access}
+
+This section explains how direct access to the model’s input and output tensors is obtained. These tensor handles are required to feed data into the model and to retrieve inference results after execution.
+
+\begin{itemize}
+	\item \PYTHON{interpreter->input(0)} 
+	
+	This call returns a pointer to the first input tensor of the model. The application writes preprocessed and quantized input data into this tensor before invoking the interpreter.
+	
+	\item \PYTHON{interpreter->output(0)} 
+	
+	This function returns a pointer to the first output tensor of the model. After inference, the application reads the model’s quantized output values from this tensor for further processing or interpretation.
+\end{itemize}
+
+\paragraph{Input Preprocessing and Quantization}
+
+This section describes how input data is prepared and converted into the format expected by a quantized TensorFlow Lite model. Proper preprocessing and quantization are essential to ensure that the numerical input values match the scale and representation used during model training.
+
+\begin{itemize}
+	\item \PYTHON{input->data.int8[]} 
+	
+	This array provides direct access to the quantized input buffer of the model. Preprocessed input values are written as 8-bit integers, using the tensor’s scale and zero-point parameters to convert from floating-point representations.
+\end{itemize}
+
+
+\paragraph{Model Invocation}
+
+This section covers the execution of the TensorFlow Lite model on the microcontroller. Once the input tensor has been populated with valid data, the interpreter can be invoked to perform a full inference pass.
+
+\begin{itemize}
+	\item \PYTHON{interpreter->Invoke()} 
+	
+	This function executes the model by sequentially calling all registered operators using the prepared input tensors. It performs one complete inference cycle and produces output data in the model’s output tensors.
+\end{itemize}
+
+\paragraph{Output Postprocessing and Dequantization}
+
+This section describes how the quantized output produced by the model is accessed and converted back into a floating-point representation. Dequantization is required to interpret the inference results in a numerically meaningful form consistent with the original training domain.
+
+\begin{itemize}
+	\item \PYTHON{output->data.int8[]} 
+	
+	This array provides direct access to the quantized output buffer of the model. The raw 8-bit integer values are read from this tensor and converted to floating-point values using the output tensor’s scale and zero-point parameters.
+\end{itemize}
+
+
+\paragraph{Application-Specific Output Handling}
+
+This section describes how the results of a model inference are forwarded to application- or hardware-specific logic. The output handling layer decouples the core inference process from platform-dependent actions such as visualization, logging, or actuation.
+
+\begin{itemize}
+	\item \PYTHON{HandleOutput(error\_reporter, x, y)} 
+	
+	This function processes the dequantized input and output values produced by the model. Its implementation is target-specific and can be adapted to display results, control peripherals, or report inference behavior for debugging and evaluation purposes.
+\end{itemize}
+
+\paragraph{Inference Control Logic}
+
+This section manages the control flow of repeated model execution. It defines how often inference is performed and how input values are cycled, enabling deterministic and continuous evaluation of the model over a defined input range.
+
+\begin{itemize}
+	\item \PYTHON{inference\_count} 
+	
+	This variable tracks the number of inferences that have been executed. It is incremented after each inference run and is used to determine the current position within a predefined inference cycle.
+
+	\item \PYTHON{kInferencesPerCycle} 
+	
+	This constant specifies the total number of inference steps within one complete cycle. When the inference counter reaches this value, it is reset, ensuring periodic repetition of the input sequence.
+\end{itemize}
+
+
+
+\section{Example}
+
+The Hello World Example \ref{lst:PushButtonTest} is given by the library and can be found, when the library is installed correctly in the Arduino IDE, in \menu{File > Examples > Arduino\_TensorFlowLite>hello\_world}. The presented sketch implements a complete TensorFlow Lite for Microcontrollers inference pipeline. While the individual code components and their responsibilities have already been described in detail in section \ref{FunctionsHavard}, this section focuses on how these elements interact at runtime and how data flows through the system from input generation to output handling. The inference results are output via the serial monitor and the built-in LED, where the serial interface provides numerical values, while the LED offers visual feedback on the system state. As the input value is cycled over a fixed range and passed to a regression model trained on a sine function, the resulting output approximates a sinusoidal waveform.
+
+At startup, the \PYTHON{setup()} function initializes the TinyML runtime environment. The TensorFlow Lite model, which is compiled into the firmware as a byte array, is mapped into memory and validated against the supported schema version. An operator resolver is instantiated to provide the mathematical building blocks required by the model, and a \PYTHON{MicroInterpreter} is constructed to coordinate model execution. During tensor allocation, all memory needed for inputs, outputs, and intermediate activations is reserved from a statically defined tensor arena. Once this initialization phase is complete, pointers to the model’s input and output tensors are stored for repeated use during inference.
+
+The actual inference process takes place in the \PYTHON{loop()} function and is executed continuously. Instead of receiving external sensor data, the input is generated computationally: a normalized position value is computed based on an inference counter and scaled to match the numeric range the model was trained on. This floating-point value represents the model input and is subsequently quantized into an 8-bit integer using the input tensor’s scale and zero-point parameters. The quantized value is written directly into the model’s input tensor. After the input tensor has been populated, the interpreter is invoked to run a single inference pass. During this step, the interpreter executes the model layer by layer using the registered operators and the preallocated tensor memory. The result of the inference is written into the output tensor in quantized form. This output value is then read, dequantized back into floating-point representation, and passed to a hardware- or application-specific output handler. In the reference implementation, this handler is responsible for logging values, visualizing behavior, and demonstrating the learned function. The quantization process is defined by the tensor parameters \PYTHON{params.scale} and \PYTHON{params.zero\_point}, which map floating-point values to their integer representation and back, ensuring numerical consistency between the trained model and the embedded inference runtime. The input range \PYTHON{kXrange} originates from the model configuration and defines the interval over which input values are cycled, thereby determining the domain of the approximated function. 
+
+
+Conceptually, the model approximates a simple mathematical relationship, commonly a sine-like function in the \FILE{hello\_world example}, and the sketch repeatedly evaluates this function over a fixed input range. The inference counter ensures that the input progresses deterministically through this range and resets once a full cycle has been completed. As a result, the system continuously produces a smooth, periodic output that demonstrates how a trained neural network can be executed deterministically on a microcontroller.
+
+Note that, runtime errors during model invocation are typically not caused by the inference step itself but result from insufficient memory allocation during \PYTHON{AllocateTensors()}, for example when the tensor arena size is too small, which prevents successful execution of \PYTHON{Invoke()}.
+
+
+
+\begin{center}
+	\captionof{code}{Example Code for Tensor Flow Lite Micro Library}
+	\lstinputlisting[style=all]{../../Code/TFLiteMicroHelloWorld/TFLiteMicroHelloWorld.ino}
+	\label{lst:TensorFlow}
+\end{center}
+
+
+
+

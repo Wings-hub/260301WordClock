@@ -1,0 +1,931 @@
+%%%
+%
+% $Autor: Wings $
+% $Datum: 2023-06-05 $
+% $Dateiname: IMULSM6DSOX $
+% $Version: 1 $
+%
+%%%
+
+
+\chapter{Sensor Inertial Measurement Unit LSM6DSOX}  \label{chap:InertialMeasurementUnit}
+
+An Inertial Measurement Unit (IMU) is an electronic device that measures and reports a body's specific force, angular rate, and sometimes the orientation of the body. It consists of a combination of three sensors accelerometers,  gyroscopes, and magnetometer that work together to provide information about an object's acceleration, velocity, orientation, and gravitational forces.\cite{sabatini:2011}
+
+
+\Mynote{cite books, applications, board}
+
+
+
+\section{General}
+
+
+In addition to accelerometers and gyroscopes, IMUs may also include magnetometers, which measure the direction and strength of magnetic fields. These sensors can help provide additional information about the orientation and movement of an object in relation to Earth's magnetic field.\cite{Wang:2022}
+
+\bigskip
+
+Inertial Measurement Units (IMUs) are commonly used in various fields such as aerospace, robotics, and gaming. The device is made up of multiple sensors that can measure the acceleration and angular rate of an object in three dimensions. The accelerometers measure linear motion in three axes (x, y, z), while the gyroscopes measure angular motion around these same axes.\cite{wahyudi:2011}
+
+\section{Errors}  \label{Chap: Errors}
+
+\subsection{Introduction}
+
+IMU (Inertial Measurement Unit) is a sensor that measures and reports the linear and rotational motion of an object. The error in IMU refers to any deviation or inaccuracy in the measurements reported by the sensor from the true or expected values.
+
+\bigskip
+
+
+\begin{enumerate}
+	\item\textbf{Bias}: Bias is the constant offset in the readings of the IMU. It can be caused by a variety of factors, including manufacturing defects, aging of the sensors, or changes in temperature. These errors can lead to systematic errors that can persist over time and can be difficult to detect. To correct for the bias error, the IMU must be calibrated periodically. Calibration involves comparing the IMU's measurements with a known reference, and then estimating and subtracting the bias from the measurements to obtain more accurate results.\cite{sabatini:2011}
+	
+	\item \textbf{Drift}: Drift refers to the gradual change in bias over time. It can be caused by aging of the sensors, temperature changes, or electronic interference. Unlike the bias error, drift can vary over time, and it can be challenging to detect and correct. As a result, it is essential to calibrate the IMU regularly to correct for drift. More advanced techniques such as Kalman filtering can also be used to estimate and compensate for drift over time.\cite{Tedaldi:2014}
+	
+	\item \textbf{Noise:} Noise refers to the random variations in the sensor readings that can affect the accuracy of the measurement. This error is especially pronounced when the IMU is stationary. The noise can be caused by various factors such as electronic interference, vibrations, or environmental conditions. To reduce the noise error, various techniques such as filtering or averaging can be used. Filtering techniques can help remove random variations in the sensor readings and provide more accurate measurements. Averaging can also be used to reduce noise by averaging out random variations in the measurements over time.\cite{Faragher:2014}
+\end{enumerate}
+
+\subsection{Affected Parameters}
+Bias, drift, and noise errors will affect all the accelerometers and gyroscopes parameters. Here's how they impact each parameter:
+
+
+\subsubsection{Accelerometer}
+\begin{itemize}
+	\item Ax, Ay, and Az: The accelerometer measures linear acceleration in three directions, X, Y, and Z. If the accelerometer experiences bias, there will be a constant offset in the acceleration measurement in all three directions, even when there is no actual acceleration. 
+	\item Drift in an accelerometer can cause a slow, gradual change in the measured acceleration values over time. This means that even when the device is stationary, the accelerometer readings may drift away from the true acceleration values. For example, if the accelerometer is used to measure the tilt angle of a platform, drift can cause the tilt angle to slowly change even when the platform is not moving. Over time, this can result in significant errors in the measured tilt angle.
+	\item Noise in an accelerometer can cause random fluctuations in the measured acceleration values. This means that even when the device is stationary, the accelerometer readings may vary randomly around the true acceleration values. For example, if the accelerometer is used to measure the vibration of a machine, noise can cause the measured vibration amplitude to fluctuate randomly around the true amplitude. This random fluctuation can make it difficult to accurately measure the machine's vibration characteristics.
+\end{itemize}
+
+\subsubsection{Gyroscope}
+
+\begin{itemize}
+	\item $\Omega$x, $\Omega$y, and $\Omega$z: The gyroscope measures the rate of change of angular velocity in three directions, Roll, Pitch, and Yaw. Bias in the gyroscope can cause a constant offset in the measured angular velocity values, even when there is no actual rotation. \cite{Noureldin:2013}
+	\item Drift in gyroscopes is caused by mechanical imperfections in the device, temperature changes, or other external factors that can lead to a gradual change in the measured angular velocity value over time, even when the device is not rotating. The drift error can accumulate over time and can significantly affect the accuracy of the gyroscope measurements. For example, a drone that uses a gyroscope for stabilization can experience drift error over time, causing it to drift off course and potentially crash.
+	\item Noise in gyroscopes is caused by random fluctuations in the measured angular velocity values due to external disturbances such as vibrations or electromagnetic interference. The noise error can affect the precision of the gyroscope measurements and can lead to instability in the application. For example, in robotics, noise error can cause the robot to deviate from its intended path or make inaccurate movements.
+\end{itemize}
+
+To minimize these errors, calibration and filtering techniques can be used. Calibration can remove bias by using known reference values to adjust the sensor's measurements. Zero-g and zero-rate calibration techniques can be used to remove bias from accelerometers and gyroscopes, respectively. Filtering techniques can be used to remove noise and reduce drift. For example, a Kalman filter can be used to estimate the true acceleration or angular velocity values based on previous measurements and sensor models.\cite{Lin:2005}
+
+
+\section{6-Axis IMU LSM6DSOX}
+
+The LSM6DSOX is a 6-axis IMU developed by STMicroelectronics that features a high-performance 3-axis digital accelerometer and 3-axis digital gyroscope. The device is designed for accurate motion tracking and is commonly used in applications such as wearable devices and smart phones. It can measure linear and rotational motion simultaneously.\cite{STMicroelectronics:2018} The device also includes a variety of other features such as a programmable digital signal processor (DSP), a configurable low-pass filter, and a built-in temperature sensor.
+
+\bigskip
+
+\subsection{Features}
+
+Features of the LSM6DSOX IMU, see \cite{STMicroelectronics:2018}, typically referring to the technical specifications and capabilities of the sensor.
+
+\bigskip
+
+Here are the features of LSM6DSOX IMU features:
+
+\begin{itemize}
+	\item  \textbf{Power consumption: }
+	
+	Power consumption is an important factor when it comes to battery-powered devices like nicla vision and smart phones. These devices are designed to be portable and convenient, and they rely on batteries to power them. Therefore, the power consumption of each component is a critical consideration to extend battery life and to provide better user experience.
+	
+	\bigskip
+	
+	The LSM6DSOX has a power consumption of 0.55 mA in combo high-performance mode. This means that the sensor can operate at a low power consumption level while still delivering high-performance data. In this mode, the sensor can measure both acceleration and angular rate simultaneously, and provide accurate and reliable data with a high sampling rate.
+	
+	\bigskip
+	
+	The combo high-performance mode is an optimized mode that reduces power consumption without compromising on data accuracy and reliability. It achieves this by using advanced algorithms and signal processing techniques to filter out noise and unwanted signals, resulting in high-quality data with low power consumption.
+	
+	
+	\item  \textbf{Always-on:}
+	
+	This means that the LSM6DSOX can be kept running all the time, even when a device is in sleep mode, without using up too much power. This is useful for applications that require continuous motion tracking, such as fitness tracking or navigation.
+	
+	
+	\item  \textbf{Smart FIFO: }
+	
+	The Smart FIFO (First In First Out)  is a buffer that can store up to 9 kilobytes of motion data. It is "smart" because it can be configured to store only the most important data, saving memory and reducing power consumption.\cite{Martinez:2022}
+	
+	
+	\item  \textbf{Android compatiblity:}
+	
+	The LSM6DSOX is compatible with the Android operating system, which is used in many smartphones and tablets.
+	
+	
+	\item  \textbf{Accelerometer full scale: }
+	
+	The accelerometer in the LSM6DSOX can detect motion in up to four different full-scale ranges, from ±2g to ±16g. full scale refers to the maximum range of acceleration that can be measured by the sensor without saturating or clipping the output signal. 
+	
+	\bigskip
+	
+	For example, if an accelerometer has a full scale range of ±2g,\cite{Liu:2022} it means that the sensor can accurately measure accelerations up to 2g in both the positive and negative directions. If the measured acceleration exceeds this range, the sensor output will saturate at the maximum value, which may cause distortion in the output signal.
+	
+	\item  \textbf{Gyroscope full scale: }
+	
+	The gyroscope in the LSM6DSOX can detect rotation in up to five different full-scale ranges, from ±125 degrees per second (dps) to ±2000 dps. Each range corresponds to a certain maximum angular velocity that the sensor can detect.
+	
+	\item  \textbf{Analog supply voltage: }
+	
+	1.71 V to 3.6 V: This is the voltage range that the LSM6DSOX can operate at.
+	
+	\item  \textbf{Independent IO supply: }
+	
+	The input/output connections on the LSM6DSOX can operate at a separate voltage of 1.62 V.
+	
+	\item  \textbf{Compact footprint: }
+	
+	2.5 mm x 3 mm x 0.83 mm: This is the size of the LSM6DSOX package, which is small enough to fit many types of electronic devices.
+	
+	
+	\item  \textbf{SPI / I²C \& MIPI I3CSM serial interface with main processor data synchronization:}
+	
+	These are three different types of communication interfaces that the LSM6DSOX supports. The main processor data synchronization means that the data collected by the sensor can be synchronized with other sensors or data sources.
+	
+	
+	\item  \textbf{Auxiliary SPI for OIS data output for gyroscope and accelerometer: }
+	
+	This is an additional interface that can be used to output data from the gyroscope and accelerometer.
+	
+	\item  \textbf{OIS configurable from Aux SPI, primary interface (SPI/I²C \& MIPI I3CSM): }
+	
+	The OIS (optical image stabilization) feature of the LSM6DSOX can be configured using either the auxiliary SPI or one of the other serial interfaces.
+	
+	\item  \textbf{Advanced pedometer, step detector, and step counter: }
+	
+	These features allow the LSM6DSOX to accurately track the number of steps taken by a person wearing a device that contains the sensor.
+	
+	\item  \textbf{Significant Motion Detection, Tilt detection: }
+	
+	The LSM6DSOX can detect significant motion events, such as a sudden acceleration or deceleration, as well as changes in orientation or tilt.
+	
+	\item  \textbf{Standard interrupts:}
+	
+	Free-fall, wakeup, 6D/4D orientation, click and double-click: These are pre-programmed events that can trigger.
+	
+\end{itemize}
+
+
+\subsection{Data}
+
+The LSM6DSOX is a type of Inertial Measurement Unit (IMU) sensor that measures acceleration, angular speed and temperature. The data output from this sensor includes acceleration, gyroscope, and temperature measurements.
+
+\bigskip
+
+Accelerometer that measures the acceleration (Ax, Ay, Az) the rate of change of acceleration over time. The acceleration in each axis is typically reported in units of meters per second squared ($m/s^2$). For example, if the LSM6DSOX measures an acceleration of 5 $m/s^2$ in the x-axis, it means that the object being measured is increasing in velocity by 5 meters per second every second in the x-direction. See figure \ref{fig: Axis Acceleration of Accelerometer Sensor}
+
+\bigskip
+
+Gyroscope that measures the angular speed ($\Omega$x, $\Omega$y, $\Omega$z) is a measure of the rate of change of the orientation of the object being measured with respect to each axis. The angular velocity in each axis is typically reported in units of degrees per second ($^\circ/s$). For example, if the LSM6DSOX measures an angular velocity of 100$^\circ/s$ in the z-axis, it means that the object being measured is rotating at a rate of 100 degrees per second around the z-axis. See figure \ref{fig: Angular Speed of Gyroscope Sensor.PNG}
+
+\bigskip
+
+Temperature sensor that measures the ambient temperature (T) in degrees celsius (°C). The temperature sensor is located on the same chip as the accelerometer and gyroscope, and it operates by detecting changes in the voltage output of a diode that is sensitive to temperature. The temperature sensor can be used in a variety of applications, such as monitoring the temperature of electronic devices, measuring the temperature of an environment in which the sensor is placed, or compensating for temperature changes in the output of the accelerometer and gyroscope.
+
+\bigskip
+
+\subsubsection{Accelerometer:}\cite{Chiang:2006}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=6cm, height=5cm]{NiclaVision/SlopeControl/AxisAccelerationofAccelerometerSensor.PNG}
+	\caption{\emph{Axis Acceleration of Accelerometer Sensor}}
+	\label{fig: Axis Acceleration of Accelerometer Sensor}\Mynote{tikz!}
+\end{figure}
+
+\begin{itemize}
+	\item Acceleration in X-axis (Ax): meters per second squared ($m/s^2$)
+	\item Acceleration in Y-axis (Ay): meters per second squared ($m/s^2$)
+	\item Acceleration in Z-axis (Az): meters per second squared ($m/s^2$)
+\end{itemize}
+
+
+\subsubsection{Gyroscope}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=6cm, height=5cm]{NiclaVision/SlopeControl/AngularSpeedofGyroscopeSensor.PNG}
+	\caption{\emph{Angular Speed of Gyroscope Sensor}}
+	\label{fig: Angular Speed of Gyroscope Sensor.PNG}
+\end{figure}
+
+\begin{itemize}
+	\item Angular speed in X-axis (Roll, $\Omega$x): degrees per second ($^\circ/s$)
+	\item Angular speed in Y-axis (Pitch, $\Omega$y): degrees per second ($^\circ/s$)
+	\item Angular speed in Z-axis (Yaw, $\Omega$z): degrees per second ($^\circ/s$)
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Applications LSM6DSOX}
+
+The LSM6DSOX 6-axis IMU (Inertial Measurement Unit) is a versatile sensor that combines a 3-axis accelerometer and a 3-axis gyroscope.
+
+\begin{enumerate}
+	\item \textbf{Motion tracking and gesture detection:} The LSM6DSOX IMU can be used to track the motion of a device and detect gestures such as shaking, tilting, and rotating. This application is particularly useful in gaming, virtual reality, and augmented reality applications.
+	
+	\item \textbf{Sensor hub:} The LSM6DSOX IMU can act as a sensor hub, collecting data from other sensors such as magnetometers, barometers, and GPS sensors. This enables the sensor to provide a more complete picture of the device's orientation and motion.\cite{Stefanicka:2017}
+	
+	\item \textbf{Indoor navigation:} The LSM6DSOX IMU can be used for indoor navigation by tracking the device's motion and orientation. This application is useful in navigation and location-based services in indoor environments where GPS signals are not available.
+	
+	\item \textbf{IoT and connected devices:} The LSM6DSOX IMU is an ideal sensor for IoT (Internet of Things) and connected devices. It can provide motion tracking data to a wide range of devices, such as smart homes, wearables, and industrial IoT devices.\cite{Tripathy:2022}
+	
+	\item \textbf{Smart power saving for handheld devices:} The LSM6DSOX IMU can be used to optimize power consumption in handheld devices by detecting when the device is idle or in motion. This information can be used to adjust the device's power settings and conserve battery life.
+	
+	\item \textbf{EIS and OIS for camera applications:} The LSM6DSOX IMU can be used to provide electronic image stabilization (EIS) and optical image stabilization (OIS) in camera applications. This allows for smoother video and reduces camera shake and blurring.
+	
+	\item \textbf{Vibration monitoring and compensation:} The LSM6DSOX IMU can be used to monitor vibration levels in machinery and compensate for the effects of vibration. This is useful in industrial applications where vibration can cause damage or reduce the performance of machinery.
+\end{enumerate}
+
+
+
+\section{Libraries for the IMU}
+
+
+\subsection{Library \FILE{LSM6DSOX} - Description}
+
+
+
+
+\subsection{Library \FILE{LSM6DSOX} - Installation}
+
+Install the Library \FILE{LSM6DSOX}:
+
+\begin{itemize}
+	\item In the Arduino IDE, go to \menu{Sketch > Include Library > Manage Libraries...}.
+	\item The Library Manager will open, providing a search bar.
+	Type ``LSM6DSOX'' into the search bar.
+	Look for the library called \FILE{LSM6DSOX} in the search results.
+	\item Click on the library and then click the button ``Install'' to install the library.
+\end{itemize}
+
+\begin{center}
+	\includegraphics[width=12cm]{NiclaVision/SlopeControl/LibrarySetup.png}
+	\captionof{figure}{Library setup in Arduino IDE}
+\end{center}
+
+\begin{center}	
+	\includegraphics[width = 5cm]{Arduino/IMU/LSM9DS1.png}
+	\captionof{figure}{Library choice }
+\end{center}
+
+
+\subsection{ Library \FILE{LSM6DSOX} - Data}
+
+\begin{itemize}
+	\item data types
+	\item data structure
+	\item data quantity
+	\item data quality
+\end{itemize}
+
+
+
+\subsection{Library \FILE{Wire.h}}
+
+The library \FILE{Wire.h} is a library that allows for communication between I\textsuperscript{2}C devices.  The library \FILE{Wire.h} provides functions for initializing the bus I\textsuperscript{2}C, sending and receiving data over the bus, and managing multiple devices on the same bus. With this library, developers can easily connect multiple I\textsuperscript{2}C devices, such as sensors or displays, to an Arduino board.\cite{arduinoLCDI2C:2023,Aristi:2021}
+
+
+\begin{itemize}
+	
+	\item \PYTHON{Wire.begin()}: Initializes the library \PYTHON{Wire.h} and prepares the Arduino to act as master or slave on the bus I\textsuperscript{2}C.
+	\item \PYTHON{Wire.beginTransmission(address)}: Starts a transmission to a slave device with the specified address.
+	\item \PYTHON{Wire.write(data)} : Sends data on the bus I\textsuperscript{2}C during transmission.
+	\item \PYTHON{Wire.endTransmission()} : Ends the current transmission and releases the I2C bus.
+	\item \PYTHON{Wire.requestFrom(address, quantity)} : Requests data from a slave device with the specified address.
+	\item \PYTHON{Wire.available()}: Checks whether data is available to be read after a request.
+	\item \PYTHON{Wire.read()}: Reads data received from a slave device.
+	
+\end{itemize}
+
+\bigskip
+
+We can test the function with on example of the library \FILE{Wire.h}. This is an example to 
+test the bus I\textsuperscript{2}C on the board. 
+
+\begin{center}
+	
+	\captionof{code}{Simple sketch using the sensor LSM9DS1  detection}
+	\label{TestWire}
+	\ArduinoExternal{}{../../Code/Nano33BLESense/IMU/Test/WireEx/WireEx.ino}
+	
+\end{center}
+
+
+\subsection{Library \FILE{Kalman.h}}
+
+The library \FILE{Kalman.h} is a library that implements the Kalman filter algorithm. The Kalman filter is a mathematical technique used to estimate the state of a system based on incomplete measurements. It is commonly used in control systems, robotics, and navigation applications to improve the accuracy of sensor measurements and reduce errors. \FILE{Kalman.h} provides a simple interface for developers to implement the Kalman filter in their Arduino projects.\cite{arduino:2019Kalman,Fetick:2021}
+
+\subsubsection{Functions \PYTHON{kalmanX.setQ()}, \PYTHON{kalmanY.setQ()}, \PYTHON{kalmanZ.setQ()}}
+These functions set the process noise covariance for the Kalman filter in the X, Y, and Z axes respectively. The process noise covariance controls how much we trust our prediction of the state of the system at the next time step. A higher value of Q indicates that the system is more likely to deviate from the predicted state and a lower value indicates that the system is more likely to follow the predicted state.
+
+\subsubsection{Functions \PYTHON{kalmanX.setR()}, \PYTHON{kalmanY.setR()}, \PYTHON{kalmanZ.setR()}}
+These functions set the measurement noise covariance for the Kalman filter in the X, Y, and Z axes respectively. The measurement noise covariance controls how much we trust the sensor measurement of the system. A higher value of R indicates that the sensor measurement is less reliable and a lower value indicates that the sensor measurement is more reliable.
+
+\subsubsection{Functions \PYTHON{kalmanX.update()}, \PYTHON{kalmanY.update()}, \PYTHON{kalmanZ.update()}}
+These functions update the Kalman filter in the X, Y, and Z axes respectively. They take a measurement of the system and use it to update the state estimate of the system. The function returns the estimated bias of the measurement. The estimated bias is subtracted from the measurement to get a corrected measurement, which is used to update the state estimate.
+
+\subsubsection{Functions \PYTHON{kalmanX.getSigma()}, \PYTHON{kalmanY.getSigma()}, \PYTHON{kalmanZ.getSigma()}}
+These functions return the standard deviation of the Kalman filter output in the X, Y, and Z axes respectively. The standard deviation is a measure of the noise in the output of the Kalman filter.
+
+
+\subsection{Library \FILE{Arduino\_LSM6DSOX.h}}
+
+The library \FILE{Arduino\_LSM6DSOX.h} is a library that provides access to the sensor LSM6DSOX on the Arduino boards, like the board Arduino Mbed OS Nicla Vision. The sensor LSM6DSOX is a 6-axis sensor that can measure linear acceleration and angular velocity. The library \FILE{Arduino\_LSM6DSOX.h} provides functions for initializing the sensor, reading data from the sensor, and configuring the sensor parameters. With this library, developers can easily integrate the LSM6DSOX sensor into their Arduino projects and use the sensor data for various applications, such as gesture recognition or orientation detection.\cite{arduino:2021lsm6dsox}
+
+
+\subsubsection{Function \PYTHON{IMU.begin()}}
+
+
+The function to initialized the IMU is \PYTHON{IMU.begin()}, they start the IMU initialization process. This step is important to configures the IMU's basic parameters, set the communications with other devices, and prepares the unit for proper operation. Accurate initialization is essential to ensure the accuracy and reliability of the data provided by the IMU.
+
+An error during the initialization can lead to inaccurate measurements or unpredictable behavior. For example, incorrectly configured measurement parameters or sampling rates can compromise data quality, affecting overall system performance.
+
+
+\begin{Arduino}
+	if (!IMU.begin()) {
+		Serial.println("Failed to initialize IMU!");
+		while(1){};	}
+\end{Arduino}
+
+
+\subsubsection{Function \PYTHON{IMU.end()}} 
+
+This function is composed without parameter. After do this function they return value of 1 if all is good and they return value of 0 if we had some problem.
+
+This function is used to stop or deactivate the IMU once it is no longer required. It frees up the resources used by the IMU and ends its operation cleanly. When called, it ensures that all tasks associated with the IMU are properly finalized, avoiding memory leaks or other problems associated with incomplete de-initialization.
+
+This step helps to ensure the stability and reliability of the system as a whole, by avoiding problems associated with incorrect IMU de-initialization.
+
+The data was return at the end. 
+
+\begin{Arduino}
+	if (!IMU.begin()) {
+		Serial.println("Failed to initialize IMU!");
+		while(1){}; }
+\end{Arduino}
+
+
+\subsubsection{Function \PYTHON{IMU.setAccelerometerRange()}}
+
+The function is used to set the range of the accelerometer on the LSM6DSOX sensor. The accelerometer range determines the maximum acceleration that can be measured by the sensor. This function takes an argument that specifies the range in Gs (gravitational force) and can be set to 2G, 4G, 8G, or 16G depending on the application requirements.
+
+\subsubsection{Function \PYTHON{IMU.setGyroscopeRange()}}
+
+The function is used to set the range of the gyroscope on the LSM6DSOX sensor. The gyroscope range determines the maximum angular velocity that can be measured by the sensor. This function takes an argument that specifies the range in degrees per second (dps) and can be set to 125dps, 250dps, 500dps, 1000dps, or 2000dps depending on the application requirements.
+
+\subsubsection{Function \PYTHON{IMU.setAccelerometerDataRate()}}
+
+The  function is used to set the data rate of the accelerometer on the LSM6DSOX sensor. The data rate determines how often the sensor samples the acceleration data and can be set to 12.5Hz, 26Hz, 52Hz, 104Hz, 208Hz, 416Hz, 833Hz, or 1660Hz depending on the application requirements.
+
+\subsubsection{Function \PYTHON{IMU.setGyroscopeDataRate()}}
+
+The  function is used to set the data rate of the gyroscope on the LSM6DSOX sensor. The data rate determines how often the sensor samples the angular velocity data and can be set to 12.5Hz, 26Hz, 52Hz, 104Hz, 208Hz, 416Hz, 833Hz, or 1660Hz depending on the application requirements.
+
+\subsubsection{Function \PYTHON{IMU.accelerationSampleRate()}}
+
+The function is used to read the current sample rate of the accelerometer on the LSM6DSOX sensor. This function returns the current data rate value in Hz.
+
+\subsubsection{Function \PYTHON{IMU.gyroscopeSampleRate()}}
+
+The IMU.gyroscopeSampleRate() function is used to read the current sample rate of the gyroscope on the LSM6DSOX sensor. This function returns the current data rate value in Hz.
+
+\subsubsection{Function \PYTHON{IMU.temperatureAvailable()}}
+
+The function is provided by the Arduino\_LSM6DSOX.h library for the LSM6DSOX accelerometer and gyroscope sensor on the Arduino Mbed OS Nicla Board. This function is used to check if the temperature data is available to be read from the sensor. It returns a boolean value of true if the temperature data is available, and false if it is not.
+
+\subsubsection{Function \PYTHON{IMU.readTemperature()}}
+
+The function is provided by the library \FILE{Arduino\_LSM6DSOX.h} and is used to read the temperature data from the LSM6DSOX sensor on the Arduino Mbed OS Nicla Board. This function returns the temperature in degrees Celsius as a floating-point value. Before calling this function, you should use the function \PYTHON{temperatureAvailable()} to check if the temperature data is available.
+
+\subsubsection{Function \PYTHON{IMU.accelerationAvailable()}}
+	
+This function allows you to check the status of IMU acceleration data, indicating whether or not new data is ready to be retrieved.
+	
+In scenarios such as motion tracking, robotics or navigation systems, where the IMU continuously captures acceleration data, the availability of new data determines the system answers. Test the IMU at regular intervals is used for application and they can check for acceleration currently or non, ensuring that the system remains synchronized with object movements in real time.
+	
+When the function returns a value of \PYTHON{1}, this means that new acceleration data is available, enabling the system to extract the data and process it further. A value of \PYTHON{0} indicates that there have been no recent acceleration updates.
+	
+\begin{Arduino}
+  float x, y, z;
+		
+  if (IMU.accelerationAvailable()) {
+    IMU.readAcceleration(x, y, z);
+			
+	Serial.print(x);
+	Serial.print('\t');
+	Serial.print(y);
+	Serial.print('\t');
+	Serial.println(z); }
+\end{Arduino}
+	
+	
+
+\subsubsection{Function \PYTHON{IMU.readAcceleration(x,y,z)}}
+
+The \PYTHON{IMU.readAcceleration()} is used to read the IMU accelerometer and obtain the data, this is expressed in gravity (g). This function provides information on the movements detected by the IMU's accelerometer. The resulting acceleration data can be used for a variety of applications, such as shock or motion detection, or inertial navigation. By regularly interrogating the accelerometer and analyzing variations in acceleration, it is possible to understand and react to changes in motion with precision, which is essential in many modern embedded systems and electronic devices.
+
+The parameters \PYTHON{x}, \PYTHON{y}, and \PYTHON{z} are floats giving information on the x, y or z-axis 
+
+\begin{Arduino}
+	
+	float x; 
+	float y; 
+	float z;
+	
+	if (IMU.accelerationAvailable()) {
+		IMU.readAcceleration(x, y, z);
+		
+		Serial.print(x);
+		Serial.print('\t');
+		Serial.print(y);
+		Serial.print('\t');
+		Serial.println(z);	}
+\end{Arduino}
+
+\subsubsection{Function \PYTHON{IMU.gyroscopeAvailable()}}
+
+This function ask if new gyro data are available for the IMU and they returns a value 0 if no new gyro data is available, and 1 if new gyro data is ready to be retrieved.
+
+In applications requiring real-time monitoring of rotational motion, such as drone stabilization, virtual reality systems or inertial navigation, the system can determine whether to wait for updated gyroscope readings or proceed to process available data.
+
+A value of 1 indicates that new gyro data is available, enabling the system to retrieve and use this information for adapted the orientation tracking or motion control. Conversely, a feedback value of 0 indicates that there have been no recent updates to the gyroscope measurements, prompting the system to wait for new data to become available before proceeding.
+
+\begin{Arduino}
+	float x, y, z;
+	
+	if (IMU.gyroscopeAvailable()) {
+		IMU.readGyroscope(x, y, z);
+		
+		Serial.print(x);
+		Serial.print('t');
+		Serial.print(y);
+		Serial.print(' t');
+		Serial.println(z); }
+\end{Arduino}
+
+\subsubsection{Function \PYTHON{IMU.readGyroscope()}}
+
+Retrieves data from the IMU's gyroscope and returns angular velocity in degrees per second (dps). This function provides information on the rotational movement detected by the IMU's gyroscope. The angular velocity data retrieved can be used in various applications such as robotics, motion tracking or navigation systems. By regularly interrogating the gyroscope and analyzing angular velocity variations, it becomes possible to understand and respond precisely to rotational movements, which is crucial in applications requiring precise orientation control or stabilization.
+
+The parameters x, y and z are floats giving information on the x, y or z axis 
+
+\begin{Arduino}
+	float x, y, z;
+	
+	if (IMU.gyroscopeAvailable()) {
+		IMU.readGyroscope(x, y, z);
+		
+		Serial.print(x);
+		Serial.print('\t');
+		Serial.print(y);
+		Serial.print('\t');
+		Serial.println(z);	}
+\end{Arduino}
+
+
+
+\subsection{Library \FILE{LSM6DSOXSensor.h}}
+
+The library \FILE{LSM6DSOXSensor.h} is a library that provides an interface for interacting with the sensor LSM6DSOX. The library \FILE{LSM6DSOXSensor.h} allows developers to easily interact with the sensor LSM6DSOX by providing functions and classes for configuring the sensor, reading raw sensor data, and performing sensor fusion to obtain calibrated accelerometer and gyroscope data, as well as derived data such as orientation, linear acceleration, and angular velocity. The library abstracts the low-level communication with the sensor, providing a higher-level API that simplifies the process of working with the sensor.
+
+\subsubsection{Function \PYTHON{lsm6dsoxSensor.Set\_X\_FS()}}
+The function \PYTHON{lsm6dsoxSensor.Set\_X\_FS()} is a function provided by the library \FILE{LSM6DSOXSensor.h} that is used to set the full-scale range of the accelerometer in the sensor  LSM6DSOX. The accelerometer measures acceleration along three axes (X, Y, Z) and the full-scale range determines the maximum range of acceleration that the sensor can measure without saturation.
+
+The function takes an argument that specifies the desired full-scale range for the accelerometer. The available options for the resolution range may vary depending on the specific sensor model, but commonly include $\pm$2g, $\pm$4g, $\pm$8g, or $\pm$16g. The full-scale range is typically expressed in units of acceleration (e.g. g) and represents the maximum acceleration that the sensor can accurately measure along each axis.
+
+When the function \PYTHON{lsm6dsoxSensor.Set\_X\_FS()} is called with the desired resolution range as an argument, the function sends the appropriate configuration commands to the sensor  LSM6DSOX to set the accelerometer to the specified full-scale range. This ensures that the sensor is configured to accurately measure accelerations within the desired range and prevents saturation of the sensor's output, which can result in inaccurate readings.
+
+\subsubsection{Function \PYTHON{lsm6dsoxSensor.Set\_G\_FS()}}
+The function \PYTHON{lsm6dsoxSensor.Set\_G\_FS()} is a method or function call that likely belongs to a software library or codebase that interfaces with an snesor LSM6DSOX. 
+
+The function \PYTHON{lsm6dsoxSensor.Set\_G\_FS()} is likely used to configure the full-scale (FS) range or sensitivity of the gyroscope component of the sensor LSM6DSOX. Gyroscopes measure angular velocity or rotational motion, and the full-scale range determines the maximum angular velocity that the gyroscope can accurately measure.
+
+The full-scale range is typically specified in units of degrees per second (dps) or radians per second (rad/s) and represents the maximum rate of rotation that the gyroscope can detect without saturating its output. A higher full-scale range allows the gyroscope to measure faster rotations, but it may result in reduced resolution for slower rotations.
+
+The function \PYTHON{lsm6dsoxSensor.Set\_G\_FS()} likely takes an argument or parameter that specifies the desired full-scale range for the gyroscope, such as $\pm$125 dps, $\pm$250 dps, $\pm$ 500 dps, $\pm$ 1000 dps, or $\pm$ 2000 dps, depending on the capabilities of the sensor LSM6DSOX. The function would then configure the sensor to operate with the specified full-scale range for the gyroscope accordingly
+
+\subsubsection{Function \PYTHON{Initialize\_IMU()}}
+
+The function \PYTHON{Initialize\_IMU()} is responsible for initializing and configuring the sensor LSM6DSOX for operation. It begins by establishing communication with the sensor using the function \PYTHON{Wire.begin()}, which is commonly used for I\textsuperscript{2}C communication in Arduino-based projects. Next, it initializes the sensor LSM6DSOX using the function \PYTHON{lsm6dsoxSensor.begin()}, which sets up the sensor for operation.
+
+The function then proceeds to set the full-scale range for the accelerometer and gyroscope using the functions \PYTHON{lsm6dsoxSensor.Set\_X\_FS()} and \PYTHON{lsm6dsoxSensor.Set\_G\_FS()}, respectively. In this case, the full-scale range is set to $\pm$4g for the accelerometer and $\pm$2000 deg/s for the gyroscope, which determines the maximum range of motion that the sensor can measure.
+
+The sample rates for both the accelerometer and gyroscope are then set to 104 Hz using the functions \PYTHON{lsm6dsoxSensor.Set\_X\_ODR()} and \PYTHON{lsm6dsoxSensor.Se\_G\_ODR()}, respectively. The sample rate determines how frequently the sensor measures and reports data, with a higher sample rate resulting in more frequent updates but potentially higher power consumption.
+
+\subsubsection{Function \PYTHON{Factors\_Calculation()}}
+
+The function \PYTHON{Factors\_Calculation()} performs several steps. First, it checks if temperature data is available from the IMU sensor using the function \PYTHON{IMU.temperatureAvailable()}. If temperature data is available, it reads the temperature readings from the IMU using the function \PYTHON{IMU.readTemperature()} and stores the value in the temperature variable. Then, it calculates the temperature factor by multiplying the temperature sensitivity, temperature, and temperature tolerance, and dividing the result by 100.0 to convert the tolerance from percentage to decimal. Next, it calculates the linear acceleration factor by multiplying the linear acceleration sensitivity and linear acceleration tolerance. Finally, it calculates the angular rate factor by multiplying the angular rate sensitivity and angular rate tolerance.
+
+\subsubsection{Function \PYTHON{Factors\_Calculation()}}
+The function \PYTHON{Accelerometer\_Gyroscope\_Characteristics()} performs several steps. First, it checks if accelerometer data is available from the IMU sensor using the function \PYTHON{IMU.accelerationAvailable()}. If accelerometer data is available, it reads the accelerometer readings for the X, Y, and Z axes from the IMU using the function \PYTHON{IMU.readAcceleration()} and stores the values in the variables \PYTHON{Ax}, \PYTHON{Ay}, and \PYTHON{Az}. Then, it calculates the acceleration in $\frac{m}{s^2}$ for each axis by multiplying the raw accelerometer readings with the linear acceleration factor, temperature factor, and gravity. The calculated values are stored in the variables \PYTHON{Ax\_m\_sec2}, \PYTHON{Ay\_m\_sec2}, and \PYTHON{Az\_m\_sec2}. Next, it adds noise characteristics to the accelerometer readings by calculating the noise values for each axis based on the accelerometer noise density and sample rate, and then adding them to the corresponding calculated acceleration values. It also checks if gyroscope data is available from the IMU sensor using the function \PYTHON{IMU.gyroscopeAvailable()}. If gyroscope data is available, it reads the gyroscope readings for the X, Y, and Z axes from the IMU using the function \PYTHON{IMU.readGyroscope()} and stores the values in the variables \PYTHON{Gx}, \PYTHON{Gy}, and \PYTHON{Gz}. Finally, it converts the gyroscope readings from LSB to deg/s by multiplying with the angular rate factor and temperature factor, and stores the calculated values in the variables \PYTHON{Gx\_deg\_sec}, \PYTHON{Gy\_deg\_sec}, and \PYTHON{Gz\_deg\_sec}.
+
+
+
+
+
+
+\section{Calibration}  \label{Chap: Calibration}
+
+
+Calibration of an IMU  is the process of determining the bias, drift, and noise values of the sensors within the IMU. \cite{wahyudi:2011}This is done by measuring the output of the IMU in multiple positions and orientations and then using algorithms to determine the bias, drift, and noise values. The process is important for ensuring the accuracy of the IMU's measurements.\cite{Vectornav:2021}
+
+\subsection{Standard Operating Procedure}
+The standard operation procedure for calibrating the IMU LSM6DSOX involves the following steps:
+
+\begin{itemize}
+	\item Scope and Measurand(s) of Calibrations 
+	\item Description of the Item to be Calibrated
+	\item Measurement Parameters, Quantities, and Ranges to be Determined 
+	\item Environmental Conditions and Stabilization Periods 
+	\item Procedure Include:
+	\begin{itemize}
+		\item Handling, transporting, storing and preparation of items
+		\item Checks to be made before the work is started
+		\item  Step by step process
+	\end{itemize}
+	\item Handling, transporting, storing and preparation of items
+	\item Checks to be made before the work is started
+	\item Step by step process 
+\end{itemize}
+
+\subsection{Scope and Measurand(s) of Calibrations}
+
+\begin{itemize}
+	\item The scope of the calibration process refers to the range of measurements or properties that are being assessed. In this case, the scope of calibration means determining the bias, drift, and noise values of the accelerometer and gyroscope readings. Bias refers to the systematic error in the sensor readings, while drift refers to the change in measurement over time due to factors such as temperature or humidity. Noise refers to the random fluctuations in the sensor readings.
+	\item The measurands to be calibrated are the acceleration and angular velocity values of the sensor. Acceleration refers to the rate of change of velocity, and is typically measured in meters per second squared m/\(s^2\). Angular velocity refers to the rate of change of angular displacement, and is typically measured in degree per second (°/s). Both acceleration and angular velocity are important measurements for applications such as robotics, navigation, and motion tracking.
+	\item By calibrating the sensor, the accuracy of the acceleration and angular velocity measurements can be improved, leading to more reliable and precise data. This is especially important in applications where small errors in measurement can have significant consequences, such as in mobile robot.
+\end{itemize}
+
+\subsection{Description of the Item to be Calibrated}
+
+\begin{itemize}
+	\item The LSM6DSOX IMU sensor is a device that is designed to measure acceleration and angular velocity in three different axes. It is commonly used in applications where the measurement of motion or orientation is required, such as in drones, robotics, and virtual reality systems.
+	\item The sensor uses a combination of accelerometers and gyroscopes to measure motion and orientation. The accelerometers measure changes in acceleration, while the gyroscopes measure changes in angular velocity. Together, these measurements can be used to calculate the orientation and movement of the sensor in three dimensions.
+	\item The LSM6DSOX IMU sensor is a compact device that can be integrated into various systems and devices. It typically includes a microcontroller and communication interface, such as I2C or SPI, for sending the measured data to other devices or systems.
+\end{itemize}
+
+\subsection{Measurement Parameters, Quantities, and Ranges to be Determined}
+
+\begin{itemize}
+	\item The bias, drift, and noise are parameters that affect the accuracy and stability of the sensor readings. Bias refers to any systematic error in the sensor output that is not related to the input signal. It can be thought of as an offset that needs to be subtracted from the raw sensor output to get a more accurate measurement. Drift refers to the change in the sensor output over time, even when there is no change in the input signal. It can be caused by factors such as temperature changes or aging of the sensor components. Noise refers to the random fluctuations in the sensor output that can be caused by various sources, such as electrical interference or mechanical vibration.
+	\item The quantities to be measured are the acceleration and angular velocity values in each axis of the sensor. Acceleration is measured in units of meters per second squared m/\(s^2\) and angular velocity is measured in units of radians per second (rad/s).
+	\item The range of the measurements will depend on the specifications of the sensor and the conditions in which it is being used. For example, the range of acceleration measurements might be ±2g, ±4g, ±8g, ±16g  (where g is the acceleration due to gravity) and the range of angular velocity measurements might be : ±125, ±250, ±500, ±1000, ±2000 (degrees per second). The actual range of measurements will be determined by the sensitivity and resolution of the sensor and the specific application in which it is being used.
+\end{itemize}
+
+\subsection{Environmental Conditions and Stabilization Periods}
+
+\begin{itemize}
+	\item Environmental conditions play a critical role in ensuring accurate calibration of the sensor. Any significant vibration or movement in the environment can cause erroneous readings and introduce error into the calibration process. Therefore, it is essential to ensure that the environment in which the calibration is performed is stable and free from any such disturbances.
+	\item The sensor also requires sufficient stabilization time to ensure that it is at a steady state before calibration. This stabilization period allows the sensor to adjust to its environment and ensures that any initial drift is stabilized. The length of this stabilization period can vary depending on the sensor's specifications and the specific conditions in which the calibration is being performed. It is crucial to allow sufficient time for the sensor to stabilize before any measurements are taken to ensure accurate and reliable calibration results.
+\end{itemize}
+
+\subsection{Procedure}
+
+\begin{itemize}
+	\item \textbf{Handling, transporting, storing, and preparing the items: }
+	
+	The sensor should be handled carefully to avoid any damage or contamination. It should be transported and stored in a clean and dry environment, away from any sources of electromagnetic interference. Before starting the calibration, the sensor should be mounted securely on a stable surface and connected to the calibration equipment.
+	
+	\item \textbf{Checks to be made before the work is started: } 
+	
+	Before starting the calibration, several checks should be made to ensure that the setup and environment are suitable for calibration. These checks may include verifying equipment is a flat surface, additional checks may include ensuring that the surface is level and stable, and checking that the sensor is securely mounted and positioned correctly on the surface, checking that the sensor is connected and communicating properly, and verifying that the environment is stable and free from any significant vibration or movement.
+	
+	\item \textbf{Step by step process:}
+	
+	\begin{enumerate}
+		
+		\item \textbf{Reading the accelerometer and gyroscope values from each axis: }
+		
+		The sensor should be placed on a stable and flat surface to ensure accurate readings. The readings can be obtained using software designed to communicate with the sensor or a microcontroller. The readings are usually in the form of digital signals, which are then converted into acceleration and angular speed values.
+		\item \textbf{Updating the Kalman filter with these values:}
+		
+		Once the readings from each axis are obtained, they are used to update the Kalman filter. The Kalman filter is a mathematical algorithm that estimates the bias, drift, and noise of each axis based on the readings obtained. The filter takes into account previous readings and estimates to provide a more accurate estimate of the current values. The Kalman filter is an essential part of the calibration process as it helps to correct for errors in the sensor readings.
+		\item \textbf{Storing these values:}
+		
+		The estimated bias, drift, and noise values for each axis are stored in the sensor's memory or in a separate data storage device. These values can be used to correct for errors in subsequent measurements taken by the sensor. The storage location and format of the values depend on the sensor and the application. Some sensors have built-in memory, while others may require an external storage device. The values may be stored in a binary or text format depending on the application's requirements.
+		
+	\end{enumerate}
+	
+	%\lstinputlisting[language=C++]{Code/Calibration.h}
+	
+	
+	\item \textbf{Measurement Assurance:}
+	
+	\begin{itemize}
+		\item Measurement assurance is a critical aspect of any measurement process, which involves verifying the accuracy, precision, and reliability of the measurements. There are several ways to ensure measurement assurance, including comparing the measured values to known reference values, repeating the calibration process multiple times, and performing statistical analysis of the measurement data.
+		
+		\item Our approach is ensuring measurement assurance is to compare the estimated values to known reference values. This can involve using a reference standard or a calibration artefact with a known value, such as a calibrated weight or a temperature sensor with a known output. By comparing the measured values to the reference values, it is possible to determine the accuracy and precision of the measurement system and make any necessary adjustments to improve the measurement quality. For our LSM6DSOX IMU sensor measurement assurance is to compare all the accelerometer and gyroscope reading to zero when the IMU is in stationery over a flat surface and the temperature reading should be compared with external temperature sensor. 
+	\end{itemize}
+	
+\end{itemize}
+
+\subsection{Low and high limit method}
+
+The low and high limit method involves recording minimum and maximum values on all three axes using a simple scratch to determine their absolute values. The sensor undergoes circular rotations along each axis multiple times\cite{Rehder:2017}. The centre point is then identified between these extremes. Increasing the number of rotations enhances the likelihood of capturing the absolute peak. The center point will be close to zero if the sensor exhibits no offset. However, slight variations may indicate a hard iron offset attributed to distortion caused by the Earth's magnetic field\cite{Rehder:2017}. This method assumes minimal soft iron distortion, evident from the rounded outlines in the graph. 
+
+It is important to note that this method necessitates capturing values each time to prevent performance degradation due to component drift and aging sensors\cite{Rehder:2017}. For devices relying on primary batteries, calibration becomes essential after each battery change, as the battery inevitably serves as the main source of magnetic disturbance, and new batteries may behave differently from their predecessors\cite{Rehder:2017}.
+
+\subsection{FreeIMU Calibration Application Magnetometer}
+
+In the FreeIMU Calibration Application Magnetometer method, raw magnetometer data undergoes pre-processing with axis-specific gain correction to convert the raw output into nanoTesla \cite{Rehder:2017}:
+
+\begin{itemize}
+	\item Xm-nanoTesla = rawCompass.m.x*(100000.0/1100.0); 
+	\item Gain X [LSB/Gauss] for selected input field range;
+	\item Ym-nanoTesla = rawCompass.m.y*(100000.0/1100.0);  
+	\item  Zm-nanoTesla = rawCompass.m.z*(100000.0/980.0);
+\end{itemize}
+
+The converted data is saved in the Mag-raw.txt file, which can be opened with the Magneto program. To implement this method, the scaling factors(e.g. 100000.0/1100.0) must be replaced with values specific to your sensor to convert the output into nanoTesla. Magneto generates twelve calibration values that correct for various errors, including bias, hard iron, scale factor, soft iron, and misalignment \cite{Rehder:2017}. An additional benefit is that this method can be used to calibrate accelerometers by pre-processing raw accelerometer output, considering bit depth and G sensitivity, converting the data into milliGalileo. We can also enter a value of 1000 milliGalileo as the "norm" for the gravitational field \cite{Rehder:2017}.
+
+
+
+\subsection{Example}
+
+\begin{code}
+	\begin{Arduino}
+		#include <ArduinoSound.h>
+		
+		void setup() {
+			Serial.begin(9600);
+			Sound.begin();
+		}
+		
+		void loop() {
+			int micValue = Sound.read();
+			Serial.println(micValue);
+			delay(1000);
+		}
+	\end{Arduino}
+	\caption{Example Microphone}
+	
+\end{code}
+
+\begin{code}
+	\begin{Arduino}
+		#include <Arduino_LSM9DS1.h>
+		
+		void setup() {
+			Serial.begin(9600);
+			if (!IMU.begin()) {
+				Serial.println("Failed to initialize IMU!");
+				while (1);
+			}
+		}
+		
+		void loop() {
+			float x, y, z;
+			
+			if (IMU.accelerationAvailable()) {
+				IMU.readAcceleration(x, y, z);
+				Serial.print("AccX: "); Serial.print(x);
+				Serial.print(", AccY: "); Serial.print(y);
+				Serial.print(", AccZ: "); Serial.println(z);
+			}
+			if (IMU.gyroscopeAvailable()) {
+				IMU.readGyroscope(x, y, z);
+				Serial.print("GyroX: "); Serial.print(x);
+				Serial.print(", GyroY: "); Serial.print(y);
+				Serial.print(", GyroZ: "); Serial.println(z);
+			}
+			delay(1000);
+		}
+	\end{lstlisting}
+\end{Arduino}
+\caption{Example IMU (Accelerometer and Gyroscope)}
+
+\end{code}
+
+\begin{code}
+\begin{Arduino}
+	#include <Wire.h>
+	#include <SparkFun_APDS9960.h>
+	
+	// Object declaration
+	SparkFun_APDS9960 apds;
+	
+	void setup() {
+		Serial.begin(9600);
+		// Initialize sensor
+		if (!apds.init()) {
+			Serial.println("Failed to initialize sensor!");
+			while (1);
+		}
+		// Enable proximity and gesture sensing
+		apds.enableProximitySensor(true);
+		apds.enableGestureSensor(true);
+		Serial.println("Sensor initialized");
+	}
+	
+	void loop() {
+		// Read proximity value
+		if (apds.proximityAvailable()) {
+			uint8_t proximity = apds.readProximity();
+			Serial.print("Proximity: ");
+			Serial.println(proximity);
+		}
+		
+		// Read gesture
+		if (apds.isGestureAvailable()) {
+			uint8_t gesture = apds.readGesture();
+			Serial.print("Gesture: ");
+			Serial.println(gesture);
+		}
+		
+		delay(1000);
+	}
+	
+\end{Arduino}
+\caption{Example ADPS-9960}
+
+\end{code}
+
+
+
+
+
+
+
+\subsection{Function \PYTHON{IMU.begin()}}
+
+
+The function to initialized the IMU is \PYTHON{IMU.begin()}, they start the IMU initialization process. This step is important to configures the IMU's basic parameters, set the communications with other devices, and prepares the unit for proper operation. Accurate initialization is essential to ensure the accuracy and reliability of the data provided by the IMU.
+
+An error during the initialization can lead to inaccurate measurements or unpredictable behavior. For example, incorrectly configured measurement parameters or sampling rates can compromise data quality, affecting overall system performance.
+
+
+\begin{Arduino}
+	if (!IMU.begin()) {
+		Serial.println("Failed to initialize IMU!");
+		while(1){};	}
+\end{Arduino}
+
+
+\subsection{Function \PYTHON{IMU.end()}} 
+
+This function is composed without parameter. After do this function they return value of 1 if all is good and they return value of 0 if we had some problem.
+
+This function is used to stop or deactivate the IMU once it is no longer required. It frees up the resources used by the IMU and ends its operation cleanly. When called, it ensures that all tasks associated with the IMU are properly finalized, avoiding memory leaks or other problems associated with incomplete de-initialization.
+
+This step helps to ensure the stability and reliability of the system as a whole, by avoiding problems associated with incorrect IMU de-initialization.
+
+The data was return at the end. 
+
+\begin{Arduino}
+	if (!IMU.begin()) {
+		Serial.println("Failed to initialize IMU!");
+		while(1){}; }
+\end{Arduino}
+
+
+\subsection{Function \PYTHON{IMU.readAcceleration(x,y,z) }}
+
+The \PYTHON{IMU.readAcceleration()} is used to read the IMU accelerometer and obtain the data, this is expressed in gravity (g). This function provides information on the movements detected by the IMU's accelerometer. The resulting acceleration data can be used for a variety of applications, such as shock or motion detection, or inertial navigation. By regularly interrogating the accelerometer and analyzing variations in acceleration, it is possible to understand and react to changes in motion with precision, which is essential in many modern embedded systems and electronic devices.
+
+The parameters x, y and z are floats giving information on the x, y or z-axis 
+
+\begin{Arduino}
+	
+	float x; 
+	float y; 
+	float z;
+	
+	if (IMU.accelerationAvailable()) {
+		IMU.readAcceleration(x, y, z);
+		
+		Serial.print(x);
+		Serial.print('\t');
+		Serial.print(y);
+		Serial.print('\t');
+		Serial.println(z);	}
+\end{Arduino}
+
+\subsection{Function \PYTHON{IMU.readGyroscope()}}
+
+Retrieves data from the IMU's gyroscope and returns angular velocity in degrees per second (dps). This function provides information on the rotational movement detected by the IMU's gyroscope. The angular velocity data retrieved can be used in various applications such as robotics, motion tracking or navigation systems. By regularly interrogating the gyroscope and analyzing angular velocity variations, it becomes possible to understand and respond precisely to rotational movements, which is crucial in applications requiring precise orientation control or stabilization.
+
+The parameters x, y and z are floats giving information on the x, y or z axis 
+
+\begin{Arduino}
+	float x, y, z;
+	
+	if (IMU.gyroscopeAvailable()) {
+		IMU.readGyroscope(x, y, z);
+		
+		Serial.print(x);
+		Serial.print('\t');
+		Serial.print(y);
+		Serial.print('\t');
+		Serial.println(z);	}
+\end{Arduino}
+
+
+
+\subsection{Function \PYTHON{IMU.accelerationAvailable()}}
+
+This function allows you to check the status of IMU acceleration data, indicating whether or not new data is ready to be retrieved.
+
+In scenarios such as motion tracking, robotics or navigation systems, where the IMU continuously captures acceleration data, the availability of new data determines the system answers. Test the IMU at regular intervals is used for application and they can check for acceleration currently or non, ensuring that the system remains synchronized with object movements in real time.
+
+When the function returns a value of 1, this means that new acceleration data is available, enabling the system to extract the data and process it further. A value of 0 indicates that there have been no recent acceleration updates.
+
+\begin{Arduino}
+	float x, y, z;
+	
+	if (IMU.accelerationAvailable()) {
+		IMU.readAcceleration(x, y, z);
+		
+		Serial.print(x);
+		Serial.print('\t');
+		Serial.print(y);
+		Serial.print('\t');
+		Serial.println(z); }
+	
+\end{Arduino}
+
+
+\subsection{Function \PYTHON{IMU.gyroscopeAvailable()}}
+
+This function ask if new gyro data are available for the IMU and they returns a value 0 if no new gyro data is available, and 1 if new gyro data is ready to be retrieved.
+
+In applications requiring real-time monitoring of rotational motion, such as drone stabilization, virtual reality systems or inertial navigation, the system can determine whether to wait for updated gyroscope readings or proceed to process available data.
+
+A value of 1 indicates that new gyro data is available, enabling the system to retrieve and use this information for adapted the orientation tracking or motion control. Conversely, a feedback value of 0 indicates that there have been no recent updates to the gyroscope measurements, prompting the system to wait for new data to become available before proceeding.
+
+\begin{Arduino}
+	float x, y, z;
+	
+	if (IMU.gyroscopeAvailable()) {
+		IMU.readGyroscope(x, y, z);
+		
+		Serial.print(x);
+		Serial.print('t');
+		Serial.print(y);
+		Serial.print(' t');
+		Serial.println(z); }
+\end{Arduino}
+
+
+\subsection{Function \PYTHON{IMU.accelerationSampleRate()}}
+
+This function is designed to provide information on the sampling rate of the IMU's accelerometer. The function \PYTHON{IMU.accelerationSampleRate()} returns the accelerometer sampling rate, expressed in Hertz (Hz). This value represents the frequency at which the accelerometer takes measurements and provides acceleration data. It indicates how many times per second the accelerometer registers changes in acceleration along its axes.
+
+In activities such as motion tracking, gesture recognition or vibration analysis, knowledge of the accelerometer's sampling rate ensures that the system can accurately capture and respond to changes in motion dynamics. 
+
+\begin{Arduino}
+	Serial.print("Accelerometer sample rate = ");
+	Serial.print(IMU.accelerationSampleRate());
+	Serial.println(" Hz");
+	Serial.println();
+	Serial.println("Acceleration in g's");
+	Serial.println("X \t Y  \t Z");
+\end{Arduino}
+
+
+
+\subsection{Function \PYTHON{IMU.gyroscopeSampleRate()}}
+
+To recover and communicate the specific rate at which the gyroscope, integrated into the inertial measurement unit (IMU), collects data samples. This frequency is usually expressed in hertz (Hz), corresponding to the number of samples acquired per second. This is the frequency at which the gyroscope takes measurements, giving an idea of its operational efficiency and performance.
+
+\begin{Arduino}
+	Serial.print("Gyroscope sample rate = ");
+	Serial.print(IMU.gyroscopeSampleRate());
+	Serial.println(" Hz");
+	Serial.println();
+	Serial.println("Angular speed in degrees/second");
+	Serial.println("X tY tZ");
+	
+\end{Arduino}
+
+
+\section{Example}
+
+In this section, a simple example is described in detail, which demonstrates how the library supports the sensor/actor.
+
+
+\subsection{Manual}
+
+\subsection{Inside the Example}
+
+\subsection{Code}
+
+\subsection{Files}
+
+
+
+\section{Simple Code}
+
+
+\section{Simple Application}
+
+
+
+\section{Tests}
+
+\subsection{Simple Function Test}
+
+\subsection{Test all Functions}
+
+
+
+\section{Further Readings}
+
+
+

@@ -1,0 +1,141 @@
+%%%
+% $Autor: Malena Wilken $
+% $Date: 2025-01-29 $
+% $File: SigFox.tex $
+% $Version: 1 $
+%
+%%%
+
+\chapter{SigFox Connection Check}
+Sigfox is a low-power wide-area network (LPWAN) technology designed for Internet of Things (IoT) applications. It enables devices to send small amounts of data over long distances while consuming minimal energy, making it ideal for battery-powered sensors and remote monitoring solutions. Unlike traditional cellular networks, Sigfox operates on unlicensed radio frequencies and uses a simple and efficient communication protocol, reducing costs and complexity for IoT deployments.
+
+The Hypatia Board includes a Sigfox module, allowing it to communicate over this network. To verify that the Sigfox element is working correctly, we will create an example code that demonstrates how to use it. This example will include sending and receiving data via Sigfox and checking whether the device successfully connects to the network. Through this test, we can ensure that the Sigfox functionality on the Hypatia Board is properly configured and operational.
+
+
+\section{Arduino Code for BLE System}
+The project consists of three separate files, each serving a distinct purpose and requiring individual storage to ensure proper functionality. The SigfoxModule.h file is the header file, which defines the SigfoxModule class, including its attributes and functions. It declares the UART communication setup and specifies the pin configurations for the Sigfox module. Additionally, it defines the public methods, such as retrieving the Sigfox ID, sending messages, and resetting the module, while also managing necessary internal variables.
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstinputlisting[
+caption= Sigfox header file,
+label={lst:Sigfox header},
+language=C++,
+backgroundcolor=\color{backcolour},   
+commentstyle=\color{codegreen},
+keywordstyle=\color{magenta},
+numberstyle=\tiny\color{codegray},
+stringstyle=\color{codepurple},
+basicstyle=\ttfamily\footnotesize,
+breakatwhitespace=false,         
+breaklines=true,                 
+keepspaces=true,                 
+numbers=left,       
+numbersep=5pt,                  
+showspaces=false,                
+showstringspaces=false,
+showtabs=false,                  
+tabsize=2]{../../Code/Syde/Test/TestSigfox/SigfoxModule.h}
+
+The SigfoxModule.cpp file serves as the implementation of the SigfoxModule class. It contains the actual code for handling serial communication via UART, sending and receiving AT commands to interact with the Sigfox module. Functions like getID(), sendMessage(), and setSigFoxMode() are responsible for retrieving the module’s ID, transmitting data, and ensuring that the module operates in the correct mode. The implementation also includes an error-handling mechanism, converting messages into hexadecimal format before transmission and providing a reset function for troubleshooting.
+
+
+\lstinputlisting[
+caption= Sigfox Module implementation class,
+label={lst:Sigfox class},
+language=C++,
+backgroundcolor=\color{backcolour},   
+commentstyle=\color{codegreen},
+keywordstyle=\color{magenta},
+numberstyle=\tiny\color{codegray},
+stringstyle=\color{codepurple},
+basicstyle=\ttfamily\footnotesize,
+breakatwhitespace=false,         
+breaklines=true,                 
+keepspaces=true,                 
+numbers=left,       
+numbersep=5pt,                  
+showspaces=false,                
+showstringspaces=false,
+showtabs=false,                  
+tabsize=2]{../../Code/Syde/Test/TestSigfox/SigfoxModule.cpp}
+
+The SigfoxMessage.ino file acts as the main program file that runs on the Arduino. This script initializes the SigfoxModule object and coordinates the interaction between the ESP32 and the Sigfox module. It executes commands from the SigfoxModule class, such as retrieving the device ID, sending messages, and ensuring that the Sigfox module is functioning correctly. This file acts as the entry point of the program, defining the execution flow and making use of the previously implemented functions.
+
+
+\lstinputlisting[
+caption= Sigfox Main code,
+label={lst:Sigfox Main},
+language=C++,
+backgroundcolor=\color{backcolour},   
+commentstyle=\color{codegreen},
+keywordstyle=\color{magenta},
+numberstyle=\tiny\color{codegray},
+stringstyle=\color{codepurple},
+basicstyle=\ttfamily\footnotesize,
+breakatwhitespace=false,         
+breaklines=true,                 
+keepspaces=true,                 
+numbers=left,       
+numbersep=5pt,                  
+showspaces=false,                
+showstringspaces=false,
+showtabs=false,                  
+tabsize=2]{../../Code/Syde/Test/TestSigfox/TestSigfox.ino}
+
+\section{Connecting Hypatia with Sigfox}
+
+To set up and program the Hypatia Board, the first step is to install the Arduino IDE on your computer. Additionally, it is essential to verify that all required configurations for the Hypatia Board have been properly set up before proceeding.
+
+Once the board is configured correctly and the appropriate Board and COM Port have been selected, the provided code must be compiled and uploaded to the ESP32 on the Hypatia Board. This process can be completed by clicking the upload button (see Figure \ref{fig:ArduinoUpload2}) located in the upper left corner of the Arduino IDE.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.1\linewidth]{../../../Images/Syde/Arduino/ArduinoUpload}
+	\caption[Upload and compile Code to ESP32]{Upload and compile Code to ESP32}
+	\label{fig:ArduinoUpload2}
+\end{figure}
+
+Once the upload is completed successfully, the Serial Monitor should be opened to monitor the board’s output and debug any potential issues. This can be done by selecting the corresponding button in the upper right corner of the Arduino IDE, as shown in Figure (see Figure \ref{fig:ArduinoSerialMonitor3}). Next step is to reassure that the baudrate, which can be adjusted in the upper right corner of the serial Monitor, is set to 9600 as it is initialized in the previous code.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.1\linewidth]{../../../Images/Syde/Arduino/ArduinoSerialMonitor}
+	\caption[Open Serial Monitor]{Open Serial Monitor}
+	\label{fig:ArduinoSerialMonitor3}
+\end{figure}
+
+The Serial Monitor allows real-time monitoring of the Hypatia Board's connection status to the SigFox network. Additionally, the Serial Monitor provides valuable insights into the Sigfox communication process, offering real-time feedback on the status and responses of the Hypatia Board's Sigfox module (see Figure \ref{fig:SigFoxSerialMonitor}). It displays the initialization process, including setting the Sigfox mode (LMS100A) and verifying the module's operational state. If any errors occur, such as an AT\_ERROR, they are immediately visible, allowing for quick troubleshooting.
+
+Furthermore, the Serial Monitor logs responses received from the Sigfox module, such as the device information, mode, and firmware version. It confirms whether commands have been successfully processed and provides the Sigfox Device ID, which is essential for network registration and communication verification. The displayed OK responses indicate that the module is functioning correctly and executing commands as expected.
+
+By analyzing these outputs, it is possible to ensure that the Sigfox module is properly configured, detect potential issues, and validate that the device is successfully communicating over the Sigfox network.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/SigFox/SigFoxSerialMonitor}
+	\caption[Serial Monitor showing SigFox Data]{Serial Monitor showing SigFox Data}
+	\label{fig:SigFoxSerialMonitor}
+\end{figure}
+
+In addition to displaying the Sigfox module’s initialization and device information, the Serial Monitor also provides feedback on the message transmission process (see Figure \ref{fig:SigFoxSerialMonitor}). When a message, such as "HELLO1234", is sent via Sigfox, the Serial Monitor logs each step of the transmission, ensuring that the data is correctly processed and transmitted over the 868 MHz frequency band.
+
+The logs show the RF initialization (RF\_API\_init in TX), the starting transmission frequency, and the TX START command, which indicates the beginning of the message transmission. The number of bytes (nB=26) sent is also logged, followed by the waiting period until the transmission is complete. After transmission, the system waits for an acknowledgment (Wait For End of Tx), confirming that the message has been fully processed.
+
+Once the transmission is finalized, the Serial Monitor displays responses such as "OnTxDone" and "TX END", signaling that the message has been successfully sent. The presence of multiple TX cycles in the logs suggests that the module follows the Sigfox protocol’s retransmission mechanism, ensuring message delivery reliability.
+
+Finally, the Serial Monitor outputs an "OK" response, confirming that the Sigfox module is operating as expected. By analyzing these logs, it can be verified whether the Hypatia Board successfully sends message via SigFox. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/SigFox/SigFoxSerialMonitorMessage}
+	\caption[Serial Monitor showing SigFox communication]{Serial Monitor showing SigFox Communication}
+	\label{fig:SigFoxSerialMonitorMessage}
+\end{figure}
+
+
+
+

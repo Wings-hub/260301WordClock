@@ -1,0 +1,5 @@
+debug "true" !!!!
+
+Starting up the system, I get the sigfox ID and sigfox PAC
+
+For activation, send this number to Syde!

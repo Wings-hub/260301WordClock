@@ -1,0 +1,88 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Automatisierung/Skript/Produktspezifikation/Powerpoint/AMF.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+%todo Hier ist viel zu tun: Keine Quellen
+% nicht ausführlich genug
+\chapter{Gesichtserkennung}\label{FaceDetection}
+
+Gesichtserkennung ist eine auf künstlicher Intelligenz basierende Computertechnologie, die zur Erkennung menschlicher Gesichter in Bildern verwendet wird.
+Sie bestimmt die Position und Größe menschlicher Gesichter in einem Bild oder Videostream und sollte, nachdem das Gesicht erkannt wurde, eine Bounding Box der erkannten Gesichter zurückgeben. Die Gesichtserkennung wird in vielen Anwendungen wie biometrischen Sicherheitssystemen verwendet, in denen es möglich ist, Personen in Echtzeit zu verfolgen und zu überwachen.
+
+Es gibt zwei Arten von Ansätzen für die Erkennung eines Gesichts in einem Bild:
+
+\begin{enumerate}
+	\item Merkmalsbasierter Ansatz 
+	\item Bildbasierter Ansatz.
+\end{enumerate} 
+
+\bigskip
+
+\subsection{Merkmalsbasierter Ansatz}
+
+Bei dieser Art von Methode werden die verschiedenen Merkmale des Gesichts im Bild gefunden, z. B. die Erkennung von Augen, Nase, Augenbrauen und Mund. Da diese Merkmale in einem Bild, das ein Gesicht enthält, trotz anderer Variabilitäten wie Beleuchtung und Posen konsistent sind. Die Hauptidee dieses Ansatzes besteht also darin, diese Merkmale mit Hilfe von Kantenerkennungstechniken zu extrahieren und auf der Grundlage dieser extrahierten Merkmale statistische Modelle zu erstellen, um die Beziehung zu beschreiben und das Vorhandensein eines Gesichts in einem Bild zu erkennen.
+
+\subsection{Bildbasierter Ansatz}
+
+Die bildbasierte Methode versucht, Vorlagen aus Beispielen in Bildern zu lernen. Das heißt, diese Methode stützt sich auf maschinelles Lernen und statistische Analysetechniken, um die Gesichtsmerkmale zu finden und zu erklären, ob das Bild ein Gesicht enthält oder nicht. Bei dieser Methode werden neuronale Netze für die Erkennung verwendet. 
+
+
+
+\subsection{Herausforderungen}
+
+Die Herausforderungen bei der Erkennung von Gesichtern sind die Gründe für eine geringere Genauigkeit und Erkennungsrate in Bildern. Einige der Herausforderungen sind:
+
+\begin{itemize}
+	\item Beleuchtungsbedingungen: 
+	
+	Die Beleuchtung in der Umgebung eines Bildes kann in Teilen des Bildes schwach oder stark sein, was die Erkennung von Gesichtern erschwert.
+	\item Abstand: 
+	
+	Wenn der Abstand der Kamera zu einem Gesicht sehr gering oder groß ist, wird die Erkennung ebenfalls schwierig.
+	\item Orientierung: 
+	
+	Die Ausrichtung des Gesichts und der Winkel zur Kamera können ebenfalls zu Erkennungsfehlern führen.
+	\item Komplexer Hintergrund: 
+	
+	Wenn der Hintergrund des Bildes eine größere Anzahl von Objekten enthält, wird die Erkennung zu einer schwierigen Aufgabe.
+	\item Niedrige Auflösung: 
+	
+	Wenn die Bildauflösung sehr niedrig ist oder das Bild Rauschen enthält, ist die Genauigkeit der Gesichtserkennung geringer.
+\end{itemize}
+
+\subsection{Lösungen}
+
+\begin{itemize}
+	\item Optimale Beleuchtungsbedingungen sollten berücksichtigt werden, wenn man versucht, ein Gesicht in einem Bild zu erkennen. Ein gut und gleichmäßig ausgeleuchtetes Bild erleichtert die Erkennung von Gesichtern in einem Bild.
+	\item Der Abstand zwischen der Kamera und dem Gesicht sollte optimal sein. In unserem Fall ist ein Abstand zwischen 7cm-10cm am besten für die Gesichtserkennung geeignet.
+	\item Die Anzahl der Trainingsbilder mit verschiedenen Winkeln und Ausrichtungen sollte genommen werden, um die Erkennungsrate in Bildern mit verschiedenen Ausrichtungen von Gesichtern zu verbessern.
+	\item Der Hintergrund des Bildes sollte auch so berücksichtigt werden, dass das zu erkennende Gesicht nicht durch eine größere Anzahl von Objekten im Bild verdeckt wird.
+	\item Die Verwendung modernster Methoden wie Faltungsneuronale Netze (CNN) zur Gesichtserkennung trägt erheblich zur Erkennungsrate bei.
+\end{itemize}
+
+\subsection{Anwendungen}
+
+\begin{itemize}
+	\item Qualitätsprüfung: 
+	
+	Prüfung der Qualität von Fertigprodukten in einer Produktionsanlage
+	\item Überwachung: 
+	
+	Es wird zur Erkennung von Gesichtern in einer Menschenmenge, z. B. an einem öffentlichen oder privaten Ort, verwendet.
+	\item Erwartung: 
+	
+	Es kann verwendet werden, um die Anwesenheit von Menschen in einer Klasse zu erkennen, und wenn es mit einem biometrischen Sicherheitssystem kombiniert wird, kann es auch für die Zugangsverwaltung in einem Gebäude verwendet werden.
+	
+	\item Fotografie: 
+	
+	Handykameras erkennen Gesichter für den Autofokus in einem Bild.
+\end{itemize}

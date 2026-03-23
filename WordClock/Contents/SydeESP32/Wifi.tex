@@ -1,0 +1,99 @@
+%%%
+% $Autor: Malena Wilken $
+% $Date: 2025-01-29 $
+% $File: WiFi.tex $
+% $Version: 1 $
+%
+% English Version C:\Users\malen\Documents\2025\Praxissemester\Ecosensors
+%%%
+\chapter{WiFi Connection Check}
+When a client needs to verify the Wi-Fi connection of the Hypatia Board, a simple diagnostic program is required. The following code enables the ESP module on the board to establish a WiFi network and host a webpage. By accessing this webpage via the ESP's IP address, the user can remotely control an LED on the board. This functionality provides a straightforward way to confirm that the ESP is successfully connected and responsive
+
+\section{Explanations}
+\subsection{SSID}
+The SSID (Service Set Identifier) is the name of a Wi-Fi network that allows devices to identify and connect to it. When scanning for available networks on a phone or computer, the list of visible names represents different SSIDs. Each wireless router or access point broadcasts an SSID to distinguish its network from others in the area.
+
+\subsection{IP Address}
+An IP address (Internet Protocol address) is a unique set of numbers assigned to a device connected to a network. It serves as an identifier, allowing devices to communicate with each other over the internet or within a local network.
+
+\section{Code}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstinputlisting[
+caption= WiFi Check LED Code,
+label={lst:WiFi cpp},
+language=C++,
+backgroundcolor=\color{backcolour},   
+commentstyle=\color{codegreen},
+keywordstyle=\color{magenta},
+numberstyle=\tiny\color{codegray},
+stringstyle=\color{codepurple},
+basicstyle=\ttfamily\footnotesize,
+breakatwhitespace=false,         
+breaklines=true,                 
+keepspaces=true,                 
+numbers=left,       
+numbersep=5pt,                  
+showspaces=false,                
+showstringspaces=false,
+showtabs=false,                  
+tabsize=2]{../../Code/Syde/Test/TestWifi/TestWifi.ino}
+
+The program starts by importing the necessary libraries \ref{lst:WiFi cpp}. WiFi.h enables the board to establish a network connection, while WebServer.h allows it to create and manage a simple web-based interface. The Adafruit NeoPixel library is included to control a WS2812B LED, and an additional image.h file contains graphical data, likely a logo that will be displayed on the web interface.
+
+Next, the code defines key hardware and network settings. The LED is connected to pin 21, and the board is configured to join a predefined Wi-Fi network using a specific SSID and password. Once the connection is established, a web server is started on port 80, allowing access to the interface.
+
+The board processes incoming HTTP requests, which correspond to specific actions. The code defines functions that change the LED’s color based on the request received. For example, if a request is sent to /red, the LED will switch to red, while /green and /blue activate their respective colors. Each function updates the LED and returns a response message, confirming the change. The server continuously listens for new requests, ensuring real-time interaction.
+
+The main program execution begins in the setup() function, where the board initializes its serial communication, connects to Wi-Fi, and starts the web server. Once running, the loop() function ensures that all incoming web-based commands are continuously processed.
+
+\section{Connecting Hypatia with WiFi}
+To begin setting up and programming the Hypatia Board, the Arduino IDE must first be installed on your computer. In addition, the Adafruit Library is required to ensure proper functionality and enable communication with specific components of the board. It is important to verify that all necessary configurations for the Hypatia Board have been correctly applied.
+
+Once the configurations are in place and the correct Board and COM Port have been selected, the next step is to adapt the code to your Wi-Fi network by entering the SSID and password at the designated locations in the code. This ensures that the Hypatia Board can successfully connect to the correct network and establish communication. Make sure to replace the placeholders with your actual network credentials to enable a stable connection. Afterwards compile and upload the provided code to the ESP32 on the Hypatia Board. This can be done by clicking the upload button (see Figure \ref{fig:ArduinoUpload}) located in the upper left corner of the Arduino IDE.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.1\linewidth]{../../../Images/Syde/Arduino/ArduinoUpload}
+	\caption[Upload and compile Code to ESP32]{Upload and compile Code to ESP32}
+	\label{fig:ArduinoUpload}
+\end{figure}
+
+After successfully uploading the code, open the Serial Monitor by selecting the corresponding button in the upper right corner, as illustrated in the following image \ref{fig:ArduinoSerialMonitor2}. In the Serial Monitor tab, set the baud rate to 115200, matching the initialization value defined in the code.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.1\linewidth]{../../../Images/Syde/Arduino/ArduinoSerialMonitor}
+	\caption[Open Serial Monitor]{Open Serial Monitor}
+	\label{fig:ArduinoSerialMonitor2}
+\end{figure}
+
+The Serial Monitor provides real-time feedback on the connection status of the Hypatia Board to the Wi-Fi network. Additionally, it displays the IP address of the web server that the board has just created (see Figure \ref{fig:WiFiSerialMonitor}). 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/WiFi/WiFiSerialMonitor}
+	\caption[IP Adress in Serial Monitor]{IP Adress in Serial Monitor}
+	\label{fig:WiFiSerialMonitor}
+\end{figure}
+
+Once the web server is up and running, this IP address can be entered into any browser on a device that is connected to the same Wi-Fi network for which the SSID and password were previously configured in the code. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\linewidth]{../../../Images/Syde/WiFi/WiFiBrowser}
+	\caption[Enter IP Adress to Webbrowser]{Enter IP Adress to Webbrowser}
+	\label{fig:WiFiBrowser}
+\end{figure}
+
+When the IP address of the Hypatia Board is entered into a web browser (see Figure \ref{fig:WiFiBrowser}), a webpage appears, allowing interaction with the board. If all configurations have been set correctly and the WiFi system of the Hypatia Board is functioning properly, the interface should now enable control over the LED on the board(see Figure \ref{fig:WiFiWebServer}). By pressing the available buttons, the LED should change color accordingly, switching between red, green, and blue. This confirms that the Wi-Fi connection and web server functionality are working as expected.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/WiFi/WiFiWebServer}
+	\caption[Web Server Wifi Check Hypatia]{Web Server WiFi Check Hypatia}
+	\label{fig:WiFiWebServer}
+\end{figure}

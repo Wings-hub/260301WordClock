@@ -1,0 +1,81 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Automatisierung/Skript/Produktspezifikation/Powerpoint/ArduinoIDEBlink.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+\chapter{Arduino IDE 1.8.x - First Steps}
+
+
+
+\section{Simple Example ``Hello World''}
+
+There are set of examples which are build in Arduino (IDE) for the testing purpose, for checking all the configuration and setting up the board we can open one of the basic LED blink example first as shown in the figure.  \ref{fig:LED-Example}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/LED}
+    \caption{LED-Example Test}
+    \label{fig:LED-Example}
+\end{figure}
+
+This LED-blink example support all the arduino boards, for the checking purposes just need to run this basic example on any arduino embed board and it will blink the LED on our Arduino board after pre-set miliseconds. In the same example folder, there are also number of build in usefull example written in Arduino IDE for embedded boards. These examples are very usefull for getting the basic knowledge about the board and programming.
+
+\Mynote{Where is the code?}
+
+\section{Upload Code in Arduino Board}
+
+It's time to upload the Arduino program. There are five icons (verify, upload, new, open, save) below the file section, before uploading the program the best practice is to verify the program first, it show us if there are any error or warning in the program exist or not. By successfully verifying the program we can safely upload the program by click the upload button in the top below the file section as shown in figure. \ref{fig:Upload}.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/Upload}
+    \caption{Upload the Program in Arduino board}
+    \label{fig:Upload}
+\end{figure}
+
+After uploading, the code will compile and if there is any issue in our program it will pop up in the bottom black window as well.
+
+After successfully uploading and compiling the code in Arduino board, it also require to change the port again as we did it previously. Go to tool select arduino port and make sure to check the port again as shown in figure \ref{fig:Port} by getting output in the serial monitor.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/Port}
+    \caption{Setting the Port}
+    \label{fig:Port}
+\end{figure}
+
+
+\Mynote{The Arduino Portenta H7 is on the images.}
+
+
+\section{Output Window (Serial Monitor)}
+
+Serial Monitor is the another window on the Arduino IDE, which shows the Input/Output of our program and results appear on it as per the required output. For getting access to Serial Monitor, we need to go extreme right in the Arduino IDE, the small circle pop up when we reach it is the serial monitor as show in the figure. \ref{fig:Serial Monitor}
+
+\Mynote{More details}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/Serial Monitor}
+    \caption{Serial Monitor Icon}
+    \label{fig:Serial Monitor}
+\end{figure}
+
+The Final results, all the variables, input, sensor values are shown in the serial monitor the (Output Window)  as shown in the figure \ref{fig:Output Window} by clicking the serial monitor button.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/4}
+    \caption{Output Window}
+    \label{fig:Output Window}
+\end{figure}
+

@@ -1,0 +1,266 @@
+%%%%%%%%%%%%
+%
+% $Autor: übernommen von AM Gruppe Microfon $
+% $Datum: 2025-05 $
+% $Pfad: SpannungswandlerMPM3610.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+% Structure
+
+\chapter{Spannungswandler MPM3610}
+
+Der Arduino Nano 33 BLE Sense benötigt grundsätzlich eine Versorgungsspannung von 3.3 V. Um auf 3.3V zu kommen benötigt der Arduino einen Spannungswandler, auch DC-DC-Wandler genannt, denn die Eingangsspannung muss mindestens 4.5 V betragen. Auf dem Arduino ist bereits ein Spannungswandler verbaut. Dies erübrigt einen externen Spannungswandler und spart zudem Platz ein. \cite{Arduino:2025Nano}
+
+\bigskip
+
+Dies ist auf den spezifisch genutzten DC-DC-Wandler in dem Arduino zurückzuführen. Der MPM3610 hat einen Eingangsspannungsbereich von 4.5  V - 21 V und gibt immer 3.3 V an den Arduino aus. Aufgrund dessen kann eine 9 V Lithium Batterie genutzt werden, die über einen Batterieclip mit dem Arduino verbunden wird. \cite{Arduino:2025Nano} \cite{MPS:2015}
+
+\section{Allgemein}
+
+Ein Spannungswandler bezeichnet man meistens einen Regler, der eine Gleichspannung als Eingang erhält. Dieser wandelt eine technische Versorgungsspannung in eine geregelte Spannung um.  Dabei kann man zwischen verschiedenen Spannungswandlern unterscheiden. Die größte Unterscheidung findet zwischen linearen und schaltbaren Reglern statt. \cite{Ekbert:2014}
+
+\subsection{Allgemeines Funktionsprinzip}
+
+Ein Spannungswandler muss ein Regelkreis besitzen, damit die Ausgangsspannung „unabhängig“ von der Eingangsspannung geregelt werden kann. Die Ausgangsspannung wird überwacht und mit dem Sollwert abgeglichen. Wenn die Spannung angepasst werden muss, kann dies unter anderem über die Transistoren stattfinden, welche unter anderem in Schaltreglern ihre Anwendung finden. Im Folgenden wird nur auf Schaltregler eingegangen, da dies im Arduino verbaut ist.  \cite{Ekbert:2014} \cite{Arduino:2025Nano}
+
+
+
+\section{Schaltregler (Schaltende DC-DC-Wandler)}
+
+Bei einem Schaltregler (getaktete Stromversorgung) wird eine Gleichspannung in eine Wechselspannung umgewandelt. Dabei werden Thyristoren, Leistungstransistoren, Triacs, MOFETS und IGBTs verwendet. Diese Wechselspannung wird durch Dioden wieder gleichgerichtet und mithilfe von Kondensatoren geglättet. \cite{Ekbert:2014}
+
+\bigskip
+
+Der Schaltregler regelt nicht wie weit der Transistor öffnet bzw. schließt, sondern die Frequenz in dem dieser Öffnen und Schließen soll. Dies geschieht mit hoher Frequenz und schaltet somit zwischen vollem Durchgang oder gar kein Durchgang. Der Übergangswiderstand wird  nicht zur Regelung genutzt, wie bei einem Verlustregler. Zudem  kann auch geregelt werden wie lange der Transistor schließen und wie lange dieser geöffnet werden soll (Pulsbreitenmodulation). Ein Regler misst hier kontinuierlich die Ausgangsspannung und passt so das Tastverhältnis an. Dabei ist der besonders hohe Wirkungsgrad  von Schaltreglern hervorzuheben, da dieser nur zwischen eingeschaltet und ausgeschaltet unterscheidet. Der Vorgang zwischen den beiden Stellungen erzeugt nur geringe Übergangswiderstände. \cite{Ekbert:2014}
+
+\bigskip
+
+Die Nachteile des Schaltreglers sind unter anderem die hohe Frequenz, welche Störsignale aufweisen kann. Zudem ist eine Frequenz zu wählen, die über dem Hörbereich des Menschen sind. In der Praxis werden meistens Frequenzen zwischen 30 kHz und 50 kHz. \cite{Ekbert:2014}
+
+\subsection{Abwärtswandler}
+
+Ein Abwärtswandler \ref{fig:Abwärtswandler} wandelt eine höhere Gleichspannung in eine niedrigere um. Dabei besteht der Tiefsetzsteller grundsätzlich aus einem Transistor, Spule, Freilaufdiode und einem Glättungskondensator. Wenn der Transistor schließt fließt ein Strom durch die Spule. Bei Ausschalten des Transistors bleibt der Strom in der Spule aufrecht und gibt diese Energie an die Diode weiter in den Ausgang und lädt auch gleichzeitig den Siebkondensator. Dieser lädt sich auf und kann so beim Schalten des Transistors Spannungseinbrüche ausgleichen durch die gespeicherte Ladung, glättet also die Ausgangspannung. So hat man zwar Impulse des Transistors, kann diese aber an der Ausgangsspannung wieder ausgleichen.  
+
+\bigskip
+
+Einsatzgebiete: Z.B. Mikroprozessoren \cite{Ekbert:2014}
+
+\bigskip
+
+\begin{figure}[htbp]
+	\centering
+	\resizebox{0.8\linewidth}{!}{%
+		\input{../../Images/MPM3610/tikzMPM3610StepDown}
+	}
+	\caption{Abwärtswandler}
+	\label{fig:Abwärtswandler}
+\end{figure}
+
+\subsection{Aufwärtswandler }
+
+Der Aufwärtswandler \ref{fig:Aufwärtswandler} funktioniert im Prinzip genauso wie der Abwärtswandler. Der Unterschied ist in dem Fall dass die Spule dauerhaft am Eingang angeschlossen ist und somit in Serie mit der Last geschalten ist. Der Transistor liegt parallel zur Last. Durch das Schalten des Transistors lädt sich die Spule auf und durch das plötzliche Abschalten, wird dennoch weiterhin ein Strom in die Spule fließen. Die Spule will ihr Magnetfeld aufrecht erhalten. Das addiert sich zur Eingangsspannung und setzt somit die Spannung hoch. Diese Spannung wird an die Diode und den Kondensator weitergeleitet. Durch das Tastverhältnis lässt sich die Ausgangsspannung regeln. Bei der Schaltung ist die Lastspannung immer mindestens die Eingangsspannung. 
+
+\bigskip
+
+Einsatzgebiete: Z.B. Elektromotoren  \cite{Ekbert:2014}
+
+\bigskip
+
+\begin{figure}[htbp]
+	\centering
+	\resizebox{0.8\linewidth}{!}{%
+		\input{../../Images/MPM3610/tikzMPM3610StepUp}
+	}
+	\caption{Aufwärtswandler}
+	\label{fig:Aufwärtswandler}
+\end{figure}
+
+\section{Spannungswandler MPM3610}
+
+Der MPM3610 ist ein synchrones, gleichgerichtetes Abwärtswandlermodul \ref{fig:FBDS}. Diese werden auch Step-Down-Wandler genannt. Eingebaut sind Leistungs-MOFETs, Spulen und Kondensatoren. Eine Ausgabe von 3.3 V bei 1.2 A wird somit sichergestellt, wobei der Eingangsspannungsbereich bei 4.5 V – 21 V liegt. \cite{MPS:2015}
+
+\bigskip
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{MPM3610/CircuitDiagram}
+	\caption{Funktions Block-Diagramm Spannungswandler}
+	\label{fig:FBDS}
+\end{figure}
+
+Dabei kann der Wandler zwischen drei Arbeitsmodi unterscheiden: Erweiterte asynchrone Modulation (AAM, diskontinuierlicher Leitungsmodus (DCM) und kontinuierlicher Leitungsmodus (CCM). \cite{MPS:2015}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{MPM3610/Example}
+	\caption{Beispielanwendung Spannungswandler}
+	\label{fig:BeispielSW}
+\end{figure}
+
+\subsection{AAM-Regelbetrieb}
+
+Bei geringer Last arbeitet der MPM3610 im AAM-Modus \ref{fig:AAMRegelbetrieb}. In diesem Modus wird Energie eingespart, indem die Transistoren Impulse der Schaltzyklen überspringen. So wird nur so viel Energie geliefert, wie auch wirklich nötig ist. Hier wird intern über VAAM mit VCOMP verglichen. VAAM wird über einen Widerstand am AAM-Pin eingestellt. Wenn VCOMP < VAAM, dann ist die Last sehr klein und Schaltzyklen werden übersprungen, was Energie spart. Wenn VCOMP > VAAM, dann ist die Last höher und es wird mehr Energie benötigt. Das bedeutet, dass der interne Takt wieder freigegeben wird bzw. Schaltzyklen stattfinden. Der HS-FET (High-Side-MOSFET) wird eingeschaltet bei höherer Last. Dieser ist zwischen VIN und Spule geschaltet und leitet den Stromfluss in die Spule (VILsense). Diese wird solange aufgeladen, bis der durch VCOMP vorgegebene Zielstrom erreicht wird, woraufhin der HS-FET wieder abschaltet. \cite{MPS:2015}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{MPM3610/AAMUse}
+	\caption{Spannungswandler AAM-Regelbetrieb}
+	\label{fig:AAMRegelbetrieb}
+\end{figure}
+
+\subsection{DCM-Steuerungsbetrieb}
+
+Mit steigendem Ausgangsstrom wird VCOMP hochgefahren und signalisiert dem Regler, dass mehr Energie benötigt wird. Sobald VCOMP > VAAM ist, wechselt das Gerät in den DCM-Modus \ref{fig:DCMSteuerungsbetrieb} und startet einen PWM-Zyklus mit einem internen 2-MHz-Takt. Der HS-FET wird eingeschaltet und bleibt an, bis VILsense den von VCOMP gesetzten Zielwert erreicht. Nach einer kurzen Totzeit schaltet sich der LS-FET ein und leitet den Strom zum Ausgang und zur Masse, bis der Induktivitätsstromwert auf Null sinkt. So wird die benötigte Ausgangsspannung geregelt. \cite{MPS:2015}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{MPM3610/DCMUse}
+	\caption{Spannungswandler DCM-Steuerungsbetrieb}
+	\label{fig:DCMSteuerungsbetrieb}
+\end{figure}
+
+
+\subsection{CCM-Steuerbetrieb}
+
+Wenn der Induktivitätsstromwert innerhalb eines Taktzyklus nicht mehr auf Null sinkt, dann wechselt das Gerät von DCM zu CCM. Auch hier hat der PWM-Zyklus einen 2-MHz-Takt und fungiert im Prinzip so wie der DCM-Steuerungsbetrieb. Der Unterschied ist hier, dass die Totzeit zwischen dem HS-FET und dem LS-FET weiterhin vorhanden ist, jedoch danach keine Pause gemacht wird, bis der Induktivitätsstromwert auf Null sinkt. Stattdessen bleibt der Induktivitätsstrom immer positiv und der nächste Zyklus wird direkt gestartet. Wenn VILsense den von VCOMP eingestellten Wert nicht innerhalb von 85 \% einer PWM-Periode erreicht, wird der HS-FET abgeschaltet. \cite{MPS:2015}
+
+\subsection{Interner VCC-Regler}
+
+Der MPM3610 besitzt einen internen 4,9 V-Regler, der die internen Schaltungen versorgt. Dieser Regler arbeitet über den gesamten VIN-Bereich und benötigt keinen zusätzlichen externen Kondensator, der die Spannung glättet, da dieser intern schon vorhanden ist. Überschreitet VIN 4,9 V wird die Spannung sauber geregelt. Wenn die Spannung unter 4,9 V fällt sinkt die Leistung. \cite{MPS:2015}
+
+\subsection{Fehlerverstärker (EA)}
+
+Der Fehlerverstärker (EA) vergleicht die Rückführungsspannung (FB) mit der internen Referenzspannung Vref (0,798 V). Die daraus entstehende COMP-Spannung steuert den Strom durch den Leistungs-MOSFET. \cite{MPS:2015}
+
+\subsection{Unterspannungsabschaltung (UVLO)}
+
+Die Unterspannungsabschaltung (UVLO) schützt den Chip bei zu niedriger Versorgungsspannung. Diese wird aktiv, wenn VCC unter 3,25 V fällt und deaktiviert sich wieder oberhalb von 3,9 V. \cite{MPS:2015}
+
+\subsection{Enable Control (EN)}
+
+Über den EN-Pin kann der Wandler ein- und ausgeschaltet werden. Ein interner 1 $M\Omega$-Widerstand zieht EN auf GND, wenn dieser offen bleibt. Der EN-Pin ist durch eine 6,5 V-Zenerdiode geschützt. Bei direktem Anschluss an hohe Spannungen muss ein Pull-Up-Widerstand verwendet werden, um den Strom zu begrenzen. \cite{MPS:2015}
+
+\subsection{Soft-Start}
+
+Der interne Soft-Start (SS) verhindert ein Überschwingen der Ausgangsspannung beim Start. SS steigt von 0 V auf 4,9 V an. Während SS unter 0,798 V bleibt, wird SS als Referenz genutzt, danach VREF. Die Soft-Start-Zeit beträgt 1,5 ms. \cite{MPS:2015}
+
+\subsection{Pre-Bias-Start}
+
+Das MPM3610 unterstützt auch einen Pre-Bias-Start: Wenn die Ausgangsspannung beim Einschalten bereits vorgespannt ist, wird ein monotones Hochfahren ermöglicht. Hier wird ein Sanftanlaufkondensator geladen und schaltet so den HS-FET und LS-FET nacheinander ein. \cite{MPS:2015}
+
+\subsection{Überstromschutz (OCP) und Schluckauf}
+
+Der Überstromschutz (OCP) überwacht den Spitzenstrom. Wird der Grenzwert überschritten, schaltet der HS-FET ab und der LS-FET ein, bis der Strom wieder unter den Grenzwert fällt. Sinkt VFB unter etwa 50 \% von VREF, aktiviert der Regler den Schluckauf-Modus, um thermische Belastungen bei Kurzschluss zu vermeiden. Der Schluckauf-Modus endet, wenn die Überstrombedingung entfernt wurde. \cite{MPS:2015}
+
+\subsection{Thermische Abschaltung (TSD)}
+
+Die thermische Abschaltung (TSD) schützt den Regler bei Übertemperatur: Ab 150 °C stoppt der Betrieb, unter 130 °C läuft der Chip wieder an. \cite{MPS:2015}
+
+\subsection{Floating-Treiber und Bootstrap-Aufladung}
+
+Ein interner Bootstrap-Kondensator versorgt den Treiber des HS-FETs. Dieser Bootstrap-Pfad verfügt über eigenen UVLO-Schutz mit 2,2 V Schwelle mit einer 150 mV Hysterese. \cite{MPS:2015}
+
+\subsection{Starten und Herunterfahren}
+
+Der Startvorgang läuft automatisch ab, sobald VIN und EN ihre Schwellen überschreiten. Ein Referenzblock sorgt für eine Referenzspannung, wodurch der Regler für eine stabile Versorgung der restlichen Schaltkreise sorgen kann. Der Shutdown erfolgt bei VIN low, VEN low oder bei thermischer Abschaltung. Dabei wird die COMP-Spannung und die interne Versorgungsspannung geregelt abgeschaltet. Der floating driver ist davon nicht betroffen. \cite{MPS:2015}
+
+\subsection{Zusätzliche RC-Snubber-Schaltung}
+
+Optional kann eine RC-Snubber-Schaltung eingesetzt werden, um Spannungsspitzen zu dämpfen und das Schaltverhalten zu verbessern. Typisch wird ein 5,6 $\Omega$ Widerstand und ein 330 pF Kondensator empfohlen. \cite{MPS:2015}
+
+\subsection{Wirkungsgrad}
+
+Der Wirkungsgrad des Spannungswandlers für die Umwandlung auf 3,3 V Ausgangsspannung \ref{fig:WirkungsgradSpannungswandler} , mit welcher der Arduino arbeitet, ist für Ströme im Bereich von 0,01 A bis ca. 0,1 A bei höherer Eingangspannung größer. Für Ströme im Bereich von ca. 0,1 A bis 1 A sinkt der Wirkungsgrad mit zunehmender Eingangsspannung. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{MPM3610/Efficiency}
+	\caption{Spannungswandler Wirkungsgrad \cite{MPS:2015}}
+	\label{fig:WirkungsgradSpannungswandler}
+\end{figure}
+
+
+\section{Spezifikationen}
+
+
+\begin{itemize}
+	\item 4,5 V bis 21 V Eingangsspannungsbereich
+	
+	\item 1,2 A kontinuierlicher Laststrom
+	
+	\item 200 µA niedriger Ruhestrom
+	
+	\item Niedriger Einschaltwiderstand der internen Power-MOSFETs: 90 $m\Omega$ / 40 $m\Omega$
+	
+	\item Integrierte Induktivität 
+	
+	\item Integrierte VCC- und Bootstrap-Kondensatoren
+	
+	\item Externer AAM-Anschluss zur Programmierung des Energiesparmodus
+	
+	\item Überstromschutz (OCP) mit Schluckauf-Modus
+	
+	\item Thermische Abschaltung
+	
+	\item Ausgangsspannung einstellbar ab 0,8 V 
+	
+	\item Verfügbar im QFN-20 Gehäuse (3 mm × 5 mm × 1,6 mm)
+	
+	\item Gesamtlösungsgröße: 6,7 mm × 6,3 mm
+	
+\end{itemize}
+\cite{MPS:2015}
+
+\section{Anwendung}
+
+\begin{itemize}
+	\item Industriesteuerungen
+	
+	\item Medizin- und Bildgebungsgeräte
+	
+	\item Telekommunikations- und Netzwerktechnik
+	
+	\item Ersatz für LDO-Regler
+	
+	\item Anwendungen mit begrenztem Platz und Ressourcen
+\end{itemize}
+\cite{MPS:2015}
+
+
+\section{Weiterführende Literatur}
+
+Martin Alles: Einführung in die elektronische Schaltungstechnik \cite{Alles:2024}
+
+\bigskip  
+
+Das Buch bietet vertiefende Einblicke in die physikalischen Grundlagen der elektronischen Schaltungstechnik. Dabei werden verschiedene Komponenten, die in elektrischen Schaltungen verbaut werden können, beschrieben und erläutert. Dabei wird Bezug auf die Funktionsweise und Integration von Dioden, insbesondere von LEDs genommen. 
+
+\bigskip
+
+Leonhard Stiny: Aktive elektronische Bauelemente \cite{Stiny:2019}
+
+\bigskip
+
+Dieses Buch stellt umfassendes Wissen zur Elektronikpraxis im Bereich der Halbleitertechnik bereit. Dabei werden Bauteile beschrieben, erläutert und erklärt, wie diese in Schaltungen integriert werden können, um fehlerfreie und sichere Ergebnisse zu erzielen. Auf zentrale Bauelemente wie unter anderem Dioden, bzw. LEDs wird besonders Bezug genommen  
+
+\bigskip
+
+Jonathan Bartlett: Elektronik für Einsteiger \cite{Bartlett:2023}
+
+\bigskip
+
+Dieses Buch bietet einen simplen Einstieg in den Umgang mit elektronischen Schaltungen und Mikrocontrollern. Es werden Funktionsweisen von Bauteilen erläutert und wie diese in Schaltungen integriert werden können. Zudem wird auch erklärt wie diese Bauteile auch per Mikrocontroller gesteuert werden können und es Beispiele dargestellt.  
+
+\bigskip
+
+Rainer Ose: Elektrotechnik für Ingenieur:innen \cite{Ose:2022}
+
+\bigskip
+
+Dieses Buch erklärt das physikalische Verhalten elektronischer Bauelemente. Dabei wird auch Fokus auf die Simulation von Schaltkreisen mit MicroCap und LTspice gelegt. Es wird auch auf den zielgerichteten Einsatz in der schaltungstechnischen Praxis Bezug genommen.

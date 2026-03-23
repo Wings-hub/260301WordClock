@@ -1,0 +1,39 @@
+\subsection{Controller Module}
+The controller is a handheld unit built around a third Hypatia board that provides real-time command and feedback for the External Force system. Its electronics, user controls, and phone mount are packaged in a compact front-panel enclosure so the operator can drive and monitor the demonstrator with one device.
+
+The Hypatia board sits at the core and generates the motor commands and handles the wireless link. Two KY-023 joysticks \cite{JoyIT:2017} on the front panel map directly to the two drive motors: the left joystick commands the left motor and the right joystick the right motor. Pushing one joystick forward and one backward commands rotation. The joystick deflection is converted to a \ac{PWM} duty cycle for speed, while the sign of the deflection sets the motor polarity. A small display window labeled VELOCITY shows live telemetry received from the External Force system, namely the measured wheel speed, along with brief status text for connection. A momentary RECONNECT button is provided to re-initiate pairing and refresh the ESP-NOW peer configuration without cycling power. A latching ON/OFF switch removes system power when the unit is not in use (see figure (\ref{fig:Controller})).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{../../../Images/Syde/HTA/CAD/Controller}
+	\caption[Remote Control]{Remote Control}
+	\label{fig:Controller}
+\end{figure}
+
+The top of the remote controller features a slide-in rail for the phone attachment (see figure \ref{fig:PhoneStand}). To its left, a cable pass-through provides routing to the power bank mounted at the rear of the controller. The phone attachment includes a secondary sliding clamp that stabilizes the phone in position (see figure \ref{fig:PhoneHolder}). Both pieces are secured from the back with two wing nuts, allowing quick, tool-free adjustment.
+
+\begin{figure}[H]
+	\centering
+	\setlength{\SubFigEqualH}{5.0cm} % adjust as needed
+	
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\SubFigEqualH,keepaspectratio]{../../../Images/Syde/HTA/CAD/PhoneStand}
+		\caption{Phone Attachment (stand)}
+		\label{fig:PhoneStand}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\SubFigEqualH,keepaspectratio]{../../../Images/Syde/HTA/CAD/PhoneHolder}
+		\caption{Phone Attachment (holder)}
+		\label{fig:PhoneHolder}
+	\end{subfigure}
+	
+	\caption{Phone Attachments Overview}
+	\label{fig:PhoneAttachmentsOverview}
+\end{figure}
+
+
+The controller is supplied by a 5V power bank housed inside the Phone Attachment. The Hypatia board and the auxiliary electronics are fed from regulated rails derived from this source. The single front-panel switch disconnects the upstream supply so the entire controller can be shut down in one action.
+
+\newpage

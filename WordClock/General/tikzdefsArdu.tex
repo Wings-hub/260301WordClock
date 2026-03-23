@@ -1,0 +1,523 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-12-09 11:50:02Z $
+% $Pfad: komponenten/Bilderkennung/Produktspezifikation/CorelTPU/TPU/Allgemein/tikzdefs.tex $
+% $Version: 1766 $
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Definition für tikz
+
+\usepackage{pgfplots}
+\usepackage{pgf,tikz}
+\usepackage{mathrsfs}
+\usepackage{circuitikz}
+\usepackage{tikz}
+\usetikzlibrary{shapes,shapes.symbols,shapes.misc, shapes.multipart, shapes.geometric,arrows,angles,quotes,babel,positioning,calc,math,matrix,backgrounds}
+\usetikzlibrary{positioning,fadings,through}
+\usetikzlibrary{math}
+
+
+\usepackage{tikz-3dplot}
+
+\definecolor{ArduinoColor}{rgb}{0.1,0.5,0.6}
+\definecolor{BlackGreen}{rgb}{0.5, 0.68,0.375}
+\definecolor{Or}{rgb}{0.945, 0.768,0.0588}
+\definecolor{Cyann}{rgb}{0.1,0.9,0.9}
+\definecolor{DarkOrange}{rgb}{0.89, 0.4,0.09}
+
+\definecolor{platineGreen}{RGB}{0, 197, 82}
+\definecolor{platineDarkGreen}{RGB}{8,131,70}
+\definecolor{cameraBlack}{RGB}{85, 85, 85}
+\definecolor{lensBlack}{RGB}{56, 56, 54}
+\definecolor{lensGrey}{RGB}{163, 162, 167}
+\definecolor{cameraGold}{RGB}{174, 132, 46}
+\definecolor{cameraGrey}{RGB}{113, 122, 137}
+\definecolor{cameraRed}{RGB}{238, 173, 149}
+\definecolor{cameraBrown}{RGB}{97, 51, 26}
+
+
+\tikzset{
+  input2/.style={ % requires library shapes.geometric
+    draw,
+    trapezium,
+    trapezium left angle=60,
+    trapezium right angle=120,
+  },
+  process rectangle outer width/.initial=0.15cm,
+  predefined process/.style={
+    rectangle,
+    draw,
+    append after command={
+      \pgfextra{
+        \draw [fill=blue!20]
+        ($(\tikzlastnode.north west)-(0,0.5\pgflinewidth)$)--
+        ($(\tikzlastnode.north west)-(\pgfkeysvalueof{/tikz/process rectangle outer width},0.5\pgflinewidth)$)--
+        ($(\tikzlastnode.south west)+(-\pgfkeysvalueof{/tikz/process rectangle outer width},+0.5\pgflinewidth)$)--
+        ($(\tikzlastnode.south west)+(0,0.5\pgflinewidth)$);
+        \draw [fill=blue!20]
+        ($(\tikzlastnode.north east)-(0,0.5\pgflinewidth)$)--
+        ($(\tikzlastnode.north east)+(\pgfkeysvalueof{/tikz/process rectangle outer width},-0.5\pgflinewidth)$)--
+        ($(\tikzlastnode.south east)+(\pgfkeysvalueof{/tikz/process rectangle outer width},0.5\pgflinewidth)$)--
+        ($(\tikzlastnode.south east)+(0,0.5\pgflinewidth)$);
+      }  
+    },
+    text width=#1,
+    align=center, fill=blue!20,  minimum height=4em
+  },
+  predefined process/.default=20mm,
+  data1/.style={
+    trapezium, 
+    trapezium left angle=70, 
+    trapezium right angle=110, 
+    text width=1.5cm, 
+    inner ysep=17pt,
+    align=center, 
+    line width=2pt,
+    fill=blue!20
+  },      
+}
+
+
+
+
+
+
+\tikzstyle{bigblock} = [draw, fill=blue!20, rectangle, minimum height=1.5em, minimum width=8em]
+\tikzstyle{mediumblock} = [draw, fill=red!20, rectangle, minimum height=1.5em, minimum width=4em]
+\tikzstyle{smallblock} = [draw, fill=red!20, rectangle, minimum height=1.5em, minimum width=1.5em]
+\tikzstyle{arrow} = [->,shorten >=1pt,>=stealth',semithick]
+
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\definecolor{frenchblue}{rgb}{0.0, 0.45, 0.73}
+\definecolor{greenblue}{rgb}{0.0, 0.25, 0.3}
+\definecolor{darkcyan}{rgb}{0.0, 0.55, 0.55}
+\definecolor{bondiblue}{rgb}{0.0, 0.58, 0.71}
+\definecolor{grayleft}{rgb}{0.1, 0.1, 0.1}
+\definecolor{grayright}{rgb}{0.2, 0.2, 0.2}
+\definecolor{graycircle}{rgb}{0.3, 0.3, 0.3}
+\definecolor{graylight}{rgb}{0.8, 0.8, 0.8}
+\definecolor{greenenglish}{rgb}{0.0, 0.5, 0.0}
+\definecolor{darkpastelgreen}{rgb}{0.01, 0.75, 0.24}
+\definecolor{copper}{rgb}{0.72, 0.45, 0.2}
+\definecolor{greenyellow}{rgb}{0.68, 1.0, 0.18}
+\definecolor{fuchsia}{rgb}{1.0, 0.0, 1.0}
+\definecolor{silver}{rgb}{0.75, 0.75, 0.75}
+\definecolor{deepskyblue}{rgb}{0.0, 0.75, 1.0}
+
+% Beispiele
+%
+%\begin{center}
+%  \begin{tikzpicture}
+%  \HermiteSym{1}{120}
+%  \end{tikzpicture}
+%\end{center}
+%
+%\begin{center}
+%  \begin{tikzpicture}
+%  \HermiteSym{1}{70}
+%  \end{tikzpicture}
+%\end{center}
+%
+%\begin{center}
+%  \begin{tikzpicture}
+%  \HermiteSym{1}{20}
+%  \end{tikzpicture}
+%\end{center}
+%
+%\begin{center}
+%  \begin{tikzpicture}
+%  \HermiteSym{1}{0}
+%  \end{tikzpicture}
+%\end{center}
+%
+%
+%\begin{center}
+%  \begin{tikzpicture}
+%  \HermiteSymNeg{1}{-20}
+%  \end{tikzpicture}
+%\end{center}
+%
+%\begin{center}
+%  \begin{tikzpicture}
+%  \HermiteSymNeg{1}{-70}
+%  \end{tikzpicture}
+%\end{center}
+%
+%
+%\begin{center}
+%  \begin{tikzpicture}
+%  \HermiteSymNeg{1}{-120}
+%  \end{tikzpicture}
+%\end{center}
+%
+
+
+\newcommand{\ArduinoNanoShieldTikz}{
+  \fill[ArduinoColor] (0.29, 29.47) rectangle (11.06, 23.44);
+
+  %linksoben der Knopf
+  \fill[darkgray] (0.33, 28.68) rectangle (1.98, 27.2);
+  \fill[lightgray] (0.45, 28.57) rectangle (1.84, 27.35);
+  \fill[gray] (1.14, 27.96) ellipse (0.48cm and 0.45cm);
+  \fill[black] (0.93, 28.15) rectangle (1.35, 27.78);
+
+  %steckplatz Kamera
+  \fill[darkgray] (6.71, 28.04) rectangle (7.35, 24.91);
+  \fill[black] (6.76, 25.15) rectangle (6.96, 24.94);
+  \fill[black] (7.1, 25.14) rectangle (7.29, 24.94);
+  \fill[black] (6.76, 27.97) rectangle (6.95, 27.76);
+  \fill[black] (7.09, 27.96) rectangle (7.29, 27.76);
+  \fill[black] (6.76, 27.64) rectangle (6.95, 27.44);
+  \fill[black] (7.1, 27.63) rectangle (7.29, 27.44);
+  \fill[black] (6.77, 27.33) rectangle (6.96, 27.13);
+  \fill[black] (7.1, 27.32) rectangle (7.29, 27.13);
+  \fill[black] (6.76, 27.02) rectangle (6.96, 26.82);
+  \fill[black] (7.1, 27.01) rectangle (7.29, 26.82);
+  \fill[black] (6.77, 26.7) rectangle (6.96, 26.5);
+  \fill[black] (7.1, 26.7) rectangle (7.29, 26.5);
+  \fill[black] (6.77, 26.39) rectangle (6.96, 26.19);
+  \fill[black] (7.11, 26.38) rectangle (7.3, 26.19);
+  \fill[black] (6.76, 26.08) rectangle (6.96, 25.87);
+  \fill[black] (7.1, 26.07) rectangle (7.29, 25.87);
+  \fill[black] (6.76, 25.77) rectangle (6.95, 25.57);
+  \fill[black] (7.1, 25.76) rectangle (7.29, 25.57);
+  \fill[black] (6.76, 25.46) rectangle (6.95, 25.26);
+  \fill[black] (7.1, 25.45) rectangle (7.29, 25.26);
+
+  %Schraubenlöcher
+  \fill[white] (10.72, 23.76) ellipse (0.25cm and 0.22cm);
+  \fill[white] (10.68, 29.18) ellipse (0.25cm and 0.22cm);
+  \fill[white] (0.65, 29.17) ellipse (0.25cm and 0.22cm);
+  \fill[white] (0.64, 23.75) ellipse (0.25cm and 0.22cm);
+
+  %Stromzufuhr
+  \fill[green] (0.3, 25.34) rectangle (1.49, 24.0);
+  \fill[black] (0.81, 24.97) ellipse (0.25cm and 0.23cm);
+  \fill[black] (0.81, 24.36) ellipse (0.25cm and 0.23cm);
+  \fill[darkgray] (0.7, 24.57) rectangle (0.92, 24.14);
+  \fill[darkgray] (0.7, 25.18) rectangle (0.91, 24.75);
+  \fill[white] (1.49, 25.12) rectangle (2.15, 24.89);
+  \node[teal, font=\tiny] at (1.8,25) {GND};
+  \node[white, font=\tiny] at (1.8,24.34) {VIN};
+
+  %Arduino Steckplatz links
+  \fill[darkgray] (2.35, 28.82) rectangle (2.71, 24.12);
+  \fill[black] (2.41, 26.89) rectangle (2.63, 26.67);
+  \fill[black] (2.41, 26.58) rectangle (2.63, 26.36);
+  \fill[black] (2.41, 26.26) rectangle (2.63, 26.04);
+  \fill[black] (2.41, 25.94) rectangle (2.63, 25.72);
+  \fill[black] (2.41, 25.63) rectangle (2.63, 25.41);
+  \fill[black] (2.41, 25.33) rectangle (2.63, 25.11);
+  \fill[black] (2.41, 25.02) rectangle (2.63, 24.8);
+  \fill[black] (2.41, 24.7) rectangle (2.63, 24.48);
+  \fill[black] (2.41, 24.38) rectangle (2.63, 24.16);
+  \fill[black] (2.4, 27.19) rectangle (2.63, 26.97);
+  \fill[black] (2.41, 27.5) rectangle (2.64, 27.28);
+  \fill[black] (2.42, 28.11) rectangle (2.65, 27.89);
+  \fill[black] (2.42, 27.82) rectangle (2.65, 27.6);
+  \fill[black] (2.42, 28.43) rectangle (2.64, 28.21);
+  \fill[black] (2.43, 28.74) rectangle (2.65, 28.52);
+  \fill[black] (2.48, 25.78) rectangle (2.5, 25.78);
+
+  %Arduino Steckplatz rechts
+  \fill[darkgray] (4.48, 28.82) rectangle (4.84, 24.12);
+  \fill[black] (4.54, 26.89) rectangle (4.76, 26.67);
+  \fill[black] (4.54, 26.58) rectangle (4.76, 26.36);
+  \fill[black] (4.54, 26.26) rectangle (4.76, 26.04);
+  \fill[black] (4.54, 25.94) rectangle (4.76, 25.72);
+  \fill[black] (4.54, 25.62) rectangle (4.76, 25.41);
+  \fill[black] (4.54, 25.33) rectangle (4.76, 25.11);
+  \fill[black] (4.54, 25.02) rectangle (4.76, 24.8);
+  \fill[black] (4.54, 24.7) rectangle (4.76, 24.48);
+  \fill[black] (4.54, 24.38) rectangle (4.76, 24.16);
+  \fill[black] (4.53, 27.19) rectangle (4.76, 26.97);
+  \fill[black] (4.54, 27.5) rectangle (4.76, 27.28);
+  \fill[black] (4.55, 28.11) rectangle (4.78, 27.89);
+  \fill[black] (4.55, 27.81) rectangle (4.78, 27.6);
+  \fill[black] (4.55, 28.43) rectangle (4.77, 28.21);
+  \fill[black] (4.56, 28.74) rectangle (4.78, 28.52);
+  \fill[black] (4.61, 25.78) rectangle (4.63, 25.78);
+  \fill[black] (4.61, 25.78) rectangle (4.63, 25.78);
+
+  %USB Seite vom Steckplatz mit weißer Umrandung
+  \draw [ultra thick, white] (2.34,29.03) rectangle (4.85,23.81);
+  \fill [teal] (3.1,29.23) rectangle (4.1,28);
+  \draw [ultra thick, white] (3.1,29.23) rectangle (4.1,28);
+  \node [rotate=270,white,font=\tiny] at (3.6,28.6) {USB};
+
+  %Groove 6
+  \fill[white] (9.9, 24.84) rectangle (10.15, 24.1);
+  \fill[brown!20] (9.0, 24.15) rectangle (10.39, 23.43);
+  \fill[brown!40] (9.56, 23.72) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (9.84, 23.72) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (10.12, 23.72) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (9.29, 23.72) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (9.29, 23.55) rectangle (10.11, 23.43);
+  \node [rotate=270,teal,font=\tiny] at (10.025,24.52) {GND};
+  \node [rotate=270,white,font=\tiny] at (9.725,24.52) {3V3};
+  \node [rotate=270,white,font=\tiny] at (9.425,24.52) {SDA};
+  \node [rotate=270,white,font=\tiny] at (9.125,24.52) {SCL};
+
+  %Groove 5
+  \fill[white] (7.89, 24.83) rectangle (8.14, 24.09);
+  \fill[brown!20] (6.95, 24.1) rectangle (8.33, 23.43);
+  \fill[brown!40] (7.51, 23.74) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (7.79, 23.74) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (8.07, 23.74) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (7.24, 23.74) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (7.24, 23.55) rectangle (8.06, 23.43);
+  \node [rotate=270,teal,font=\tiny] at (8.01,24.52) {GND};
+  \node [rotate=270,white,font=\tiny] at (7.71,24.52) {3V3};
+  \node [rotate=270,white,font=\tiny] at (7.41,24.52) {SDA};
+  \node [rotate=270,white,font=\tiny] at (7.11,24.52) {SCL};
+
+
+  %Groove 4
+  \fill[white] (5.89, 24.82) rectangle (6.14, 24.07);
+  \fill[brown!20] (4.91, 24.11) rectangle (6.3, 23.43);
+  \fill[brown!40] (5.47, 23.74) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (5.75, 23.74) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (6.03, 23.74) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (5.2, 23.75) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (5.2, 23.55) rectangle (6.02, 23.43);
+  \node [rotate=270,teal,font=\tiny] at (6.01,24.52) {GND};
+  \node [rotate=270,white,font=\tiny] at (5.71,24.52) {3V3};
+  \node [rotate=270,white,font=\tiny] at (5.41,24.52) {SDA};
+  \node [rotate=270,white,font=\tiny] at (5.11,24.52) {SDL};
+
+
+  %Groove 3
+  \fill[brown!20] (8.98, 29.49) rectangle (10.37, 28.84);
+  \fill[brown!40] (9.54, 29.12) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (9.83, 29.12) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (10.1, 29.12) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (9.27, 29.13) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (9.27, 29.49) rectangle (10.1, 29.37);
+  \fill[white] (9.1, 28.84) rectangle (9.35, 28.09);
+  \node [rotate=270,teal,font=\tiny] at (9.225,28.455) {GND};
+  \node [rotate=270,white,font=\tiny] at (9.525,28.455) {3V3};
+  \node [rotate=270,white,font=\tiny] at (9.825,28.455) {A7};
+  \node [rotate=270,white,font=\tiny] at (10.125,28.455) {A6};
+
+  %Grove 2
+  \fill[brown!20] (6.95, 29.47) rectangle (8.33, 28.82);
+  \fill[brown!40] (7.51, 29.1) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (7.79, 29.1) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (8.07, 29.1) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (7.24, 29.11) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (7.24, 29.47) rectangle (8.06, 29.35);
+  \fill[white] (7.08, 28.84) rectangle (7.33, 28.09);
+  \node [rotate=270,teal,font=\tiny] at (7.205,28.455) {GND};
+  \node [rotate=270,white,font=\tiny] at (7.505,28.455) {3V3};
+  \node [rotate=270,white,font=\tiny] at (8.105,28.455) {D11};
+
+  % Grove 1
+  \fill[brown!20] (4.91, 29.49) rectangle (6.3, 28.84);
+  \fill[brown!40] (5.47, 29.13) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (5.75, 29.13) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (6.03, 29.12) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (5.2, 29.13) ellipse (0.12cm and 0.11cm);
+  \fill[brown!40] (5.2, 29.49) rectangle (6.03, 29.37);
+  \fill[white] (5.06, 28.85) rectangle (5.31, 28.1);
+  \node [rotate=270,teal,font=\tiny] at (5.185,28.455) {GND};
+  \node [rotate=270,white,font=\tiny] at (5.485,28.455) {3V3};
+  \node [rotate=270,white,font=\tiny] at (6.085,28.455) {D12};
+}    
+
+
+\newcommand{\Battery}{%
+	\definecolor{batteryCopper}{RGB}{226, 154, 105}
+	
+	
+	%\node (g) at (0.96,1.85) {\includegraphics[width=2.5cm]{Images/Battery/Duracell}};
+	
+	%\draw (0,0) -- (5,0);
+	%\draw [step=0.1,blue] (0,0) grid (5,5);
+	%\draw [step=0.5,black] (0,0) grid (5,5);
+	
+	\fill[black,thick,rounded corners = 1] (0,0) rectangle ++(1.92,2.21); 
+	\fill[batteryCopper,thick,rounded corners = 1] (0,2.21) rectangle ++(1.92,1.19); 
+	
+	\fill[gray!30,thick] (0.3,3.4) rectangle ++(0.4,0.15);
+	\fill[gray!30,thick] (1.3,3.4) rectangle ++(0.4,0.15);
+	\fill[gray!30,thick] (0.25,3.5) rectangle ++(0.5,0.05);
+	\fill[gray!30,thick] (1.25,3.4) rectangle ++(0.5,0.05);
+	
+	\fill[batteryCopper,thick] (0,2.15) rectangle ++(1.92,0.5);
+	
+	\fill[black,thick] (0.35,3) rectangle ++(0.3,0.06);
+	\fill[black,thick] (1.35,3) rectangle ++(0.3,0.06);
+	
+	\fill[black,thick] (1.475,2.875) rectangle ++(0.06,0.3);
+	
+	
+	\fill[black,thick,rounded corners = 1.5] (0.1,3.55) rectangle ++(1.8,0.3);
+	
+}
+
+
+
+
+
+\newcommand{\CameraOV}{%
+	
+	
+	
+	\fill[platineGreen] (0,-0.06) rectangle ++(5,5.06); 
+	
+	%Screwholes
+	\foreach \x/\y in {0.55/4.48, 0.55/1.54, 4.48/1.54, 4.47/4.48}{
+		\fill[platineDarkGreen](\x,\y) circle (0.44);
+		\fill[gray!30](\x,\y) circle (0.375);
+		\fill[white](\x,\y) circle (0.275);
+	}
+	
+	%Pins 
+	\def\xstart{0.58}
+	\def\dx{0.435}
+	\def\ystart{0.18}
+	\def\dy{0.43}
+	
+	\foreach \k in {0,1}{
+		\foreach \i in {0,...,9}{
+			\fill[platineDarkGreen] ({\xstart+\i*\dx},{\ystart+\k*\dy}) circle (0.2);
+			\fill[gray!30]          ({\xstart+\i*\dx},{\ystart+\k*\dy}) circle (0.13);
+			\fill[white]            ({\xstart+\i*\dx},{\ystart+\k*\dy}) circle (0.04);
+		}
+	}
+	
+	%camera
+	\def\cx{2.57}
+	\def\cy{3.06}
+	\def\R{0.44}    % großer Kreis
+	\def\r{0.12}    % kleine Kreise
+	
+	%connector camera to platine
+	\fill[cameraBrown] (\cx-1.15,\cy-0.55) rectangle ++(0.2,1.1);
+	\fill[cameraBrown] (\cx-1.65,\cy-0.65) rectangle ++(0.6,1.3);
+	
+	%pins
+	\fill[platineDarkGreen,rounded corners = 0.2] (\cx-1.75,\cy-0.622) rectangle ++(0.12,1.244);
+	
+	\foreach \i in {0,...,11}{
+		\pgfmathsetmacro{\pin}{\cy-0.602 + \i*0.104}
+		\fill[gray!30,rounded corners = 0.2] (\cx-1.73,\pin) rectangle ++(0.1,0.06); 
+	}
+	
+	%adapter
+	\fill[cameraGrey] (\cx-1.65,\cy-0.7) rectangle ++(0.2,1.4); 
+	\fill[cameraGrey] (\cx-1.55,\cy-0.8) rectangle ++(0.1,1.6); 
+	
+	\fill[cameraRed] (\cx-1.25,\cy-0.7) rectangle ++(0.1,1.4); 
+	\fill[cameraRed] (\cx-1.35,\cy-0.8) rectangle ++(0.1,1.6);   
+	
+	\foreach \i in {0,...,24}{
+		\pgfmathsetmacro{\pin}{\cy-0.61 + \i*0.05}
+		\fill[cameraGold,rounded corners = 0.1] (\cx-1.46,\pin) rectangle ++(0.12,0.02); 
+	}
+	
+	\fill[cameraGold] (\cx-1,\cy-0.4) rectangle ++(0.5,0.8); 
+	\fill[cameraBlack,rounded corners = 0.5] (\cx-0.5,\cy-0.5) rectangle ++(1,1); 
+	
+	% lens
+	\draw[lensGrey,thick] (\cx,\cy) circle (\R);
+	
+	\begin{scope}
+		\clip (\cx,\cy) circle (\R);
+		
+		
+		\foreach \i in {0,...,7}{
+			\pgfmathsetmacro{\a}{\i*360/8}
+			\fill[black]
+			({\cx+\R*cos(\a)},{\cy+\R*sin(\a)})
+			circle (\r);
+			\draw[lensBlack]
+			({\cx+\R*cos(\a)},{\cy+\R*sin(\a)})
+			circle (\r);
+		}
+		
+	\end{scope}
+	
+	\fill[black](\cx,\cy) circle (0.13);
+	\fill[lensGrey](\cx,\cy) circle (0.1);
+	\fill[black](\cx,\cy) circle (0.05);
+	
+	
+	
+	
+	
+	\draw[white,thick] (0.35,-0.06) rectangle ++(4.33,0.88);
+	\draw[white,thick] (0.35,-0.06) rectangle ++(0.43,0.44);
+	\draw [xstep=0.274,ystep =0.75,  white, thick] (1.08,0.82) grid (3.85,2.18);
+	\draw [white,thick] (1.08,2.18) -- (3.85,2.18);
+	
+	\def\xpinstart{0.3625}
+	\def\dx{0.435}
+	
+	\foreach \i in {0,...,9}{
+		\fill[gray!30] (\xpinstart + \dx*\i, -0.06) -- (\xpinstart + \dx*\i + 0.05, -0.12) -- (\xpinstart + \dx*\i + 0.385, -0.12) -- (\xpinstart + \dx*\i + 0.435, -0.06); 
+		\draw[cameraBlack] (\xpinstart + \dx*\i, -0.06) -- (\xpinstart + \dx*\i + 0.05, -0.12) -- (\xpinstart + \dx*\i + 0.385, -0.12) -- (\xpinstart + \dx*\i + 0.435, -0.06); 
+	}
+	
+	
+	
+	
+	\node[white, font=\tiny] at (0.2,0.18) {1};
+	\node[white, font=\tiny] at (0.2,0.61) {2};
+	
+	\node[white, font=\tiny] at (4.83,0.18) {19};
+	\node[white, font=\tiny] at (4.83,0.61) {20};
+	
+	\node[white, font=\tiny, rotate = 90] at (1.22,1.15) {VCC};
+	\node[white, font=\tiny, rotate = 90] at (1.22,1.83) {GND};
+	
+	\node[white, font=\tiny, rotate = 90] at (1.5,1.15) {SCL};
+	\node[white, font=\tiny, rotate = 90] at (1.5,1.83) {SDA};
+	
+	\node[white, font=\tiny, rotate = 90] at (1.78,1.15) {VS};
+	\node[white, font=\tiny, rotate = 90] at (1.78,1.83) {HS};
+	
+	\node[white, font=\tiny, rotate = 90] at (2.05,1.15) {PCLK};
+	\node[white, font=\tiny, rotate = 90] at (2.05,1.83) {XCLK};
+	
+	\node[white, font=\tiny, rotate = 90] at (2.32,1.15) {D7};
+	\node[white, font=\tiny, rotate = 90] at (2.32,1.83) {D6};
+	
+	\node[white, font=\tiny, rotate = 90] at (2.6,1.15) {D5};
+	\node[white, font=\tiny, rotate = 90] at (2.6,1.83) {D4};
+	
+	\node[white, font=\tiny, rotate = 90] at (2.86,1.15) {D3};
+	\node[white, font=\tiny, rotate = 90] at (2.86,1.83) {D2};
+	
+	\node[white, font=\tiny, rotate = 90] at (3.15,1.15) {D0};
+	\node[white, font=\tiny, rotate = 90] at (3.15,1.838) {D1};
+	
+	\node[white, font=\tiny, rotate = 90] at (3.7,1.15) {PEN};
+	\node[white, font=\tiny, rotate = 90] at (3.7,1.83) {PDN};
+	
+	\draw[platineDarkGreen,thick] (0,-0.06) rectangle ++(5,5.06); 
+	
+	
+	%was richtig ist kann über die Graphik -> stört nicht mehr (++ heißt relativ -> ohne abs -- Or ist gold)
+	%\draw (0,0) -- (5,0);
+	%\draw [step=0.1,blue] (0,0) grid (5,5);
+	%\draw [step=0.5,black] (0,0) grid (5,5);
+	
+	%\node (g) at (2.625,2.1) {\includegraphics[width=7.45cm]{Images/CAM/ov7675/CamOV7675}};
+	
+	
+}
+
+
+
+
+
+
+
+
+
+

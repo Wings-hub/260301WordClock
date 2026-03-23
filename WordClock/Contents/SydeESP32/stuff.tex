@@ -1,0 +1,107 @@
+\chapter{needed?}
+
+In the SI system, work and energy are measured in joules (J). One joule is defined as the work done when a force of 1 newton acts over a distance of 1 meter in the direction of the force. This relationship is expressed by:
+
+\begin{equation}
+	F\times d = W   
+	\label{eq:Work}
+\end{equation} 
+
+When working with rotational systems, it’s usually simpler to work with torque and angular displacement rather than linear force and distance. In these systems, torque $T$ is determined by:
+
+\begin{equation}
+	T = F\times r   
+	\label{eq:torqueRot}
+\end{equation} 
+
+where $r$ is the radius of rotation. If the system rotates through an angle $\phi$ the path traced by the force at the edge of the rotation is $r\phi$. The work done by the torque in this rotation is therefore:
+
+\begin{equation}
+	W = F\times (r\times \phi) = (F\times r)\times \phi = T\times \phi   
+	\label{eq:WorkTorque}
+\end{equation}
+
+This shows that in rotational systems, work is the product of torque and angular displacement, with units remaining consistent as newton-metres or joules. Power measures how quickly work is done. In linear systems with constant speed, power can be calculated as:
+
+\begin{equation}
+	P = \frac{W}{t} = \frac{F\times d}{t} = F\times v
+	\label{eq:PowerLin}
+\end{equation}
+
+where $v$ is the linear speed. The rotational equivalent is:
+
+\begin{equation}
+	P = \frac{W}{t} = \frac{T\times \phi}{t} = T\times \omega
+	\label{eq:PowerRot}
+\end{equation}
+
+with $\omega$ representing angular speed in radians per second. This leads to a broader relationship linking motor power output to rotor dimensions and magnetic loading \cite[see][23-25]{Hughes:2006}. Therefore the maximum power a motor can produce under these conditions can be expressed mathematically as:
+
+\begin{equation}
+	P = \frac{\pi^2}{2}(\bar{B}\bar{A})D^2L\omega
+	\label{eq:velTorqRelation}
+\end{equation}
+
+where $\bar{B}$ is the air gap flux density in teslas, $\bar{A}$ represents the electrical loading in amperes per meter of circumference, $l$ is the rotor length in meters, $d$ is the air gap diameter in meters, and $n$ is the number of revolutions per minute.
+
+Electrical loading can also be described using the geometry of the rotor slots and the allowable current density:
+
+\begin{equation}
+	A = J \frac{bh}{y}
+	\label{eq:elLoading}
+\end{equation}
+
+Here, $J$ is the maximum current density in amperes per square meter, $bh$ is the total conductor cross-sectional area in each slot in sqare meters, and $y$ is the slot pitch—the distance between adjacent slots in meters \cite[see][26]{Toliyat:2004}.
+
+
+\section{Existing L298N Documentation}
+\chapter{\textcolor{red}{{Entwicklerboard - Motorsteuerung DEBO MotoDriver2 L298N}}}
+
+\URL{https://www.reichelt.de/de/de/shop/produkt/entwicklerboards_-_motodriver2_l298n-202829}
+
+\URL{https://octopart.com/de/datasheet/e-l298n-stmicroelectronics-2791}
+
+
+\Mynote{Diese Dokumentation ist einfach nur schlecht, auch die Bilder. Aber: Man hat einen Namen für die Platine}
+
+Um die zwei verwendeten Motoren ansteuern zu können, wird die Erweiterungsplatine DEBO MotoDriver2 L298N benutzt. Diese erlaubt die Steuerung und Versorgung von bis zu zwei Gleichstrommotoren. Die Motoren können mit Spannungen zwischen 5V und 35V angetrieben werden. Der verwendete Chipsatz ist L298N. Es wird auf dem Logiklevel von 5V gearbeitet. Die Ausgangsleistung beträgt 25W bei einem maximalen Treiberstrom von bis zu 2A. Die Abmaße der Platine sind 43mm $\times$ 43mm $\times$ 27mm. In der folgenden Abbildung \ref{fig:L298N} ist die Erweiterungsplatine zu sehen.
+
+
+\begin{figure}
+	\centering
+	\includegraphics [width=70mm] {L298N/L298N}
+	\caption{Motorsteuerung DEBO MotoDriver2 L298N}
+	\label{fig:L298N}
+\end{figure}
+
+In der folgenden Abbildung \ref{fig:driverpin} sind die Pins des Treibers beschriftet und in der Tabelle \ref{tab:driver_pin} ist die Pinbelegung dargestellt. \cite{Simac:2019b}
+
+\begin{figure}
+	\centering
+	\includegraphics [width=70mm] {L298N/AnschlussDriver}
+	\caption{Treiber mit Beschriftung}
+	\label{fig:driverpin}
+\end{figure}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{PIN}           & \textbf{Belegung}                          \\ \hline
+		1                          & DC Motor 1 / Stepper Motor +       \\ \hline
+		2                          & DC Motor 1 / Stepper Motor GND      \\ \hline
+		3                          & 12V Jumper       \\ \hline
+		4                          & Stromversorgung +       \\ \hline
+		5                          & Stromversorgung GND      \\ \hline
+		6                          & 5V Ausgang (wenn Jumper 3 gesetzt)     \\ \hline
+		7                          & DC Motor 1 Jumper       \\ \hline
+		8                          & Input 1       \\ \hline
+		9                          & Input 2      \\ \hline
+		10                          & Input 3       \\ \hline
+		11                         & Input 4       \\ \hline
+		12                          & DC Motor 2 Jumper      \\ \hline
+		13                          & DC Motor 2 / Stepper Motor +       \\ \hline
+		14                          & DC Motor 2 / Stepper Motor GND       \\ \hline
+	\end{tabular}
+	\caption{Pinbelegung des Treibers}
+	\label{tab:driver_pin}
+\end{table}

@@ -1,0 +1,208 @@
+%%%
+%
+% $Autor: Wings $
+% $Date: 2024-10-31 11:15:45Z $
+% $File: TensorFlowLiteArduino.tex $
+% $Version: 1 $
+%
+%%%
+
+
+\chapter{TensorFlow Lite as a Library for Arduino}
+
+This section broadly covers the various contexts in which TensorFlow Lite is used, including its role in microcontrollers (Arduino), as a tool for model conversion and optimization and as a library path in larger projects.
+
+\section{TensorFlow Lite as a Library for Arduino}
+TensorFlow Lite for Microcontrollers is a version of TensorFlow Lite designed to run machine learning models on microcontroller devices, such as those based on the Arduino platform. This library is highly optimized to work within the constraints of small devices with limited resources (e.g., very low memory and processing power). \cite{TensorFlowGitHub:2024}
+
+\subsection{Usage and Integration}
+
+When you use TensorFlow Lite on an Arduino, you typically include the TensorFlow Lite Micro library in your Arduino IDE. This allows you to write programs that can perform tasks like speech recognition, gesture detection, or even basic image classification directly on the Arduino. The library is optimized to run on devices with very limited resources, such as minimal RAM and processing power. 
+The library is installed into the Arduino development environment, and you can include it in your projects by adding the appropriate headers and linking against the library when compiling your code. This allows your Arduino sketches to utilize TensorFlow Lite models. \cite{TensorFlowGitHub:2024}
+
+
+\subsection{TensorFlow Lite Micro Arduino Example}
+TensorFlow Lite Micro Library for Arduino repository contains examples needed to use Tensorflow Lite Micro on an Arduino. To implement, first clone the TensorFlow Lite Micro Arduino Examples repository from GitHub into a local directory called \PATH{Arduino\_TensorFlowLite}. This repository contains examples for using TensorFlow Lite on microcontrollers like Arduino for various machine learning tasks, such as image classification and voice recognition, optimized for low-power devices like Arduino. \cite{TensorFlowGitHub:2024}. 
+\\Run the command \SHELL{git clone https://github.com/tensorflow/tflite-micro-arduino-examples} as per figure ~\ref{Clone}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{TensorFlowLite/TFLiteMicro.png}
+		\caption{TFlite Micro github Cloning to local repository}
+		\label{Clone}
+	\end{center}
+\end{figure}
+
+Once the library is installed, Open Arduino IDE, go to \SHELL{Files > Examples > Arduino\_TensorFlowLite > hello\_world} as shown in figure ~\ref{TFLlib}.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{TensorFlowLite/helloWorld.png}
+		\caption{TensorFlow Lite as a Library for Arduino}
+		\label{TFLlib}
+	\end{center}
+\end{figure}
+
+This example program, hello\_world, is designed to replicate a sine wave using a TensorFlow Lite model. The model generates a pattern that varies the brightness of the built-in LED on an Arduino in a pattern similar to the last predicted sine value. Since the value ranges from -1 to 1, we could represent 0 with a fully off LED, -1 and 1 with a fully lit LED, and all intermediate values with a partially dimmed LED. As the program loops, making inferences, the LED fades in and out repeatedly. To dim our built-in LED, we use a technique called pulse width modulation (PWM). If we turn an output pin on and off extremely quickly, the output voltage of the pin is set to a factor of ratio the time spend between on and off states. If the pin spends half of the time in each state, its output voltage will be half of its maximum (50 percent). 
+With the \PYTHON{constantkInferencesPerCycle} the number of inferences performed over a full sine cycle can be varied. Since an inference takes a certain amount of time, by setting the \PYTHON{constantkInferencesPerCycle}, can be set how quickly the LED fades out. \cite{TensorFlowGitHub:2024}
+
+First, we include some header files in the source code (refer ~\ref{lst:helloworld}). These headers include the essential TensorFlow Lite for Microcontrollers (TFLM) files, allowing the model and interpreter to function.
+
+The global variables define pointers to the model, interpreter, input/output tensors, and a tensor arena for storing intermediate data.
+The \PYTHON{setup()} function initializes the TensorFlow Lite model and sets up the necessary components such as Model Initialization, Operations Resolver \PYTHON{AllOpsResolver} object used to load all necessary operations for the model, Interpreter setup, Tensor Allocation and Tensor Pointers.
+
+The \PYTHON{loop()} function performs continuous inferences using the sine wave model
+The loop function first calculates the current x-value based on \PYTHON{inference\_count}, then quantizes the x-value to an integer format, reducing memory and computation requirements. It executes the model inference, updating the output tensor with the result. Following this, it dequantizes the output back to floating-point, generating the sine wave value y. The \PYTHON{HandleOutput()} function is used to update the LED based on the sine wave pattern. Finally, it increments the \PYTHON{inference\_count} and resets it after completing a full sine wave cycle.
+
+
+\begin{code}
+	% Include a specific range of lines from the Python file for Model Conversion
+	\lstinputlisting[
+	language=C++, 
+	firstline=16, 
+	lastline=115, 
+	caption={Hello World Program}, 
+	label={lst:helloworld}
+	]{../../Code/TensorFlowLite/SineWaveLED/SineWaveLED.ino}
+\end{code}
+
+To run the example, connect your Arduino device via USB. Make sure the correct device type is selected in the Board drop-down list in the Tools menu, \SHELL{Tools > Board}. If the device not appears in the list, go to \SHELL{Tools > Board > Board Manager} and in the window appears, install the latest version of the supported board package. Then make sure the device port is selected as shown in the figure ~\ref{BoardPort} \cite{TensorFlowGitHub:2024}.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{TensorFlowLite/BoardPortSelection.png}
+		\caption{Board and Port selection}
+		\label{BoardPort}
+	\end{center}
+\end{figure}
+
+Then finally, in the Arduino window, click the Upload button to compile the code and upload it to your Arduino device.
+After the upload has completed successfully, you should see the LED on your Arduino board start to either fade in and out or blink on and off, depending on whether the pin it is connected to supports PWM.
+
+This example demonstrates a simple end-to-end workflow for using TensorFlow Lite as a Library for Arduino Microcontrollers by training and deploying a model to Arduino.
+
+\section{TensorFlow Lite as a Library Path}
+
+In software development, TensorFlow Lite as a library path refers to integrating TFLite as a reusable resource into a broader project, whether it's a mobile application, embedded system, or even a desktop application. The concept of a "library path" in this context refers to how TFLite’s library is organized, included, and linked within a project's build system, such as CMake, Bazel, or Makefiles, to streamline access across multiple components \cite{TensorFlowLiteMicro:2024}.
+
+When TensorFlow Lite is treated as an external library, it provides a centralized resource that enables different parts of a project to access TFLite's models, functions, and interpreter without duplicating or moving source files. 
+
+\subsection{Usage and Integration:}
+
+In building an application with TensorFlow Lite, ensuring that the development environment has access to the TFLite libraries is essential for linking during the build process. This often involves specifying paths in the build configuration files (such as CMakeLists.txt or BUILD files) to include TensorFlow Lite's headers and binary files \cite{TensorFlowLiteArm:2024}. A "library path" refers to the directory where TensorFlow Lite binaries, headers, and other resources are stored. This path is specified in the build configuration so that the compiler and linker can locate TensorFlow Lite components seamlessly.
+
+In large project setup, TensorFlow Lite enables inference on pre-trained models, providing localized AI functionalities directly on the device. By setting TFLite up as a library path, this approach allows each application component to perform machine learning tasks independently, with consistent access to TFLite’s resources.
+
+\subsubsection{Directory Structure Example}
+For an organized project, here’s an example directory structure ~\ref{Directory} that illustrates how TensorFlow Lite might be set up as a library path,
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[
+		every node/.style={font=\ttfamily, anchor=west},
+		level distance=10mm,
+		sibling distance=0mm,
+		edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}
+		]
+		
+		\node {MyProject}
+		child { node [xshift=5mm] {CMakeLists.txt} }
+		child [yshift=-10mm] { node [xshift=5mm] {libs}
+			child { node [xshift=5mm] {tensorflow\_lite}
+				child { node [xshift=5mm] {include}
+					child { node [xshift=5mm] {tensorflow}
+						child { node [xshift=5mm] {lite}
+							child { node [xshift=5mm] {micro}
+								child [yshift=-10mm] { node [xshift=5mm] {all\_ops\_resolver.h} }
+								child [yshift=-20mm] { node [xshift=5mm] {micro\_interpreter.h} }
+								child [yshift=-30mm] { node [xshift=5mm] {kernels} }
+								child [yshift=-40mm] { node [xshift=5mm] {...} }
+							}
+						}
+					}
+				}
+				child [yshift=-80mm] { node [xshift=5mm] {lib}
+					child { node [xshift=5mm] {libtensorflowlite.a} }
+				}
+			}
+		}
+		child [yshift=-120mm] { node [xshift=5mm] {src}
+			child { node [xshift=5mm] {component1}
+				child [yshift=-10mm] { node [xshift=5mm] {component1.cpp} }
+				child [yshift=-20mm] { node [xshift=5mm] {component1.h} }
+			}
+			child [yshift=-40mm] { node [xshift=5mm] {component2} 
+				child [yshift=-10mm] { node [xshift=5mm] {component2.cpp} }
+				child [yshift=-20mm] { node [xshift=5mm] {component2.h} }
+			}
+			child [yshift=-80mm] { node [xshift=5mm] {main.cpp} }
+		};
+		
+	\end{tikzpicture}
+	\caption{Directory structure with TensorFlow Lite as Library Path}
+	\label{Directory}
+\end{figure}
+
+
+In this structure:
+\begin{itemize}
+	\item \SHELL{libs/tensorflow\_lite} acts as the main library path for TensorFlow Lite.
+	\item The \SHELL{include} folder contains the headers needed to access TensorFlow Lite functions, such as \texttt{micro\_interpreter.h} and \SHELL{all\_ops\_resolver.h}, enabling components to directly include these headers.
+	\item \SHELL{lib/libtensorflowlite.a} is the precompiled TensorFlow Lite library, which can be linked in the build configuration.
+\end{itemize}
+
+\subsubsection{Build System Integration}
+For larger projects, common build systems like CMake, Bazel, or Make can be configured to set up this library path. \cite{TensorFlowLiteArm:2024}
+
+\begin{itemize}
+	\item \textbf{CMake}: In your \FILE{MakeLists.txt}, define the TensorFlow Lite path using \SHELL{target\_link\_libraries} and \SHELL{include\_directories} as shown in ~\ref{lst:CMakefile}
+	
+	\begin{code}
+		% Include a specific range of lines from the Python file for Model Conversion
+		\lstinputlisting[ 
+		firstline=1, 
+		lastline=4, 
+		caption={CMake file}, 
+		label={lst:CMakefile}
+		]{../../Code/TensorFlowLite/CMake.txt}
+	\end{code}
+	
+	\item \textbf{Bazel}: In Bazel's \FILE{BUILD} file, TFLite can be added as an external dependency by adding it to the \SHELL{deps} list as shown in ~\ref{lst:BazelBuildFile}
+	
+	\begin{code}
+		% Include a specific range of lines from the Python file for Model Conversion
+		\lstinputlisting[
+		language=Python, 
+		firstline=1, 
+		lastline=4, 
+		caption={Bazel BUILD file}, 
+		label={lst:BazelBuildFile}
+		]{../../Code/TensorFlowLite/BUILD.py}
+	\end{code}
+	
+	\item \textbf{Makefile}: For a Makefile-based project, specify paths using \SHELL{LDFLAGS} (linker flags) and \SHELL{CFLAGS} (compiler flags) as shown in ~\ref{lst:makefile}.
+	
+	\begin{code}
+		% Include a specific range of lines from the Python file for Model Conversion
+		\lstinputlisting[ 
+		firstline=1, 
+		lastline=4, 
+		caption={Make file}, 
+		label={lst:makefile}
+		]{../../Code/TensorFlowLite/make.txt}
+	\end{code}
+	
+\end{itemize}
+
+\section{TensorFlow Lite Library Installation on Arduino IDE}
+
+For deploying models on microcontrollers (like Portenta H7), TensorFlow Lite Micro libraries are used within Arduino IDE. Open Arduino IDE, navigate to \SHELL{Sketch > Include Library > Manage Libraries} to include TensorFlow lite library \PYTHON{EloquentTinyML}, an Arduino library to include TensorFlow Lite Micro for ARM Cortex-M chips (Arduino Portenta H7). ~\ref{TflLibraryInstallation}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{TensorFlowLite/TLFMicroLibrary.png}
+		\caption{Arduino TensorFlowLite Library Installation}
+		\label{TflLibraryInstallation}
+	\end{center}
+\end{figure}
+

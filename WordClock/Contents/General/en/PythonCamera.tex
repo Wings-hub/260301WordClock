@@ -1,0 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-02-24 14:29:03Z $
+% $Pfad: komponenten/Bilderkennung/Produktspezifikation/CorelTPU/Ausarbeitung/Kapitel/Software.tex $
+% $Version: 1791 $
+%
+%
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%todo neu formulieren
+\subsection{Using the camera with Python}
+
+%todo
+How to use the camera with Python?
+
+\subsection{Timing}
+
+The SmartPiCam needs 170-180ms to run through the loop from step 6 to 15. This corresponds to just under 6\ac{fps}. Humans perceive objects in 200-300ms for comparison, according to Wikipedia. 35-40ms are needed to display the photos and about 60-75ms are needed for inferencing on the edge computer including data transfer (about 264KB). This corresponds to a utilisation of the Edge TPU of just 33-42\%. If the display of the photos is removed from the programme, the frame rate increases further to 7.3fps. This programme variant is called \FILE{smartPiCamMainNoDisp.py} and is also included in the GitHub repository for the project. The Edge TPU still has a lot of reserves here, considering that it can also be configured for double speed. However, the latter only really makes sense if a programme also delivers photos at the corresponding speed.
