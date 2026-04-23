@@ -1,0 +1,177 @@
+%%%
+% $Autor: Malena Wilken $
+% $Date: 2025-01-29 $
+% $File: BLE.tex $
+% $Version: 1 $
+%
+%%%
+
+
+\chapter{BLE Connection Check}
+Bluetooth Low Energy (BLE) is an energy-efficient communication method widely used in embedded systems for wireless data transmission. The Hypatia Board features a BLE interface, which will be evaluated for its functionality in the following section. This includes identifying the BLE module, initializing the connection, and analyzing signal quality and data transmission. The objective of this investigation is to validate the stability and reliability of BLE communication of the Hypatia Board and identify potential sources of error. 
+
+\section {Explanations}
+\subsection{UUID}
+A UUID (Universally Unique Identifier) is a 128-bit unique identifier used in various applications, including Bluetooth Low Energy (BLE), databases, and distributed computing. In BLE communication, UUIDs play a crucial role in identifying specific services, characteristics, and descriptors, ensuring that different devices and applications do not interfere with each other.  
+
+In BLE, UUIDs can be categorized into two main types: standard 16-bit UUIDs and custom 128-bit UUIDs. Standard UUIDs, assigned by the Bluetooth Special Interest Group (SIG), are used for predefined services such as the Battery Service (0x180F) or the Heart Rate Service (0x180D). These identifiers are commonly used in BLE devices to provide standardized functionality. In contrast, custom 128-bit UUIDs such as here needed in the purpose of getting the Hypatia Booard started, allow developers to define unique identifiers for proprietary services and characteristics, ensuring compatibility within custom BLE applications. An example of a custom UUID would be `"b0cee666-6f5c-48fa-9b6b-ee42fec51a13"`, which could be used to identify a specific BLE service running on an ESP32.  
+
+The primary advantage of UUIDs is their ability to prevent conflicts in environments where multiple BLE devices are operating simultaneously. By assigning a unique UUID to a service or characteristic, developers can ensure that only the intended client device connects and interacts with the correct BLE service. This is particularly useful in IoT applications, where multiple smart devices communicate wirelessly. UUIDs are automatically generated using algorithms which can be found online, that minimize the probability of duplication, making them a reliable and scalable solution for device identification.
+
+\section{Installation}
+To proceed with the BLE communication test, there are some Installations to be done. In the following section is discribed what installations are needed to run BLE on the Hypatia Board. 
+
+\subsection{BLE-Scanner App}
+Install the BLE-Scanner app on your mobile device. The application is available in the Google Play Store for Android devices and in the Apple App Store for iOS users. Simply search for "BLE-Scanner" by Bluepixel Technologies (see Figure \ref{fig:BLEInstallation}) and install. The BLE-Scanner app by Bluepixel Technologies (Version: 3.31) is installed to analyze and manage Bluetooth Low Energy communication. This application enables scanning for available BLE devices in the vicinity and allows for a detailed examination of connection parameters. By using this app, it is possible to verify whether the Hypatia Board is correctly transmitting and receiving data.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/BLE/BLEInstallation}
+	\caption[BLE Scanner App Installation]{BLE Scanner App Installation}
+	\label{fig:BLEInstallation}
+\end{figure}
+
+
+\subsection{How to use the BLE Scanner App}
+The BLE Scanner App can be identified by its Bluetooth symbol icon, as shown in Figure \ref{fig:BLEInstallation}, and can be found among the installed apps on your device. It offers a range of features, including a radar view for detecting nearby BLE devices (see figure \ref{fig:BLERadar}), a QR code scanner, and various other settings. For testing the BLE connection of the Hypatia Board, the most relevant features are the "Nearby Devices" tab and the detailed information displayed upon connecting to a BLE device.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\linewidth]{../../../Images/Syde/BLE/BLERadar}
+	\caption[Radar of nearby BLE devices]{Radar of nearby BLE devices}
+	\label{fig:BLERadar}
+\end{figure}
+
+When you open the app, you are directed to the home screen, which is the "Nearby" tab (see Figure \ref{fig:BLEHome}). Here, you get an overview of all detected BLE devices, displaying their signals as received by your device.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/BLE/BLEHome}
+	\caption[Home Screen BLE Scanner App]{Home Screen BLE Scanner App}
+	\label{fig:BLEHome}
+\end{figure}
+
+While the app offers various options, we will focus on connecting to the device of interest. To do so, simply click on "CONNECT" next to your target device. Once connected, you will have access to detailed information about the device, including its Connection Status, Generic Attributes, Access and a Custom Service Opportunity (see Figure \ref{fig:BLEInfo}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/BLE/BLEInfos}
+	\caption[Overview BLE device Information]{Overview BLE device Information}
+	\label{fig:BLEInfo}
+\end{figure}
+
+\newpage
+\section{Arduino Code for BLE System}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstinputlisting[
+caption= BLE Check Message Code,
+label={lst:BLE cpp},
+language=C++,
+backgroundcolor=\color{backcolour},   
+commentstyle=\color{codegreen},
+keywordstyle=\color{magenta},
+numberstyle=\tiny\color{codegray},
+stringstyle=\color{codepurple},
+basicstyle=\ttfamily\footnotesize,
+breakatwhitespace=false,         
+breaklines=true,                 
+keepspaces=true,                 
+numbers=left,       
+numbersep=5pt,                  
+showspaces=false,                
+showstringspaces=false,
+showtabs=false,                  
+tabsize=2]{../../Code/Syde/Test/TestBLE/TestBLE.ino}
+
+
+At the beginning of the code, the necessary libraries are included, and constants are defined to specify the LED pin (GPIO 21) and the number of LEDs (NUM\_LEDS 1). The UUIDs for the BLE service and characteristic are also defined, ensuring unique identification within the BLE environment. A NeoPixel object is then created to control the LED, allowing it to display different colors.
+
+To process incoming BLE commands, a custom callback class (MyCallbacks) is implemented. When a new value is written to the characteristic, the function onWrite() extracts the received data. If the message contains "{}on{}", the LED turns blue, while if "{}off{}" is received, the LED turns off. The received data is also printed to the serial monitor for debugging purposes.
+
+The setup() function initializes the ESP32’s BLE server and configures the LED. Serial communication is started at 115200 baud, and the LED is initially turned off. The ESP32 is then set up as a BLE device named "MyESP32", and a BLE server is created. Within this server, a BLE service and characteristic are defined, allowing the characteristic to be read and written. A callback function is assigned to handle incoming commands, and an initial value ("Hello World") is set.
+
+Once the BLE service is started, the ESP32 begins advertising the service UUID, making it discoverable by external devices. This enables a BLE scanner, such as a smartphone app, to detect and connect to the ESP32. The loop() function contains only a small delay, as the BLE functionality operates asynchronously in the background.
+
+When the ESP32 is powered on, it starts advertising itself as "MyESP32". A client device, such as a smartphone running a BLE scanning app, can discover and connect to it. Once connected, the client can send "{}on{}" or "{}off{}" commands via BLE. If "{}on{}" is received, the LED changes to blue, while "{}off{}" turns the LED off. The ESP32 processes these commands in real-time and updates the LED accordingly.
+
+\section{Connecting Hypatia with BLE Scanner}
+
+To proceed with the setup and programming of the Hypatia Board, it is essential to install the Arduino IDE on your computer. Additionally, the Adafruit Library is required for proper functionality and communication with specific components of the Hypatia Board. Make sure that all necessary configurations for the Hypatia Board have been properly set up. When the Configurations are set and the correct Board and COM Port are chosen, its time to compile and upload the explained code to the ESP32 on the Hypatia board by pressing the arrow button in the upper left corner of the Arduino IDE. The next step is to open the Serial Monitor Tab via the button in the upper right corner like shown in the following figure \ref{fig:ArduinoSerialMonitor}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.1\linewidth]{../../../Images/Syde/Arduino/ArduinoSerialMonitor}
+	\caption[CONNECT with MYESP32]{CONNECT with MYESP32}
+	\label{fig:ArduinoSerialMonitor}
+\end{figure}
+
+Choose the baudrate in the upper right corner of the Serial monitor tab which was initialized in the code (115200 baud). With the Serial Monitor, you can track the steps the ESP32 takes to set up the BLE signal. This allows you to monitor real-time feedback from the board (see Figure \ref{fig:BLESErialMonitor}), ensuring that the initialization, connection, and communication processes are executed correctly. If the Serial Monitor is not showing text, try to upload the code again with the serial monitor being open. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../../../Images/Syde/BLE/BLESErialMonitor}
+	\caption[Serial Monitor Feedback BLE Signal]{Serial Monitor Feedback BLE Signal}
+	\label{fig:BLESErialMonitor}
+\end{figure}
+
+With getting the information of the Board being ready for connections, open the BLE Scanner App on your mobile device. After opening the app and ensuring that Bluetooth is enabled on your device, you will see a list of available BLE devices in your vicinity. To view nearby devices, select the "Near By" tab, as shown in figure \ref{fig:BLEConnection}. This tab displays all detected BLE devices along with their names and signal strengths.
+
+To connect to your Hypatia Board, locate the device named "MyESP32" in the list. Once found, tap the "CONNECT" button next to it to establish a connection. This step allows you to interact with the BLE services of the device and proceed with further testing (see figure \ref{fig:BLEConnection}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/BLE/BLEConnection}
+	\caption[CONNECT with MYESP32]{CONNECT with MYESP32}
+	\label{fig:BLEConnection}
+\end{figure}
+
+The upcoming window provides BLE signal information with multiple services and characteristics.
+The Generic Attribute Service (0x1801) includes a Service Changed characteristic with the UUID 00002A05-0000-1000-8000-00805F9B34FB. This characteristic supports the Indicate property, and its descriptor, the Client Characteristic Configuration (UUID: 0x2902), currently has notifications or indications disabled (see Figure \ref{fig:BLEGenericAttribute}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/BLE/BLEGenericAttribute}
+	\caption[Generic Attributes BLE device]{Generic Attributes BLE device}
+	\label{fig:BLEGenericAttribute}
+\end{figure}
+
+Additionally, the board features the Generic Access Service (0x1800). Within this service, the Device Name characteristic has the UUID 00002A00-0000-1000-8000-00805F9B34FB, is readable, and its current value is set to MyESP32, represented as 0x4D794553503332 in hex. The Appearance characteristic with UUID 00002A01-0000-1000-8000-00805F9B34FB is also readable but returns UNKNOWN as its value. Additionally, the Central Address Resolution characteristic has UUID 00002AA6-0000-1000-8000-00805F9B34FB, is readable, and holds a hex value of 0x00 (see Figure \ref{fig:BLEGenericAccess}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/BLE/BLEGenericAccess}
+	\caption[Generic Access BLE device]{Generic Access BLE device}
+	\label{fig:BLEGenericAccess}
+\end{figure}
+
+The Custom Service has a Primary Service UUID of BOCEE666-6F5C-48FA-9B6B-EE42FEC51A13. It includes a custom characteristic with the UUID 4B15CD64-97B9-4FF2-9599-88CCD01F07F1, supporting Read and Write properties. The current value is off, represented in hex as 0x6F6666, and the Write Type is Write Request (see Figure \ref{fig:BLECustomService}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/BLE/BLECustomService}
+	\caption[Custom Service Opportunity]{Custom Service Opportunity}
+	\label{fig:BLECustomService}
+\end{figure}
+
+What proves that the Hypatia board is correctly connected to the BLE signal is the ability to interact with the Custom Service characteristic. By pressing the W (Write) button under the Custom Service section, a window should appear displaying a text field  (see Figure \ref{fig:BLEMessage}).
+If our code is functioning correctly, we should be able to turn the LED on and off on the Hypatia board by typing "{}on{}" and "{}off{}" in the text field and sending the command. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/BLE/BLEMessage}
+	\caption[BLE Connection Check Message]{BLE Connection Check Message}
+	\label{fig:BLEMessage}
+\end{figure}
+
+Additionally, our text input should be recognized in the serial monitor window of the Arduino IDE, confirming that the board receives and processes the BLE commands successfully (see Figure\ref{fig:BLEFeedback}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\linewidth]{../../../Images/Syde/BLE/BLEFeedback}
+	\caption[BLE Connection Feedback Serial Monitor]{BLE Connection Feedback Serial Monitor}
+	\label{fig:BLEFeedback}
+\end{figure}

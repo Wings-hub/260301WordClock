@@ -1,0 +1,598 @@
+%%%
+%
+% $Autor: Wings $
+% $Date: 2024-10-31 11:15:45Z $
+% $File: MicroPython.tex $
+% $Version: 1 $
+%
+%%%
+
+
+
+\chapter{MicroPython}
+
+\section{Introduction}
+In this chapter, we will explore MicroPython and OpenMV in detail. We will discuss key features of the MicroPython programming language and how to run MicroPython scripts on the Arduino Portenta H7 using the OpenMV IDE. As a practice, we will be creating a basic MicroPython script in the OpenMV IDE to blink LED’s on the Arduino Portenta H7 board.
+
+\section{MicroPython}
+MicroPython is a open source, tiny Python programming language interpreter that works on small embedded development boards. Instead of using complex low-level languages like C or C++, MicroPython allows us to write clean and simple Python code to control hardware (what Arduino uses for programming). It is a lean and efficient implementation of the Python 3 programming language that includes a small subset of the Python standard library and is optimised to run on microcontrollers and in constrained environments.
+MicroPython runs on a wide range of microcontrollers, as well as on Unix-like (including Linux, BSD, macOS, WSL) and Windows systems and it is compact enough to fit and run within just 256k of code space and 16k of RAM. \cite{MicroPythonGitHub:2025,MicroPython:2025}
+Key features of MicroPython such as :
+\begin{itemize}
+	\item \textbf{Interactive REPL(Read-Evaluate-Print-Loop)}: MicroPython includes a REPL, which allows us to interact with the system in real time, testing and running code without the need for compilation. It is a four step process in which it first reads the user input, evaluate the code, print any results and loop back to first step.
+	\item \textbf{External Libraries}: MicroPython supports a wide range of external libraries (e.g., machine learning, network communication, sensor drivers) that can be added to a project to extend its functionality.
+	\item \textbf{Extendability}: We can write custom modules in C or C++ to extend the capabilities of MicroPython, providing optimized code for performance-critical parts or interfacing with specific hardware.
+	\item \textbf{Cross-Platform}: It can be deployed on a variety of platforms, including ARM Cortex-M microcontrollers, ESP8266/ESP32, Raspberry Pi Pico, Portenta H7 and more.
+\end{itemize}
+
+The MicroPython programming language implements the core python 3 language but it cant implement the entire standard library of Python 3 because trying to fit big libraries into tiny boards with just kilobytes of memory is not possible. One thing to
+note is that MicroPython is only a programming language interpreter whereas Arduino is an entire ecosystem which has the Arduino IDE and the hardware which in this case is Arduino Portenta H7.
+
+
+\section{MicroPython auf dem Arduino Alvik}
+
+%MicroPython ist eine vereinfachte Implementierung der Programmiersprache Python 3, einschlie\ss lich Teilen der Python-Standardbibliothek, die für die Ausführung auf Mikrocontrollern und in eingeschränkten Umgebungen optimiert ist.MicroPython bietet eine Vielzahl von Hardwaremodulen, die es Entwicklern ermöglichen, auf die Peripheriegeräte der Plattform zuzugreifen, auf der sie ausgeführt werden. Dazu gehören die Steuerung elektronischer Pin-Spannungen (GPIOs), Kommunikationsbus-Schnittstellen (wie UART, SPI, I2C, I2S und CAN) und andere Funktionsmodule wie Zeit- und Leistungssteuerung. Darüber hinaus unterstützt MicroPython Kommunikationsprotokolle wie WiFi, LAN, Bluetooth \cite{Tollervey:2027}.
+
+\section{MicroPython unterstützte Hardware}
+
+Die von MicroPython unterstützten Mikrocontroller sind:
+\begin{itemize}
+	\item \textbf{ESP32:}ESP32 ist eine von Espressif entwickelte Familie von ESP32-Mikroprozessoren, die den Tensilica Xtensa-Prozessor verwenden.
+	\item \textbf{ESP8266:}Der ESP8266 ist eine Serie von integrierten Mikrocontrollern von Espressif.
+	\item \textbf{Raspberry Pi RP2:}Der Raspberry Pi RP2 ist ein auf einem Arm Cortex M0+ Prozessor basierender Dual-Core-Mikrocontroller, der von Raspberry Pi entwickelt wurde.
+	\item \textbf{STM32:}STM32 ist eine von STMicroelectronics hergestellte Serie von 32-Bit-Mikrocontrollern, die auf ARM Cortex-Kernen basiert.
+	\item \textbf{i.MXRT:}Der i.MXRT ist eine Serie von Mikrocontrollern, die auf dem ARM Cortex-Kern basieren und von NXP Semiconductors hergestellt werden.
+	\item \textbf{Renesas RA:}32-Bit-Mikrocontroller auf Basis der Arm Cortex-M23, -M4 und M33 Prozessorkerne von Renesas Electronics.
+	\item \textbf{SAMD21/SAMD51:}Der SAMD21 und der SAMD51 sind ARM Cortex-M Core-basierte Mikrocontroller von Microchip.
+	\item \textbf{Pyboard:}Pyboard ist das offizielle Mikrocontroller-Board für MicroPython.
+\end{itemize}
+\subsubsection{MicroPython Unterstützte Integrierte Entwicklungsumgebung}
+Die von MicroPython unterstützten Integrierte Entwicklungsumgebung sind:
+\begin{itemize}
+	\item \textbf{Arduino Lab for MicroPython}
+	\item \textbf{Thonny}
+	\item \textbf{Arduino IDE}
+	\item \textbf{uPyCraft}
+	\item \textbf{PlatformIO}
+	\item \textbf{Visual Studio Code}
+	\item \textbf{PyCharm}
+	\item \textbf{WebREPL}
+	
+\end{itemize}
+
+\subsubsection{REPL}
+\begin{enumerate}
+	
+	\item \textbf{Funktionen:}REPL steht für „Read-Eval-Print Loop“ und kann auch als Terminal bezeichnet werden. In MicroPython ist REPL eine interaktive Befehlszeilenumgebung für die Echtzeit-Interaktion mit MicroPython-Geräten wie dem Arduino Nano ESP32. Entwickler können Python-Code direkt in diese Umgebung eingeben und die Ausgabe sofort sehen \cite{VanBinsbergen:2020}.REPL besteht aus den folgenden Hauptfunktionen:
+	\begin{itemize}
+		\item \textbf{Read:}Akzeptieren von vom Benutzer eingegebenen Codes.
+		\item \textbf{Eval:}Führen diesen Code aus.
+		\item \textbf{Print:}Gibt Ausführungsergebnisse an den Benutzer zurück.
+		\item \textbf{Loop:}Der Zyklus des ``Read'', ``Eval'' und ``Print'' wird fortgesetzt, bis der Benutzer die Seite verlässt.
+	\end{itemize}
+	
+	\item \textbf{Arduino Alvik-Verbindungsprozess}:
+	\begin{itemize}
+		\item Anschlie\ss en des Arduino Alvik an den Computer über ein USB-C-Kabel.
+		\item Das Betriebssystem weist dem Gerät einen USB-Seriell-Anschluss (z. B. COM4) zu,und im Windows-Betriebssystem kann der USB-Seriell-Anschluss über den Geräte-Manager angezeigt \ref{Geratemanage} werden.
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/DeviceManager}
+				\caption{Suche nach Anschlüssen im Geräte-Manager} 
+				\label{Geratemanage}                                                                                                                                                                                                                                                                                    \end{center}
+		\end{figure}
+		\item Wählen einen geeigneten Port(COM4 wird angezeigt) in Arduino Lab für MicroPython \ref{COM4}.
+		\begin{figure}[ht]
+			\begin{center}
+				%todo Bild fehlt%%%				\includegraphics[width=12cm]{Arduino/Alvik/COM4.png}
+				\caption{Suche nach Anschlüssen im Geräte-Manager} 
+				\label{COM4}                                                                                                                                                                                                                                                                                                   
+			\end{center}
+		\end{figure}
+		\item Nach erfolgreicher Verbindung sehen den REPL-Prompt() \ref{REPL}.
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/REPL}
+				\caption{REPL-Schnittstellen} 
+				\label{REPL}                                                                                                                                                                                                                                                                                                    
+			\end{center}
+		\end{figure}
+	\end{itemize}
+\end{enumerate}
+
+\subsubsection{MicroPython-Installation auf Arduino Alvik}
+MicroPython ist bereits in den Arduino Nano ESP32 auf dem Arduino Alvik integriert. Wenn die MicroPython-Version aktualisieren möchten, müssen die folgenden Schritte durchführen:
+\begin{enumerate}
+	\item MicroPython Firmware-Installationstool Updater herunterladen(\href{https://labs.arduino.cc/en/labs/micropython-installer}{https://labs.arduino.cc/en/labs/micropython-installer})\ref{webMPins}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/webMPins}
+			\caption{Firmware-Installationstool Updater herunterladen} 
+			\label{webMPins}                                                                                                                                                                                                                                                                                                   
+		\end{center}
+	\end{figure}
+	\item Öffnen Arduino Lab für MicroPython und verbinden sich mit den Arduino Nano ESP32 an das Arduino Alvik. Klicken auf „ File Manager “, um die eingebauten Programme in Arduino Alvik zu sehen\ref{Alvikoriginal}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/Original}
+			\caption{Die eingebauten Programme} 
+			\label{Alvikoriginal}                                                                                                                                                                                                                                                                                                   
+		\end{center}
+	\end{figure}
+	\item Löschen das main.py und boot.py Programm\ref{mainpy} aus dem Arduino Nano ESP32, wenn es nicht gelöscht wird, kann die Installation des MicroPython Programms fehlschlagen(Achten darauf, beim Löschen ein Backup zu erstellen).
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/MainPy}
+			\caption{main.py und boot.py} 
+			\label{mainpy}                                                                                                                                                                                                                                                                                                   
+		\end{center}
+	\end{figure}
+	\item Öffnen das MicroPython Firmware-Installationstool.Das System erkennt den Arduino Nano ESP32 automatisch\ref{MPins}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/MPins}
+			\caption{Schnittstelle zum MicroPython Firmware-Installationstool} 
+			\label{MPins}                                                                                                                                                                                                                                                                                                   
+		\end{center}
+	\end{figure}
+	\item Drücken die Reset-Taste im Arduino Nano ESP32\ref{resetESP32}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/resetESP32}
+			\caption{die Reset-Taste} 
+			\label{resetESP32}                                                                                                                                                                                                                                                                                                   
+		\end{center}
+	\end{figure}
+	\item Klicken im Schnittstelle des MicroPython Firmware-Installationstools auf ``INSTALL MICROPYTHON''\ref{tasteins}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/ButtonOne}
+			\caption{Position von ``INSTALL MICROPYTHON''} 
+			\label{tasteins}                                                                                                                                                                                                                                                                                                   
+		\end{center}
+	\end{figure}
+	\item Warten auf die Fertigstellung des Installationsprogramms.Nachdem die Installation wie in der Abbildung gezeigt abgeschlossen ist\ref{Success}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/Success}
+			\caption{Installation abgeschlossen} 
+			\label{Success}                                                                                                                                                                                                                                                                                                   
+		\end{center}
+	\end{figure}
+	
+\end{enumerate}
+
+\clearpage
+\subsubsection{Anwendung der grundlegenden MicroPython-Syntax}
+\begin{enumerate}
+	\item \textbf{Print:}
+	\begin{itemize}
+		\item \PYTHON{print()} ist ein Werkzeug zur Fehlersuche und zur Anzeige von Informationen, das eine Vielzahl von Eingabeformen unterstützt, z. B. Zeichenketten, Werte, Variablen, Ausdrücke und Funktionsrückgabewerte \ref{verwendungpr}. Es hilft Entwicklern, den Status und die Ergebnisse eines laufenden Programms anzuzeigen.
+		%	\begin{Python} [caption={Verwendung Print},label=verwendungpr]
+			%		print('Hello') # Eine Zeichenkette drucken
+			%		print(4) # Eine Zahl drucken
+			%		print(1+3) # Ergebnis 4 drucken
+			%		data = 4
+			%		print(data) # Wert der Variablen drucken 
+			%		def func():
+			%		x = 1
+			%		return x
+			%		print(func()) # Drucken des Rückgabewerts einer Funktion
+			%		print('Value: ', data) # Drucken "Value: <value of data variable>"
+			%	\end{Python}
+		{
+			\captionof{code}{Verwendung Print}\label{verwendungpr}	
+			{	\pythonstyle
+				\lstinputlisting[]{../../Code/Alvik/Syntax/print.py}}
+		}
+		\item Die gedruckten Ergebnisse sind im Terminal \ref{pr} zu sehen.
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/printREPL}
+				\caption{Terminalausgabe für Print} 
+				\label{pr}     
+			\end{center}
+		\end{figure}
+	\end{itemize}
+	\newpage
+	\item \textbf{Variablen:}In MicroPython werden Variablen verwendet, um benannte Bezeichner für Datenwerte zu speichern.In MicroPython kann es zum Speichern verschiedener Datentypen (Zahlen, Strings, Listen, Objekte usw.) verwendet werden.In MicroPython müssen Variablen nicht explizit als Typ deklariert werden; Python leitet den Typ automatisch aus der Zuweisung ab.Die Benennungsregeln für Variablennamen lauten wie folgt:
+	\begin{itemize}
+		\item Variablennamen dürfen nur aus Buchstaben, Zahlen und Unterstrichen bestehen, aber nicht mit einer Zahl beginnen.
+		\item bei den Variablennamen wird zwischen Gro\ss - und Kleinschreibung unterschieden.
+		\item Vermeiden die Verwendung von MicroPython-Schlüsselwörtern als Variablennamen (z. B. if, while, True, usw).
+	\end{itemize}
+	
+	\textbf{Die Arten von Variablen sind:}
+	
+	\begin{itemize}
+		\item \PYTHON{int}:Dient zur Speicherung von Ganzzahlwerten.Der Code zur Definition \ref{Ganzzahlvariablen} einer Ganzzahlvariablen und zum Drucken des Ergebnisses \ref{Ganzzahl} einer Ganzzahlvariablen lautet wie folgt.
+		\begin{Python} [caption={Ganzzahlwerten definieren},label=Ganzzahlvariablen]
+			a = 42
+			b = -100
+			print(a)
+			print(b)
+		\end{Python}
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/Integer}
+				\caption{Die Druckausgabe Ganzzahltyps} 
+				\label{Ganzzahl}     
+			\end{center}
+		\end{figure}
+		
+		\item \PYTHON{float}:Dient zur Speicherung von Gleitkommazahlen.Der Code zur Definition \ref{Gleitkommazahlen} einer Gleitkomma-Variable und die Ausgabe des Ergebnisses \ref{float} der Gleitkomma-Variable sind wie folgt.
+		\begin{Python} [caption={Gleitkommazahlen definieren},label=Gleitkommazahlen]
+			pi = 3.14
+			large = 1.2e3 #Wissenschaftliche Schreibweise
+			print(pi)
+			print(large)
+		\end{Python}
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/float}
+				\caption{Die Druckausgabe Gleitkomma-Variable} 
+				\label{float}     
+			\end{center}
+		\end{figure}
+		
+		\item \PYTHON{bool}:Der Boolesche Typ wird in MicroPython durch den eingebauten Typ \PYTHON{bool} definiert und dient zur Darstellung von logischen Zuständen oder Ergebnissen von Bedingungsabfragen im Programm.Der Wert ist ``True'' oder "False".Die Ausgabe des Ergebnisses der Bool-Variable sind wie folgt\ref{bool}.
+		\begin{Python} [caption={Der Bool Typ definieren}]
+			is_active = True
+			is_ready = False
+			print(is_active,is_ready)
+		\end{Python}
+		
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/bool.png}
+				\caption{Die Druckausgabe Bool} 
+				\label{bool}     
+			\end{center}
+		\end{figure}
+		
+		\item \PYTHON{str}:Der String-Typ, wird verwendet, um Textdaten zu speichern. Er kann mit einfachen oder doppelten Anführungszeichen definiert werden.Die Ausgabe des Ergebnisses der Str-Variable sind wie folgt\ref{str}.
+		\begin{Python} [caption={Der String-Typ definieren}]
+			greeting = "Hello, MicroPython!"
+			char = 'M'
+			print(greeting,char)
+		\end{Python}
+		
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/str.png}
+				\caption{Die Druckausgabe Str} 
+				\label{str}     
+			\end{center}
+		\end{figure}
+		
+		\item \PYTHON{list}:Geordnete und veränderbare Sammlung.Die Ausgabe des Ergebnisses der List-Variable sind wie folgt\ref{list}.
+		\begin{Python} [caption={List definieren}]
+			numbers = [1, 2, 3, 4, 5]
+			mixed = [1, "two", 3.0, True]
+			print(numbers,mixed)
+		\end{Python}
+		
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/list.png}
+				\caption{Die Druckausgabe List} 
+				\label{list}     
+			\end{center}
+		\end{figure}
+		
+		\item \PYTHON{tuple}:Geordnete und unveränderliche Sammlung.Die Ausgabe des Ergebnisses der Tuple-Variable sind wie folgt\ref{tuple}.
+		\begin{Python} [caption={Tuple definieren}]
+			coordinates = (10, 20, 30) 
+		\end{Python}
+		
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/tuple.png}
+				\caption{Die Druckausgabe Tuple} 
+				\label{tuple}     
+			\end{center}
+		\end{figure}
+		
+		\item \PYTHON{dict}:Eine ungeordnete Sammlung von Schlüssel-Wert-Paaren, wobei die Schlüssel unveränderliche Typen sein müssen (z. B. Strings, Zahlen, Tupel).Die Ausgabe des Ergebnisses der Dict-Variable sind wie folgt\ref{dict}.
+		\begin{Python} [caption={Dict definieren}]
+			config = {"ip": "192.168.0.1", "port": 8080}
+		\end{Python}
+		
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/dict.png}
+				\caption{Die Druckausgabe Dict} 
+				\label{dict}     
+			\end{center}
+		\end{figure}
+		\item \PYTHON{set}:Eine ungeordnete und einzigartige Sammlung.Die Ausgabe des Ergebnisses der Set-Variable sind wie folgt\ref{set}.
+		\begin{Python} [caption={Set definieren}]
+			unique_values = {1, 2, 3, 3}
+		\end{Python}
+		
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/set.png}
+				\caption{Die Druckausgabe Set} 
+				\label{set}     
+			\end{center}
+		\end{figure}
+		
+		\item \PYTHON{NoneType}:Wird verwendet, um einen ``wertlosen'' Zustand darzustellen, und hat nur einen Wert: \PYTHON{None}.Die Ausgabe des Ergebnisses der NoneType-Variable sind wie folgt\ref{nonetype}.
+		\begin{Python} [caption={NoneType definieren}]
+			result = None
+		\end{Python}
+		
+		\begin{figure}[ht]
+			\begin{center}
+				\includegraphics[width=12cm]{Arduino/Alvik/none.png}
+				\caption{Die Druckausgabe NoneType} 
+				\label{nonetype}     
+			\end{center}
+		\end{figure}
+	\end{itemize}
+	
+	\item \textbf{Operatoren:}In MicroPython werden die Operatoren für folgende Zwecke verwendet:
+	\begin{itemize}
+		\item Arithmetische Berechnungen durchführen
+		\item Die Zuweisung von Werten an Variablen
+		\item Den Vergleich zweier Werte in einer Anweisung
+		\item Mehrere Werte mit logischen Operatoren vergleichen
+	\end{itemize}
+	
+	%	\begin{Python} [caption={Operatoren Code}]
+		%		print(5+5) #Arithmetische Berechnungen,Ausgabeergebnis ist 10
+		%		print(10-5) #Ausgabeergebnis ist 5
+		%		
+		%		paragraph = "This is a sentence" #Operator wird verwendet, um einer Variablen einen Wert zuzuweisen.
+		%		x = 10
+		%		print(x) # prints 10
+		%		print(paragraph) # this prints "this is a sentence"
+		%		
+		%		if 10 > 5: #Vergleichsoperatoren können verwendet werden, um zwei Werte innerhalb einer Anweisung zu vergleichen
+		%		print("10 is indeed greater than 5")
+		%		
+		%		x = 14 
+		%		if x > 10 and x < 15: #Mehrere Werte mit logischen Operatoren vergleichen
+		%		print("x is larger than 10 but smaller than 15")
+		%	\end{Python}
+	{
+		\captionof{code}{Operatoren Code}\label{}	
+		{	\pythonstyle
+			\lstinputlisting[]{../../Code/Alvik/Syntax/Operators.py}}
+	}
+	Die Ausgabe des Ergebnisses der Operatoren Code sind wie folgt\ref{operatoren}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/OperatorenREPL.png}
+			\caption{Ergebnisse der Operatorcode-Ausgabe} 
+			\label{operatoren}     
+		\end{center}
+	\end{figure}
+	
+	
+	\item \textbf{If/Elif/Else-Anweisungen:}\PYTHON{if}/\PYTHON{elif}/\PYTHON{else} sind bedingte Anweisungen in MicroPython, die verwendet werden, um verschiedene Codeblöcke basierend auf bestimmten Bedingungen auszuführen.
+	\begin{itemize}
+		\item \PYTHON{if}:Ermittelt, ob eine Bedingung ``True'' ‚ ist, und führt den entsprechenden Codeblock aus, wenn die Bedingung ``True'' ist.
+		\item \PYTHON{elif}:Abkürzung für \PYTHON{else if}, wird verwendet, um auf andere Bedingungen zu prüfen.
+		\item \PYTHON{else}:Wenn weder die \PYTHON{if}- noch die \PYTHON{elif}-Bedingung erfüllt ist, wird die Anweisung ausgeführt.
+	\end{itemize}
+	
+	%	\begin{Python} [caption={If/Elif/Else Code}]
+		%		x = 5+5
+		%		
+		%		if x > 10:
+		%		print("x is larger than 10") #Druckt,wenn der Wert von X grö\ss er ist als 10
+		%		elif x == 10:
+		%		print("x is exactly 10") #Druckt,wenn der Wert von X gleich 10 ist
+		%		else:
+		%		print("x is smaller than 10") #Druckt,wenn der Wert von X kleiner 10 ist
+		%	\end{Python}
+	{
+		\captionof{code}{If/Elif/Else Code}\label{}	
+		{	\pythonstyle
+			\lstinputlisting[]{../../Code/Alvik/Syntax/if.py}}
+	}
+	Die Ausgabe des Ergebnisses der If/Elif/Else Code sind wie folgt\ref{if}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/IfREPL.png}
+			\caption{Ergebnisse der If/Elif/Else-Code-Ausgabe} 
+			\label{if}     
+		\end{center}
+	\end{figure}
+	
+	
+	\item \textbf{While-Schleife:}In MicroPython ist eine While-Schleife eine Schleifensteuerungsstruktur, die dazu dient, einen Codeblock wiederholt auszuführen, wenn die Bedingung ``True'' ist. while-Schleifen eignen sich für eingebettete Systeme, um Operationen zu wiederholen, bis die Bedingung erfüllt ist.
+	%     \begin{Python} [caption={While-Schleife Code}]
+		%     x = 5
+		%     
+		%     while(x == 5):
+		%     print('x=5')# Dieser Block wird so weit wiederholt, bis x ungleich 5 ist.
+		%     
+		%     while(x != 5):
+		%     print('x ist ungleich 5')# Wenn x ungleich 5 ist, wird der Block wiederholt.
+		%     \end{Python}
+	{
+		\captionof{code}{While-Schleife Code}\label{}	
+		{	\pythonstyle
+			\lstinputlisting[]{../../Code/Alvik/Syntax/while.py}}
+	}
+	Die Ausgabe des Ergebnisses der While-Schleife Code sind wie folgt\ref{whileschleife}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/whileREPL.png}
+			\caption{Ergebnisse der While-Schleife-Code-Ausgabe} 
+			\label{whileschleife}     
+		\end{center}
+	\end{figure}
+	
+	\item \textbf{For-Schleife:}Eine for-Schleife ist ein MicroPython-Konstrukt zum Durchlaufen von Sequenzen (z. B. iterierbare Objekte wie Listen, Strings, Dictionaries usw) oder Bereichen(\PYTHON{range()} wird verwendet, um eine unveränderliche Zahlenfolge zu erzeugen, in der Regel für Schleifen oder zur Erzeugung eines bestimmten Zahlenbereichs) von.
+	%	 \begin{Python} [caption={For-Schleife Code}]
+		%	numbers = [1,2,3,4,5]
+		%	for x in numbers:
+		%	    print(x) #Druckt 1-5, 5 Zahlen einzeln
+		%	
+		%	for y in range(0, 5):
+		%	    print(y) #Druckt 0-4, 5 Ziffern nacheinander
+		%	\end{Python}
+	{
+		\captionof{code}{For-Schleife Code}\label{}	
+		{	\pythonstyle
+			\lstinputlisting[]{../../Code/Alvik/Syntax/for.py}}
+	}
+	Die Ausgabe des Ergebnisses der For-Schleife Code sind wie folgt\ref{for}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/ForREPL.png}
+			\caption{Ergebnisse der For-Schleife-Code-Ausgabe} 
+			\label{for}     
+		\end{center}
+	\end{figure}
+	
+	\item \textbf{Function}:In MicroPython werden Funktionen durch das Schlüsselwort \PYTHON{def} definiert und gekapselt, und der gekapselte Codeblock kann zur Ausführung einer bestimmten Aufgabe wiederverwendet werden.
+	%	\begin{Python} [caption={Functionscode}]
+		%	def greet():
+		%	print("Hello, MicroPython!")
+		%	
+		%	func = greet
+		%	func()  # Funktion aufrufen.
+		%    \end{Python}
+	{
+		\captionof{code}{Functionscode}\label{}	
+		{	\pythonstyle
+			\lstinputlisting[]{../../Code/Alvik/Syntax/Funktion.py}}
+	}
+	Die Ausgabe des Ergebnisses der For-Schleife Code sind wie folgt\ref{func}.
+	\begin{figure}[ht]
+		\begin{center}
+			\includegraphics[width=12cm]{Arduino/Alvik/FunctionsREPL.png}
+			\caption{Ergebnisse der Functionscode-Ausgabe} 
+			\label{func}     
+		\end{center}
+	\end{figure}
+	
+\end{enumerate}
+\subsubsection{Module}
+Module sind Code-Dateien, die in Ihr Skript importiert werden können und eine zusätzliche Funktionalität bereitstellen. Zum Beispiel ermöglicht das ``time''-Modul die Steuerung, wie oft etwas stattfinden soll, oder das ``machine''-Modul enthält hardware-spezifische Funktionen. Um ein Modul zu verwenden, müssen zu es in ein Skript importieren.Häufig benutzte Module in MicroPython sind:
+\begin{itemize}
+	\item \textbf{machine:}Das machine-Modul ist das zentrale Modul in MicroPython für die Interaktion mit der Hardware. Es bietet Funktionen zur Steuerung von Hardware-Ressourcen wie GPIOs, PWMs, I2C, SPI, ADCs, DACs, Timer und mehr.
+	\item \textbf{time:}Das time-Modul wird für Zeitoperationen verwendet und ist häufig für Verzögerungen, Timer und ähnliche Funktionen erforderlich.
+	\item \textbf{network:}Das netzwerk-modul wird für Netzwerkfunktionen wie z. B. Wi-Fi-Verbindungen verwendet.
+	\item \textbf{array:}Das Array-Modul bietet Unterstützung für Arrays, die für die Arbeit mit gro\ss en Datenmengen desselben Typs nützlich sind.
+	\item \textbf{bluetooth:}Bluetooth-Modul für die Bluetooth-Kommunikation.
+	\item \textbf{os:}Das os-Modul dient der Interaktion mit dem Betriebssystem und der Durchführung von Dateioperationen (z. B. Lesen und Schreiben von Dateien, Erstellen von Verzeichnissen).
+	\item \textbf{socket:}Das Socket-Modul wird zur Implementierung der Netzwerkkommunikation verwendet. Es bietet eine Kapselung der zugrunde liegenden Netzwerkschnittstelle des Betriebssystems und unterstützt verschiedene Netzwerkprotokolle wie TCP (Transmission Control Protocol) und UDP (User Datagram Protocol) \cite{MicroPython:2025}.
+	\item \textbf{arduino\_alvik:}Das Modul arduino\_alvik enthält alle vordefinierten Funktionen und Klassen, die zur Steuerung der verschiedenen Teile der Arduino-Alvik-Hardware (z. B. Motoren und Sensoren) benötigt werden. Der Compiler von arduino Lab für MicroPython erkennt arduino\_alvik-bezogene Befehle über dieses Modul.
+	\item \textbf{arduino:}Bietet Unterstützung für allgemeine Arduino-Funktionen (z. B. Serielle Kommunikation, Systemsteuerung, Zeitsteuerung usw).
+\end{itemize}
+
+\subsubsection{Arduino Alvik Beispielcode}
+\begin{enumerate}
+	\item \textbf{Angewandte Module:}Module bieten Unterstützung für grundlegende Funktionen und hardwarespezifische Merkmale des Codes.Die Module \PYTHON{arduino\_alvik} und \PYTHON{arduino} sind erforderlich, um den meisten Arduino-Alvik-Code auszuführen.
+	
+	\item \textbf{Code-Struktur:}Die typische Codestruktur von Arduino Alvik ist in die folgenden Abschnitte unterteilt:
+	\begin{itemize}
+		\item \textbf{Modul importieren:}Bibliothekarische und fachliche Unterstützung für das Programm.
+		\item \textbf{Hardware-Objekte instanziieren:}Ein Objekt der Klasse \PYTHON{ArduinoAlvik} wird instanziiert und im Speicher unter der Adresse mit dem Namen \PYTHON{alvik}(Bei Bedarf können einen anderen Namen verwenden) gespeichert, um es für spätere Aufrufe bequem nutzen zu können.
+		\item \textbf{Kernfunktionen:}Die Hardware wird mit \PYTHON{setup()} initialisiert und das Programm vorbereitet. Nach Abschluss der Initialisierung übernimmt \PYTHON{loop()} die Steuerung der Hauptlogik in einer Schleife. Das Programm führt die Funktion \PYTHON{loop()} kontinuierlich aus, bis es unterbrochen oder beendet wird. Wenn das Programm unterbrochen oder beendet wird, sorgt \PYTHON{cleanup()} für die Freigabe der Ressourcen und das Zurücksetzen der Hardware.
+		\item \textbf{Programmeinstiegspunkt:}Die Funktion \PYTHON{start()} definiert den Ablauf des Programms, von der Initialisierung über die Hauptschleife bis zur Freigabe von Ressourcen.
+	\end{itemize}
+	
+	\item \textbf{Blinken der LED:}Arduino Alvik hat zwei eingebaute RGB-LEDs (rote, grüne und blaue Leuchtdioden), die über das Arduino Lab für MicroPython zum Blinken programmiert werden können.Um das Blinken der LEDs zu steuern, müssen \PYTHON{alvik.left\_led.set\_colour()} verwenden, um die linke LED zu steuern, und \PYTHON{alvik.right\_led.set\_colour()}, um die rechte LED zu steuern. Geben Sie in die Klammern (0,0,0) ein, wenn die LED aus ist, (1,0,0), wenn das rote Licht leuchtet, (0,1,0), wenn das grüne Licht leuchtet. ein, (0, 0, 1) für blaues Licht ein.
+	%	\begin{Python} [caption={Blinken der LED Code},label={blinkcode}]
+		%		from arduino import * #Bibliothekarische und fachliche Unterstützung für das Programm.
+		%		from arduino_alvik import ArduinoAlvik
+		%		
+		%		alvik = ArduinoAlvik() #Ein Objekt der Klasse ArduinoAlvik wird instanziiert.
+		%		
+		%		def setup(): #Die Initialisierung wird einmal vor dem Start des Laufs durchgeführt.
+		%		  alvik.begin() #Initialisierung der Alvik-Hardware
+		%		  delay(1000) #Eine Sekunde Verzögerung
+		%		
+		%		def loop(): #Die zentrale Logik des Programms, die sich unendlich oft wiederholt.
+		%		  alvik.left_led.set_color(1, 0, 0) #Arduino Alvik links rotes LED leuchtet
+		%		  alvik.right_led.set_color(1, 0, 0) #Arduino Alvik rechts rote LED leuchtet
+		%		  delay(1000)
+		%		  alvik.left_led.set_color(0, 0, 0) #Arduino Alvik links rotes LED aus
+		%		  alvik.right_led.set_color(0, 0, 0) #Arduino Alvik rechte rote LED aus
+		%		  delay(1000)
+		%		
+		%		def cleanup(): #Beendigung des Programms und Bereinigung der Hardware-Ressourcen.
+		%		  alvik.stop() #Abbruch der Ausführung von Arduino Alvik.
+		%		
+		%		start(setup, loop, cleanup) #Die Funktion start() definiert den Ablauf des Programms.
+		%	\end{Python}
+	{
+		\captionof{code}{Blinken der LED Code}\label{blinkcode}	
+		{	\pythonstyle
+			\lstinputlisting[]{../../Code/Alvik/Move/Blink.py}}
+	}
+	Dieser Code ist wie folgt aufgebaut:
+	\begin{itemize}
+		\item \textbf{Modul importieren:}Importieren eines \PYTHON{arduino} Moduls über \PYTHON{from arduino import *}.Das \PYTHON{*} ist ein Platzhalter, der alle öffentlichen Funktionen, Klassen und Variablen des Moduls importiert.Das Modul \PYTHON{arduino\_alvik} wird importiert von from \PYTHON{arduino\_alvik import ArduinoAlvik}. Verwenden \PYTHON{import ArduinoAlvik}, um die im Modul definierte Klasse \PYTHON{ArduinoAlvik} zu importieren.
+		\item \textbf{Hardware-Objekte instanziieren:}Erstellen eine Instanz der Klasse \PYTHON{ArduinoAlvik} mit dem Namen \PYTHON{alvik}. \PYTHON{alvik} ist ein Objekt, das mit der Arduino-Alvik-Hardware interagiert und über das die Steuerung des Arduino-Alviks erreicht werden kann.
+		\item \textbf{Setup:}Die Funktion \PYTHON{setup()} dient der Initialisierung des Programms beim Start.Verwenden \PYTHON{alvik.begin()}, um die Hardware zu initialisieren und den Roboter in einen funktionierenden Zustand zu bringen. Wenden \PYTHON{delay(1000)} an, d. h. eine Verzögerung von 1000 Millisekunden, um sicherzustellen, dass die Initialisierung abgeschlossen ist.
+		\item \textbf{Loop:}Die Funktion \PYTHON{loop()} ist der zentrale logische Teil des Programms und wird immer wieder aufgerufen.Die linke rote LED (DL1) am Arduino Alvik über \PYTHON{alvik.left\_led.set\_color(1, 0, 0)} zum Leuchten bringen und die rechte rote LED (DL2) am Arduino Alvik über \PYTHON{alvik.right\_led.set\_color(1, 0, 0)}. Nach einer Verzögerung von 1s werden die LEDs auf beiden Seiten am Arduino Alvik mit \PYTHON{alvik.left\_led.set\_colour(0, 0, 0)} sowie \PYTHON{alvik.left\_led.set\_colour(0, 0, 0)} für eine weitere Verzögerung von 1s zum Erlöschen gebracht. Damit wird der Zweck erreicht, dass die linke und die rechte LED gleichzeitig blinken.
+		\item \textbf{Cleanup:}\PYTHON{cleanup()} wird am Ende des Programms ausgeführt, um Ressourcen aufzuräumen oder um Arduino Alvik in einen sicheren Zustand zu versetzen.Stoppen das Arduino Alvik mit \PYTHON{alvik.stop()}, um Ressourcen freizugeben.
+		\item \textbf{Programmeinstiegspunkt:}Die Funktion \PYTHON{start()} definiert den Ablauf des Programms, von der Initialisierung über die Hauptschleife bis zur Freigabe von Ressourcen.
+	\end{itemize}
+	
+	\item \textbf{Arduino-Alvik bewegen:}
+	\begin{itemize}
+		\item Um die Vorwärts- und Rückwärtsbewegung des Arduino Alvik zu steuern, wird \PYTHON{alvik.set\_wheels\_speed(v\_l, v\_r)} verwendet. Die Zahlen in den Klammern (v\_l für das linke Rad, v\_r für das rechte Rad) geben die Geschwindigkeit der Reifen in RPM (Umdrehungen pro Minute) an,wobei positive Zahlen vorwärts und negative Zahlen rückwärts bedeuten.Die maximale Geschwindigkeit der Räder vorwärts und rückwärts beträgt 96 RPM.Anschlie\ss end \PYTHON{delay(1000)} nutzen, um die Dauer der Bewegung zu steuern. Um den Roboter zu stoppen, beide Werte auf 0 setzen, also \PYTHON{alvik.set\_wheels\_speed(0, 0)}.Der Beispielcode\ref{bewegencode} zur Steuerung der Bewegung des Arduino Alvik lautet wie folgt.
+		\item Das Arduino Alvik kann um seine eigene Achse gedreht werden, indem man die Differenzialrotation verwendet, um das Arduino Alvik durch zwei Räder mit gleicher Geschwindigkeit und in entgegengesetzter Richtung (ein Rad vorwärts, das andere rückwärts) zu drehen.Verwenden den Code \PYTHON{alvik.rotate(angle)}, um das Arduino Alvik zu drehen. angle ist der Winkelwert (positiver Wert bedeutet Linksdrehung, negativer Wert bedeutet Rechtsdrehung).
+	\end{itemize} 
+	%	\begin{Python} [caption={Bewegungscode},label={bewegencode}]
+		%		from arduino import *
+		%		from arduino_alvik import ArduinoAlvik
+		%		
+		%		alvik = ArduinoAlvik()
+		%		
+		%		def forward(R, t):
+		%		  alvik.set_wheels_speed(R, R) #Arduino Alvik Vorwärts
+		%		  delay(t)  #Verzögerung t Sekunden
+		%		  alvik.set_wheels_speed(0, 0) #Halten den Roboter an
+		%		
+		%		def backward(R, t):
+		%		  alvik.set_wheels_speed(-R, -R) #Arduino Alvik Rückwärts
+		%		  delay(t)
+		%		  alvik.set_wheels_speed(0, 0)
+		%		
+		%		
+		%		
+		%		def setup():
+		%		  alvik.begin()
+		%		  delay(1000)
+		%		
+		%		def loop():
+		%		  forward(10, 1000) #Arduino Alvik bewegt sich 1 Sekunde lang mit 10RPM vorwärts
+		%		  alvik.rotate(90) #Arduino Alvik 90° nach links drehen
+		%		  backward(20, 1000) #Arduino Alvik bewegt sich 1 Sekunde lang mit 20RPM rückwärts
+		%		  alvik.rotate(-90) #Arduino Alvik 90° nach rechts drehen
+		%		
+		%		def cleanup():
+		%		  alvik.stop()
+		%		
+		%		start(setup, loop, cleanup)
+		%	\end{Python}
+	{
+		\captionof{code}{Bewegungscode}\label{bewegencode}	
+		{	\pythonstyle
+			\lstinputlisting[]{../../Code/Alvik/Move/Move.py}}
+	}
+	Dieser Code ist wie folgt aufgebaut:
+	\begin{itemize}
+		\item \textbf{Modul importieren}%Der Abstandssensor kann mit folgendem Code getestet werden
+		\item \textbf{Hardware-Objekte instanziieren}
+		\item \textbf{Definieren von Funktionen:} Definieren eine Funktion, die den Arduino Alvik vorwärts steuert durch def \PYTHON{forward(R, t)},Eine Funktion zur Steuerung der Vorwärtsbewegung des Arduino Alvik wird definiert. In dieser Funktion wird die Methode \PYTHON{alvik.set\_wheels\_speed(R, R)} verwendet, um die Geschwindigkeit der linken und rechten Räder auf R einzustellen und den Roboter vorwärts zu bewegen. Mit der Methode delay(t) wird die Dauer der Bewegung in Millisekunden festgelegt.Rückwärtsfunktion \PYTHON{def backward(R, t)} In ähnlicher Weise verwenden \PYTHON{alvik.set\_wheels\_speed(-R, -R)} in dieser Funktion, um die Geschwindigkeit des linken und rechten Rads auf R und rückwärts zu setzen.
+		\item \textbf{Setup}
+		\item \textbf{Loop:} Die Hauptschleife enthält den Code für Vorwärtsbewegung, Drehung und Rückwärtsbewegung. Zuerst wird die zuvor definierte Vorwärtsfunktion \PYTHON{forward(10, 1000)} verwendet, um den Roboter mit einer Geschwindigkeit von 10 RPM für 1 Sekunde vorwärts zu bewegen. Anschlie\ss end dreht sich der Roboter mit \PYTHON{alvik.rotate(90)} um 90\textdegree nach links. Danach wird die Rückwärtsfunktion \PYTHON{backward(20, 1000)} aufgerufen, um den Roboter mit einer Geschwindigkeit von 20 RPM für 1 Sekunde rückwärts zu bewegen. Schlie\ss lich dreht sich der Roboter mit alvik.rotate(-90) um 90\textdegree nach rechts.
+		\item \textbf{Cleanup}
+		\item \textbf{Programmeinstiegspunkt}
+	\end{itemize}
+	
+\end{enumerate}
+
+
+

@@ -1,0 +1,124 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-07-09 09:26:07Z $
+% $Pfad: Vorlesungen/WS_19_20/Projekte/KandaNeuralnetwork/latex - Ausarbeitung/Kapitel/Hardware.tex $
+% $Version: 4440 $
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Kamera Raspberry Pi Camera Module V2}\label{SmartPiCAM:Kamera}
+
+Das Raspberry Pi-Kameramodul hat einen SONY IMX219 Vision-Sensor und eine Auflösung von 3280 $\times$ 2464 Pixel. Die Kamera-Software unterstützt die Bildformate JPEG, JPEG + RAW, GIF, BMP, PNG, YUV420, RGB888 und die Videoformate raw h.264. \cite{RaspberryPiCam:2016}
+% \href{https://uk.pi-supply.com/products/raspberry-pi-camera-board-v2-1-8mp-1080p}{raspberrypi-camera}
+Die Abbildung~\ref{SmartPiCam:Camera} stellt die Kamera mit dem Anschlusskabel dar.
+
+\begin{table}[!htbp]
+  \begin{center}
+    \begin{tabular}{|c| c|} \hline
+      Spezifikation                          & Camera V2\\  \hline\hline
+      Größe                                  & 25mm $\times$ 23mm $\times$ 9mm \\  \hline
+      Gewicht                                & 3g\\ \hline
+      Auflösung des Standbilds               & 8 Megapixels\\ \hline
+      Video Mode                             & 1080P30,720P60 und 640x480P60/90\\ \hline
+      Sensor                                 & Sony IMX219 \\ \hline
+      Sensorauflösung                        & 3280 $\times$ 2464 Pixel \\ \hline
+      Sensorbildbereich                      & 3.68mm $\times$ 2.76mm\\ \hline
+      Pixelgröße                             & 1.12umx1.12um\\\hline
+      Optische Größe                         & 1/4"\\ \hline
+      Äquivalent zum Vollformat-SLR-Objektiv & 35mm\\ \hline
+      Brennweite                             & 3.04mm\\ \hline
+      Horizontales Sichtfeld                 & $62.2^\circ$\\ \hline
+      Vertikales Sichtfeld                   & $48.8^\circ$\\ \hline
+      Brennweitenverhältnis                  & 2.0\\ \hline
+   \end{tabular}
+   \caption{Raspberry Pi Camera Module V2 Specifications \cite{RaspberryPiCam:2016}}
+  
+  %Source:\href{https://www.raspberrypi.org/documentation/hardware/camera/}{raspberrypi-camera}
+  \end{center}
+\end{table}
+
+%Für dieses Projekt können Sie auch eine gewöhnliche USB-Webcam verwenden. Sie müssen allerdings der USB-Webcam auf dem Betriebssystem raspbian os entsprechende Befehle geben, um mit ihr arbeiten zu können. Zudem müssen Sie auch Änderungen in der Datei classify\underline{\ }capture.py vornehmen, welche der Standard-USB-Webcam entspricht.
+
+\begin{figure}
+	\centering
+	\includegraphics[angle=90,width=0.75\textwidth]{Camera/camera} 
+	\caption{Kamera Raspberry Pi Camera Module V2\cite{RaspberryPi3:2019}}\label{SmartPiCam:Camera}
+\end{figure}
+
+
+\subsection{Auflösung der Kamera}
+
+Das Werkzeug v4l-utils ist hilfreich bei der Erkundung der Kamera. Es wird durch
+
+
+\medskip
+    
+    \SHELL{\$ sudo apt-get install v4l-utils}
+    
+    \medskip
+
+installiert. Die verfügbaren Formate werden dann mit dem folgenden Befehl abgefragt:
+
+\medskip
+
+\SHELL{\$ v4l2-ctl -{}-list-formats-ext} 
+
+
+
+
+
+\subsection{Kabel der Kamera}
+
+
+Das Kabel ist standardmäßig sehr flexibel und hat auf jeder Seite die gleichen Kontakte; die metallischen Kontakte befinden sich allerdings nur auf einer Seite. In der Abbildung~\ref{SmartPiCam:Camera} ist eine Kabel und die Seite mit den Kontakten dargestellt.  Da es sich um ein sehr flexibles und dünnes Kabel handelt, ist die Bruchgefahr bei mechanischer Beanspruchung sehr groß. Das mitgelieferte Kabel hat eine Länge von ungefähr 100mm. Falls weitere Strecken überwinden möchte, so stehen auch Kabellängen bis zu 2000mm zur Verfügung. 
+
+\begin{figure}
+    \centering
+    \includegraphics[angle=90,width=0.5\textwidth]{Camera/cable} 
+    \quad 
+    \includegraphics[angle=90,width=0.2\textwidth]{Camera/cable2} 
+    \caption{Kabel zur Kamera \cite{RaspberryPi3:2019}}\label{SmartPiCam:Camera}
+\end{figure}
+
+
+\bigskip
+%todo What is CSI-3? Spezification
+
+\subsection{CSI-3-Schnittstelle}
+
+\Mynote{What is CSI-3? Spezification}
+
+
+Die Kamera wird über eine CSI-3-Schnittstelle angesteuert. 
+
+\bigskip
+
+%todo Wie wird die Kamera befestigt?
+
+\subsection{Mechanische Befestigung}
+
+\Mynote{Wie wird die Kamera befestigt?}
+
+Das Kamera-Modul wird mittels vier Schrauben befestigt.
+
+
+%todo Du-Form entfernen
+\subsection{Anschluss der Kamera an den Jetson Nano}
+
+
+Das Kabel wird beim Jetson Nano in die Schnittstelle J13 eingesteckt.
+
+Wenn die Kamera noch nicht mit dem Jetson Nano verbunden ist, ist folgendes zu tun:
+
+\medskip
+
+\begin{itemize}
+    \item Am Kamerastecker von Jetson Nano ist das Plastikstück vorsichtig anzuheben, das das Flachbandkabel an seinem Platz halten wird. 
+    \item Das Flachbandkabel muss dann mit den Kontakten am Kabel nach innen zum Nano-Modul hin eingeführt. 
+    \item Jetzt muss die Kunststofflasche nach unten gedrückt werden, um das Flachbandkabel festzuhalten. 
+\end{itemize}
+
+
+

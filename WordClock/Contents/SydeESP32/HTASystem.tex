@@ -1,0 +1,48 @@
+The preceding sections outlined the data path from the strain gauge through a Wheatstone bridge and into the HX711 ADC, followed by software-based moving-average filtering and PD control on the Hypatia board. The conditioned strain-gauge data is then converted to a drive signal via an MCP4725 DAC, amplified by an LM358, and applied to a transistor H-bridge for motor actuation.
+
+The next focus is the implementation of this system in a demonstrator. As described, the HTA system features a WiFi-based dashboard, which can be uploaded to a phone and is built as a trailer-like independent module that is towed by the External Force System, which is controlled via remote control. This chapter provides an overview of how the demonstrator operates and how it can be used. 
+
+\subsection{Hybrid Traction Assistance Module}
+Electronic modules fasten to a main baseboard with M3 screws that thread into heat-set inserts in raised bosses, giving a rigid, repeatable mounting height. As discribed before, the heart of the module is a Hypatia board. It is mounted to a side wall of a montage board of the module (see figure \ref{fig:HTAMontageBoard}). Its 3D-printed from generic PLA and fits into a cover, which will be mounted to the base via four M3 screws in all four corners.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../../../Images/Syde/HTA/CAD/HTAMontageBoard}
+	\caption[Mounting Base of the HTA System Module]{Mounting Base of the HTA System Module}
+	\label{fig:HTAMontageBoard}
+\end{figure}
+
+The strain gauges are bonded to the cover’s structure at a single, fixed support so that both tensile and compressive loads can be captured (see \ref{fig:HTACover} (h)), and cable management is clean through a slot (see \ref{fig:HTACover} (g)). They are wired directly into the Wheatstone bridge on a PCB board which is mounted to the HX711 load-cell amplifier and placed close to the front to minimize lead length and noise pickup. Along the front edge of the mounting board (Fig. \ref{fig:HTAMontageBoard}) sit the main power-management modules—namely the TPS5430 converter module and the LM2596 DC-DC step-down. To the right of the board, a larger PCB carries the signal-conditioning path comprising the MCP4725 DAC and the LM358 amplifier stages. On the left, a separate PCB holds the discrete H-bridge so that the high-current motor connections (see \ref{fig:HTACover} (i)) remain short and direct. the four holes infront of the Hypatia bord are mounting holes for a third wheel, balancing the system out, in case its not attached to the External force System.
+
+On both sides of the mounting board, cross-shaped cut-outs act as guides for the optical encoders. The encoder bodies slide into these openings with sufficient clearance for the slotted wheel to run freely in the sensing gap. Adjacent to each cross, two low bosses provide threaded mounting points that lock the encoder in place, preserve the required air gap to the disc, and ensure repeatable alignment on both sides of the assembly. 
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/CAD/HTACover}
+	\caption[Cover of the HTA System Module]{Cover of the HTA System Module}
+	\label{fig:HTACover}
+\end{figure}
+
+For power management, the module separates logic and actuation supplies. The Hypatia board and the MCP4725 DAC operate from a regulated 5 V rail provided by a power bank or a DC-DC step-down (LM2596). The analog stages and the H-bridge use a higher-energy domain based on a 12.6 V Li-ion pack. A converter module (TPS5430 dual-output) generates the required amplifier rails so the second LM358 stage can swing to approximately $\pm$10 V, giving adequate headroom for the H-bridge. A single master toggle switch disconnects both the logic and power domains, and a front-panel LED indicates the on/off state at a glance. Both are located in top of the module (see \ref{fig:HTACover} (b) and (a)) Wiring is kept serviceable with lever-type WAGO connectors and small protoboards that carry the passive network ($10\Omega$ summing resistors, the bias divider, and the filter capacitor). Both of the power supplies are located on a second level in the module. (\ref{fig:HTACover} (d)) shows small bars, that fix the power bank to its position. The hole (\ref{fig:HTACover} (e)) is meant for the wiring of the LiPo battery to reach the hardware parts, where its needed.
+
+\paragraph{Wi-Fi Communication to Dashboard}
+The dashboard is organized into two pages. On the main page (see figure \ref{fig:RemoteHome}), two graphs provide live feedback. The first plot shows the strain-gauge signal processed by the HX711 ADC. All traces are off at startup; three switches below the plot enable them selectively: Raw displays the unprocessed strain signal (shown in grams), Filter applies a moving-average filter to the raw signal, and PD overlays the PD controlled output. With all three switches on, the plot shows the raw, filtered, and PD traces simultaneously. The second plot visualizes the wheel-encoder data; two switches toggle the left and right encoder curves independently. An error line at the bottom of the page reports software messages if something goes wrong.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/DAC/RemoteHome}
+	\caption[Main Page of HTA Dashboard]{Main Page of HTA Dashboard}
+	\label{fig:RemoteHome}
+\end{figure}
+
+Pressing Setup opens the second page for calibration and parameter tuning (see figure \ref{fig:HomePAge}). Calibration is guided by on-screen instructions that appear when the calibration switch is activated. In the standing step, the demonstrator rests on its wheels without contact from the user to zero the load cells. In the upside step, the module hangs freely from the traction/compression beam so the system weight can be captured as a reference. The software averages 20 samples and calibrates the HX711 for more accurate readings and cleaner plots. Below the calibration block, adjustable parameters include the moving-average depth, which was referred to as L earlier in the document \ref{MovingAverageFilter}, the PD gains Kp and Kd, and an offset that prevents the motors from reacting too early.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/DAC/HomePAge}
+	\caption[Setup Page of HTA Dashboard]{Setup Page of HTA Dashboard}
+	\label{fig:HomePAge}
+\end{figure}
+
+The dashboard runs comfortably on a phone using the RemoteXY interface and communicates with the Hypatia (ESP32) board over the ESP32’s own Wi-Fi network.

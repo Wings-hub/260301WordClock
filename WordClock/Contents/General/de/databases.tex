@@ -1,0 +1,165 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Automatisierung/Skript/Produktspezifikation/Powerpoint/AMF.tex $
+% $Version: 4250 $
+%
+%%%%%%%%%%%%
+
+%Quelle:     \href{https://www.clickworker.de/2019/05/14/realistische-trainingsdaten-fuer-maschinelles-lernen/}{Realistische Trainingsdaten für Maschinelles Lernen}
+
+%Quelle: \href{https://www.crisp-research.com/die-bedeutung-von-offentlichen-datensatzen-warum-freie-daten-wichtig-fur-die-digitale-entwicklung-eines-unternehmens-sind/}{Öffentliche Datensätze – Warum freie Daten wichtig für die digitale Entwicklung sind}
+
+%Quelle: \href{https://www.tableau.com/de-de/learn/articles/free-public-data-sets}{7 öffentliche Datensätze, die Sie sofort kostenlos analysieren können}
+
+
+% todo \item \href{http://vis-www.cs.umass.edu/lfw/}{faces}
+
+%\Ausblenden
+{
+
+%Quelle https://riptutorial.com/de/scikit-learn/example/6801/beispieldatensatze
+\chapter{Datenbanken und Modelle für das Maschinelle Lernen}
+
+Daten sind die Grundlage für das Maschinelle Lernen. Der Erfolg der Modelle sind abhängig von ihrer Qualität. Denn Maschinelles Lernen beruht auf genauen und zuverlässigen Informationen im Training seiner Algorithmen. Diese Selbstverständlichkeit ist bekannt, wird leider nicht genügend berücksichtigt. Schlechte Daten führen zu ungenügenden  oder zu falschen Ergebnisse.  
+
+Das ist eigentlich selbstverständlich, wird aber oft übersehen. Realistisch sind die Trainingsdaten dann, wenn sie die Daten widerspiegeln die das KI-System im echten Einsatz aufnimmt. Unrealistische Datensätze behindern das Maschinelle Lernen und führen zu teuren Fehlinterpretationen. Falls man eine Software für Drohnenkameras entwickeln möchte, so müssen auch realistische Bilder verwendet. Greift man in einem solchen Fall auf entsprechende Bilder aus dem Netz zurück, weisen sie in der Regel folgende Eigenschaften auf:
+
+\begin{itemize}
+  \item Die Perspektive ist eher die Kopfhöhe.
+  \item Das anvisierte Objekt befindet sich im Zentrum.
+\end{itemize}
+
+Falls man Datensätze für den eigenen Bedarf verwenden möchte, so muss darauf geachtet werden, dass nur Daten verwendet werden, die auch realistisch sind. Die Datensätze dürfen auch keine Ausreißer oder Redundanzen.  Bei der Überprüfung der Qualität der Daten können folgende Fragen hilfreich sein:
+
+
+\begin{itemize}
+  \item Mit welchen Mitteln und welcher Technik wurden die Daten generiert?
+  \item Ist die Datenquelle glaubwürdig?
+  \item Mit welcher Absicht wurden die Daten erhoben?
+  \item Woher kommen die Daten? Sind sie für die anvisierte Anwendung geeignet?
+  \item Wie alt sind die Daten?
+  \item In welcher Umgebung/unter welchen Bedingungen wurden die Daten erstellt?
+\end{itemize}
+
+Gegebenenfalls sind eigene Daten zu erheben oder erheben zu lassen.
+
+Jeder, der Data Science betreibt, kann seine entwickelten Algorithmen mit den Ergebnissen andere messen, in dem man standardisierte Datensätze verwendet. Dazu stehen stehen sehr viele Datenbanken und vortrainierte Modelle im Internet zur Verfügung. In diesem Kapitel werden einige beschrieben. Es ist zu beachten, dass viele Datensätze in verschiedenen Varianten zur Verfügung stehen. Je nach Anbieter wurden die Daten schon bearbeitet und für en Training vorbereitet. Hier ist auf eine geeignete Variante zu achten. Zugriff auf verschiedene Datensätze erhält auf folgende Seiten des Internets:
+
+
+\begin{description}
+  \item [\href{https://www.kaggle.com/datasets}{Kaggle.com:}] Hier werden über 20.000 Datensätze angeboten. Dazu ist nur ein kostenloses Benutzerkonto notwendig.
+  
+  \item [\href{https://lionbridge.ai/datasets/the-50-best-free-datasets-for-machine-learning/}{lionbridge.ai:}]  Die Website biete eine gute Übersicht zu Datensätzen aus dem öffentlichen und kommerziellen Bereich.
+  
+  \item [\href{govdata.de}{govdata.de:}] Das Datenportal für Deutschland bietet frei verfügbare Daten aus allen Bereichen der öffentlichen Verwaltung in Deutschland an.
+
+  \item [\href{https://www.data.gov}{Datenbank der amerikanischen Regierung:}] Auch die amerikanische Regierung betreibt ein Portal, wo Datensätze der Verwaltung zur Verfügung stehen.
+  
+  \item [\href{https://riptutorial.com/de/scikit-learn/example/6801/beispieldatensatze}{scikit-Datensätze:}] Mit der Python-Bibliothek werden auch Datensätze installiert. Es sind zwar nur wenige Datensätze, diese sind aber schon vorarbeitet, so dass sie einfach zu laden und zu verwenden sind.
+
+  \item [\href{https://archive.ics.uci.edu/ml/datasets.php}{UCI - Center for Machine Learning and Intelligent System:}] Die Universität von Irvine in  Kalifonien bietet rund 600 Datensätze zur eigenen Untersuchung an.
+  
+  \item [\href{}{TensorFlow:}] TensorFlow-Datensätze: Eine Sammlung liefert gebrauchsfertiger Datensätze mit. Alle Datasätze werden über die Struktur \PYTHON{alstf.data.Datasets} beziehungsweise \PYTHON{wastf.data.Datasets}  zur Verfügung gestellt. Die Datensätze können auch über \href{https://github.com/tensorflow/datasets/tree/master/tensorflow_datasets}{GitHub} einzeln abgerufen werden. 
+
+  \item [\href{https://www.opensciencedatacloud.org}{Open Science Data Cloud:}] Die Plattform möchte allen eine Möglichkeit schaffen, auf qualitativ hochwertige Daten zuzugreifen. Forscher können ihre eigenen wissenschaftlichen Daten unterbringen und gemeinsam nutzen, auf ergänzende öffentliche Datensätze zugreifen, angepasste virtuelle Maschinen mit den für die Analyse ihrer Daten erforderlichen Tools erstellen und gemeinsam nutzen.
+  
+  \item[\href{http://aws.amazon.com/de/datasets/}{Amazon:}] Auch Amazon stellt Datensätze zur Verfügung. Hierzu muss man sich kostenlos registieren.
+  
+  \begin{code}
+    \begin{lstlisting}[language=python]
+# Construct a tf.data.Dataset
+ds = tfds.load('mnist', split='train', shuffle_files=True)
+
+# Build your input pipeline
+ds = ds.shuffle(1024).batch(32).prefetch(tf.data.experimental.AUTOTUNE)
+for example in ds.take(1):
+image, label = example["image"], example["label"]
+    \end{lstlisting}
+    \caption{Laden eines Datensatzes mit TensorFlow}
+  \end{code}
+
+
+  \item [\href{https://www.kdnuggets.com/datasets}{KDnuggets.com:}] Ähnlich wie Kaggle aufgebaut; allerdings wird hier auf andere Webseiten verwiesen.
+  \item [\href{https://paperswithcode.com/datasetss}{paperswithcode.com:}] Die Plattform stellt eine Möglichkleit zur Verfügung, Datensätze auszutauschen. Hier finden sich auch viele bekannte Datensätze mit ihren Links.
+  \item [\href{https://datasetsearch.research.google.com}{Google Dataset Search:}] Die Website bietet nicht direkt Datensätze an, sondern eine Unterstützung bei der Suche. Google schränkt seine Suchmaschine hier auf Datensätze ein.
+
+  \item \href{http://vis-www.cs.umass.edu/lfw/}{faces:} Labeled Faces in the Wild ist ein öffentlicher Benchmark für die Gesichtsverifizierung, auch bekannt als Paarvergleich. Unabhängig von der Leistung eines Algorithmus sollte daraus nicht geschlossen werden, dass ein Algorithmus für einen kommerziellen Zweck geeignet ist.
+
+%  \item [\href{https://www.analyticsvidhya.com/blog/2018/03/comprehensive-collection-deep-learning-datasets/}{:}]
+%  \item [\href{}{:}]
+%  \item [\href{}{:}]
+
+\end{description}
+
+
+
+
+}
+
+
+
+
+
+
+%\Ausblenden
+{
+
+%todo http://vis-www.cs.umass.edu/lfw/ Labeled Faces in the Wild \cite{Huang:2014}
+
+\section{Modelle}
+
+Bei der Installation des Projekts jetson-inference\index{jetson-inference} von NVidia bietet das Hilfsprogramm eine große Auswahl an vortrainierten Deep-Learning-Modellen zum Herunterladen an. Darunter befinden sich bekannte wie das AlexNet\index{AlexNet} von 2012 sowie verschiedene sogenannte \ac{resnets}. Ebenfalls dabei sind SSD-Mobilenet-V2\index{SSD-Mobilenet-V2}, das 90 Objekte vom Apfel bis zur  Zahnbürste erkennt, und DeepScene\index{DeepScene} der Universität Freiburg zur Erkennung von Objekten im Straßenverkehr. 
+
+Um weitere Modelle herunterzuladen, kann der Model Downloader aufgerufen werden:
+
+\medskip
+
+\SHELL{\$ cd jetson-inference/tools} \newline 
+\SHELL{\$ ./download-models.sh} 
+
+\medskip
+
+Die Modelle GoogleNet und ResNet-18, die auf der Bilddatenbank ImageNet\index{ImageNEt} beruhen, werden im Build-Schritt automatisch heruntergeladen. In der Tabelle~\ref{Database:TrainedModell} sind alle Modelle aufgelistet, die im Projekt jetson-inference zur Verfügung stehen. Die erste Spalte der Tabelle ist der Name der Struktur des Modells. \cite{Alom:2018}. In der zweiten Spalte ist der Übergabeparameter für das Argument \PYTHON{--network} des Programms \FILE{imagenet-camera.py} enthalten.
+
+\medskip
+
+\begin{table}
+  \centering
+  \begin{tabular}[h]{lcr}
+    \textbf{Network}              & \textbf{CLI argument} & \textbf{NetworkType enum} \\ \hline
+    AlexNet\index{AlexNet}        & alexnet               & ALEXNET \\
+    GoogleNet\index{GoogleNet}    & googlenet             & GOOGLENET \\
+    GoogleNet-12                  & googlenet-12          & GOOGLENET\_12 \\
+    ResNet-18\index{ResNets}      & resnet-18             & RESNET\_18 \\
+    ResNet-50                     & resnet-50             & RESNET\_50 \\
+    ResNet-101                    & resnet-101            & RESNET\_101 \\
+    ResNet-152                    & resnet-152            & RESNET\_152 \\
+    VGG-16\index{VGG}             & vgg-16                & VGG-16 \\
+    VGG-19                        & vgg-19                & VGG-19 \\
+    Inception-v4\index{Inception} & inception-v4          & INCEPTION\_V4 \\
+  \end{tabular}
+  \caption{Vortrainierte Modelle des Projekts jetson-inference}\label{Database:TrainedModell}
+\end{table}
+
+
+
+
+
+%todo \input{../Inhalt/JetsonNano/MobileNet}
+
+%todo \input{../Inhalt/General/FaceNet}
+
+%
+%Detect-COCO-Airplane coco-airplain Flugzeuge
+%Detect-COCO-Bottle coco-bottle Flaschen
+%Detect-COCO-Chair coco-chair Stühle
+%Detect-COCO-Dog coco-dogs Hunde
+%ped-100 pednet Fußgänger
+%multiped-500 multiped Fußgänger und Gepäck
+
+%network=googlenet?
+%ResNet-18
+
+}

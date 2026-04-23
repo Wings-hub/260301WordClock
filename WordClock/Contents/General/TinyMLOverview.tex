@@ -1,0 +1,364 @@
+%%%
+%
+% $Autor: Wings $
+% $Datum: 2021-05-14 $
+% $Pfad: GitLab/MLEdgeComputer $
+% $Dateiname: 
+% $Version: 4620 $
+%
+% !TeX spellcheck = de_DE/GB
+% !TeX program = pdflatex
+% !BIB program = biber/bibtex
+% !TeX encoding = utf8
+%
+%%%
+
+%source: https://www.seeedstudio.com/blog/2021/06/14/everything-about-tinyml-basics-courses-projects-more/
+
+\chapter{Everything About TinyML – Basics, Courses, Projects \& More!}
+
+
+TinyML is one of the hottest trends in the embedded computing field right now, with 2.5 billion TinyML-enabled devices estimated to reach the market in the next decade and a projected market value exceeding \$70 billion in just five years. If you want to get in on what all the excitement is about but aren’t sure where to start, this one-stop guide is specifically for you. Learn about what TinyML is, the opportunities it offers, and how anybody can get themselves started in this exciting field!
+
+\section{What is TinyML?}
+
+Tiny Machine Learning (TinyML) is a field of machine learning that focuses on the development and deployment of ML models on low power, low-footprint microcontroller devices like an Arduino, for example.
+
+
+Machine learning is a field of computer systems that aims to develop self-improving algorithms and statistical models. This is done with massive amounts of data, which a model analyses and extracts patterns from in order to learn and improve on a given task. This seemingly simple paradigm has led to groundbreaking advancements in complex tasks like forecasting, anomaly detection, and computer vision!
+
+\section{The Benefits \& Importance of TinyML}
+
+Why is TinyML so important, you ask? Simple -- because it's tiny!
+
+The microcontrollers that TinyML models are designed for are small and power efficient; capable of running on battery power for years at a time! Furthermore, these microcontrollers are far more affordable than full sized computers or servers, which makes their use far more accessible and practical for small businesses or even individuals. This unique combination of power efficiency and affordability also means that TinyML is perfectly poised for large-scale applications in embedded computing applications, like IoT!
+
+At the same time, TinyML is a subset of what is known as Edge AI, or edge artificial intelligence. It leverages the advantages of edge computing – computing in the local space as opposed to in the cloud – to deliver several key advantages, namely:
+
+\begin{itemize}
+  \item Low latency of local compute for real time applications
+  \item Reduced bandwidth costs from lower requirements for remote communication
+  \item Excellent reliability that persists even when network connectivity is lost
+  \item Improved security with fewer transmissions and local data storage
+\end{itemize}
+
+Edge AI, similar to TinyML, is about deploying machine learning models at the edge. However, more powerful hardware might be used, which range from single board computers (SBCs) to even edge servers. If you want to learn more about Edge AI, I’ve written extensively about it in a previous article, as well as how it holds the potential to change IoT – click here for the full read!
+
+\section{Limitations of TinyML}
+
+Microcontrollers have kilobytes of RAM and megabytes of memory, which is many times smaller than even the lowest performing SBCs. Thus, it’s natural that there are limitations in the types of models that can be run with TinyML on microcontrollers in comparison to regular edge ML on more powerful devices like a Raspberry Pi or Jetson Nano. Some examples are shown in the table below:
+
+\begin{tabular}{L{30mm}L{30mm}L{30mm}}
+    ML Applications&	TinyML on Microcontrollers&	Edge ML on SBCs / Servers\\
+Forecasting \& Anomaly Detection &	Yes, with limited model size&	Yes\\
+Image Recognition &	Yes, with lower-resolution and speed&	Yes, real time processing with high-end hardware\\
+Audio Recognition &	Keyword / wake word detection only &	Full natural language processing (NLP) \\
+\end{tabular}
+
+As you can see, there are caveats to even the most common TinyML applications which you should be aware of, especially in terms of model size and processing speed. Natural language processing which uses deep neural networks with many layers, for example, is currently out of the reach of TinyML. Nonetheless, the accessibility and power efficiency offered by TinyML remains extremely valuable to various applications, which I will share more about shortly!
+
+\section{Clarifying TinyML for Beginners -- Learning vs Inference}
+
+Conventionally, machine learning occurs in two stages – learning and inferencing. At present, TinyML only handles inferencing.
+
+During learning, the ML model adjusts its internal configurations based on the data that it receives in order to achieve a better result on its given task. To achieve this, the data is passed forwards through the model, where a loss is calculated. The feedback from this loss is then passed backwards through the model for the adjustments to be made. This is repeated for multiple inputs, up to billions or even trillions of times! As you can imagine, this is extremely resource intensive and difficult to perform effectively even on some laptops, let alone microcontrollers with drastic limitations in computing resources.
+
+Note: Loss in machine learning refers to a penalty for a bad output like an incorrect classification. During training, machine learning models make adjustments to reduce this loss as much as possible. In this way, their performance improves over time.
+
+Inference, on the other hand, refers to using the model to make some conclusions on input data. For example, we might provide a weather predictor with some temperature or humidity values to receive a prediction for whether it will rain. While state of the art machine learning models still require a significant amount of hardware to run effectively, it’s possible to optimise models for lightweight inferencing on the edge – this is precisely where TinyML comes in!
+
+For a clearer picture, have a look at the following infographic:
+
+\begin{figure}
+ \includegraphics[width=\textwidth]{TinyML/Overview/Train-versus-Inference.png}
+ 
+  \caption{Source: Gartner Inc.}
+  
+\end{figure}
+
+To summarise, TinyML in its current state is only capable of using lightweight models to perform ML inferencing on microcontrollers. So, we aren’t doing any kind of training in TinyML, though this might be possible in the distant future – who knows!
+
+\section{TinyML Applications}
+
+``If you can run a neural network model at an energy cost of below 1 mW, it makes a lot of entirely new applications possible. This might seem like a somewhat arbitrary number, but if you translate it into concrete terms, it means a device running on a coin battery has a lifetime of a year. That results in a product that’s small enough to fit into any environment and able to run for a useful amount of time without any human intervention.'' – Pete Warden, TensorFlow Mobile Technical Lead
+
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{TinyML/Overview/seeeduino-xiao-compare-1030x773.jpg}
+    
+    \caption{TinyML runs on ultra-tiny MCUs like Seeeduino XIAO!}
+\end{figure}
+    
+TinyML applications excel in embedded applications with size and power constraints. With microcontrollers as small as the tip of your thumb and consuming limited power in spite of prolonged operation, TinyML can be easily applied in numerous scenarios to create always-on smart applications that make predictions, process complex data, and administer solutions!
+
+\section{Predictive Maintenance}
+
+By retrofitting industrial machinery with TinyML, we can monitor the performance characteristics of a machine and deliver maintenance ahead of failure. This minimises equipment downtime and repair costs, which improves both business revenue and workplace safety.
+
+For example, some mining companies are using TinyML to predict faults in the wheels, bearings and axles on their rail cars in order to streamline their material transport operations. With a comfortable timeframe of at least a week to resolve operational issues before incurring damages, unscheduled maintenance events have been reduced by 50% – representing savings of ~$34 million over five years.
+
+\section{Smart Agriculture}
+
+TinyML serves to improve the performance of smart agriculture techniques by providing real time analysis of environmental factors to improve crop growth in precision agriculture. With the rise of autonomous greenhouses, TinyML is also helping agricultural experts in making decisions that maximise crop yield by learning from past data. On the other hand, we can even use TinyML devices to analyse the conditions and behaviour of individual livestock to make intelligent conclusions about their state of health in real time.
+
+\section{Smart Cities}
+
+TinyML will also play a critical role in developing smart cities with small, low-power devices that can be deployed virtually everywhere. These smart devices might be used to monitor and optimise traffic, analyse carbon footprints, or even develop vision-based security systems. For example, the addition of TinyML to traffic junctions could enable road traffic optimisation in real time. By further leveraging the interconnectivity of IoT, such benefits could be multiplied manifold through a network effect in these cities!
+
+\section{On-Demand Healthcare}
+
+TinyML finally has an important role to play in providing persistent, on-demand healthcare. For example, motion-based fall detectors can recognise instances of falls in children or elderly, while keyword detection can pick up cries for help. Furthermore, TinyML is now enabling affordable solutions in on-demand medical diagnostics, which can be used in rural areas to supplement limited healthcare facilities.
+
+\chapter{Software for TinyML – Frameworks \& Platforms}
+While specialised hardware for TinyML is playing catch up, most implementations currently rely heavily on software to optimise machine learning models while retaining their effectiveness. Here are some frameworks and platforms that you should definitely know about!
+
+\section{TensorFlow Lite Micro}
+
+\href{https://www.tensorflow.org/lite/microcontrollers}{TensorFlow} is Google's open-source machine learning framework which helps in developing machine learning models quickly. For TinyML, there is TensorFlow Lite Micro, which is a specialised version of TensorFlow for microcontrollers. TFLite Micro is written in C++ 11 and requires a 32-bit platform, and is mostly compatible with \href{https://developer.arm.com/Processors#aq=%40navigationhierarchiescategories%3D%3D%22Processor%20products%22%20AND%20%40navigationhierarchiescontenttype%3D%3D%22Product%20Information%22&numberOfResults=48&f[navigationhierarchiesprocessortype]=Microcontrollers}{Arm Cortex-M Series} processors. An \href{https://www.espressif.com/en/products/socs/esp32}{ESP32} port is available as well.
+
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{TinyML/Overview/pasted image 0.png}
+  \caption{TensorFlow Lite Micro}
+\end{figure}
+
+
+TFLite Micro allows you to easily compress regular TensorFlow models into just a few kilobytes, and comes with numerous example models like the \href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/micro/examples/hello_world}{Hello World} or \href{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/micro/examples/magic_wand}{Magic Wand} to demonstrate various TinyML basics and capabilities. In addition, it supports a good number of popular microcontrollers, such as the Arduino Nano BLE 33 Sense and our very own Wio Terminal.
+
+While the field of TinyML is still relatively new and experimental, TensorFlow Lite Micro is one of the most popular frameworks being used, which means you’ll be able to leverage a substantial amount of community experience and support in your own projects.
+
+\section{Edge Impulse}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{TinyML/Overview/EdgeImpulseLogo}
+  \caption{Edge Impulse's Logo}
+\end{figure}
+
+
+\href{https://edgeimpulse.com/}{Edge Impulse} is a platform that specifically targets the development of TinyML applications. With an easy-to-use web-based interface, Edge Impulse is arguably the easiest solution for anyone to collect data, train a model, and finally deploy it on a microcontroller. Best of all, it’s free for developers, albeit with some limits on the number of projects you can create and compute time.
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{TinyML/Overview/EdgeImpulseWebInterface}
+
+\caption{Edge Impulse's Web Interface}
+\end{figure}
+
+
+Developing TinyML with Edge Impulse also allows you to take advantage of their Edge Optimised Neural (EON) compiler, which can run a neural network with 25-55\% less RAM and 35\% less storage compared to TFLite for Microcontrollers – a significant point to consider!
+
+Like TFLite Micro, Edge Impulse supports a substantial list of microcontrollers and development boards, also including the Arduino Nano 33 BLE Sense and Wio Terminal. Supported devices can easily record and upload datasets in a matter of minutes, but other devices can also use their Data forwarder to do the same with just a little more effort.
+
+\section{OpenMV}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{TinyML/Overview/OpenMVLogo}
+  \caption{OpenMV's logo}
+\end{figure}
+
+\HREF{https://openmv.io/}{OpenMV} is another TinyML development platform, this time specialising in computer vision applications. This includes machine learning applied onto any kind of image or video like object recognition or image classification. The platform is built around their OpenMV Cam H7, which is a microcontroller board that runs on the ARM Cortex M7 processor and is Micropython programmable.
+
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{TinyML/Overview/OpenMVInterface}
+    
+    \caption{OpenMV's IDE in Action}
+\end{figure}
+
+
+
+In addition, OpenMV offers a cross-platform IDE that features a powerful code editor, debug terminal, and framebuffer viewer with histogram display – all of which are key components of developing computer vision applications in TinyML! We’ve previously shared extensively about OpenMV in a previous article, so I won’t go into more detail here. If you’re interested, click here to learn more!
+
+\chapter{Hardware for TinyML}
+
+When it comes to hardware for TinyML, the Arduino Nano 33 BLE Sense is considered by many to be the de facto standard. Along with considerable compute from a 32-bit ARM Cortex-M4F microcontroller with 1MB flash and 256KB RAM, it houses a number of on-board sensors, microphone, and bluetooth that can be use to tackle various applications.
+
+Depending on your specific requirements, however, you might be better off considering some of the following products. Let’s go!
+
+\section{Arduino Nano RP2040 Connect}
+
+The latest Nano RP2040 Connect from Arduino takes on the familiar Nano form factor, and is built around \HREF{https://www.seeedstudio.com/blog/2021/06/11/all-you-need-to-know-about-the-raspberry-pi-rp2040-guides-projects-accessories-more/}{Raspberry Pi's RP2040 microcontroller} with an additional suite of connectivity and sensor peripherals like a microphone for voice-enabled projects!
+
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{TinyML/Overview/1F9C6C20-F19D-4894-BEF4-8A9D396F5CB3.jpg}
+    
+    \caption{Arduino Nano RP2040 Connect}
+\end{figure}
+
+
+It most excitingly carries an AI-enabled 6-axis IMU that can be incredibly versatile for applications requiring motion sensing, such as pedometry, free fall detection, tap detection, 6D orientation and more! You can also easily integrate the Nano RP2040 Connect in IoT projects, thanks to the onboard u-blox NINA-W102 radio module that gives both WiFi and BLE connectivity!
+
+\bigskip
+
+Additional features include:
+
+\begin{itemize}
+  \item 13 Built-in LEDs, 20 Digital I/O Pins, 8 Analog Input Pins, 20 PWM Pins, 20 External Interrupts
+  \item 5V Board Power Supply, 3.3V Circuit Operating Voltage
+  \item Support for UART, I2C, SPI communication protocols
+  \item Secure encryption with ATECC608A-MAHDA-T Crypto IC
+  \item Free OpenMV License for Machine Vision Projects
+\end{itemize}
+
+
+\HREF{https://www.seeedstudio.com/ARDUINO-NANO-RP2040-CONNECT-WITH-HEADERS-p-4941.html}{Click here} to learn more about the Arduino Nano RP2040 Connect on the Seeed Online Store!
+
+\section{Wio Terminal}
+
+Wio Terminal is your complete AI platform to get started with TinyML and IoT – Built around the ATSAMD51P19 and ARM Cortex-M4F at 120MHz for high compatibility with various ML frameworks for microcontrollers. In addition to integrated WiFi \& Bluetooth, it has an onboard 2.4'' LCD Display, IMU, microphone, buzzer, microSD card slot, light sensor \& infrared emitter to tackle any kind of application.
+
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{TinyML/Overview/awSmqmB4X23FPNNMSiUDHPvzPvbo-zHAx29CS68Ssk5ubWWW8hrguN9b9pRe87dYxw5G658XhcP8DKAe2vmCdeZmeKGVk2pAa6tbVYu48r_KWhb8pJBvQqKInt3G4Csihsp6_lkA.jpg}
+    
+    \caption{Wio Terminal}
+\end{figure}
+
+
+The Wio Terminal is \href{https://wiki.seeedstudio.com/Wio-Terminal-TinyML-EI-1/}{officially supported by Edge Impulse} and TensorFlow Lite, which means that you can easily design and deploy ML applications with it! We're also excited to announce the launch of our \href{https://www.seeedstudio.com/wio-terminal-tinyml.html}{Hello World of AI} page, where you can explore the endless possibilities with hardware, software, and learning resources – like our \href{https://wiki.seeedstudio.com/Wio-Terminal-TinyML/#download-pdf}{TinyML with Wio Terminal course}, which is free for everyone to use!
+
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{TinyML/Overview/Wio}
+    
+  \caption{Wio Terminal: Hello World of AI}
+\end{figure}
+
+
+Product Features:
+
+\begin{itemize}
+  \item Powerful MCU: Microchip ATSAMD51P19 with ARM Cortex-M4F core running at 120MHz
+  \item Reliable Wireless Connectivity: Equipped with Realtek RTL8720DN, dual-band 2.4GHz / 5GHz Wi-Fi (supported only by Arduino)
+  \item Integrated Design: 2.4” LCD Screen, IMU and more practical add-ons in a compact enclosure with magnets \& mounting holes
+  \item Supports Arduino, CircuitPython, Micropython, ArduPy, AT Firmware, Visual Studio Code
+  \item Compatible with over 300 plug-\&-play Grove modules to explore with IoT
+  \item Raspberry Pi 40-pin Compatible GPIO, USB OTG Support, TELEC Certified
+\end{itemize}
+
+\href{https://www.seeedstudio.com/Wio-Terminal-p-4509.html}{Click here} to learn more about the Wio Terminal on the Seeed Online Store!
+
+\section{Seeeduino XIAO}
+
+What are the limits of TinyML? How small can we really go? Well, the Seeeduino XIAO’s answer to that is: pretty small! It’s the smallest Arduino compatible board in the Seeeduino Family, coming in at just about the size of a thumb tip. Nonetheless, the Seeeduino XIAO is equipped with the powerful SAMD21 microchip and a variety of hardware interfaces, truly putting the tiny in TinyML!
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{TinyML/Overview/SeeduinoXIAO}
+    
+    \caption{Seeeduino XIAO}
+\end{figure}
+
+
+
+Product Features:
+
+\begin{itemize}
+  \item ARM Cortex-M0+ 32bit 48MHz microcontroller (SAMD21G18) with 256KB Flash, 32KB SRAM
+  \item Compatible with Arduino IDE \& MicroPython
+  \item Easy Project Operation: Breadboard-friendly
+  \item Small Size: As small as a thumb(20×17.5mm) for wearable devices and small projects.
+  \item Multiple development interfaces: 11 digital/analog Pins, 10 PWM Pins, 1 DAC output, 1 SWD Bonding pad, 1 I2C, 1 UART, 1 SPI interface.
+\end{itemize}
+
+
+Seeeduino XIAO has two powerful brothers, that is XIAO RP2040 and XIAO BLE SENSE, equipped with an onboard antenna, 6 Dof IMU, microphone, it is a second to none choice for TinyML!
+
+\section{Seeed XIAO BLE nRF52840 Sense – TinyML/TensorFlow Lite- IMU / Microphone – Bluetooth5}
+
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{TinyML/Overview/SeedXIAOBLE}
+    
+  \caption{Seeeduino XIAO}
+\end{figure}
+
+
+Product Features:
+
+\begin{itemize}
+  \item Powerful CPU: \HREF{https://files.seeedstudio.com/wiki/XIAO-BLE/Nano_BLE_MCU-nRF52840_PS_v1.1.pdf}{Nordic nRF52840}, ARM® Cortex™-M4 32-bit processor with FPU operating at 64 MHz
+  \item Wireless capabilities: Bluetooth 5.0, NFC, and ZigBee module with onboard Bluetooth antenna
+  \item Ultra-small size: 21 x 17.5mm, Seeed Xiao series classic form-factor for wearable devices
+  \item Ultra-low sleep power: 5 $\mu$A, deep sleep model
+  \item Battery charging chip: \HREF{https://files.seeedstudio.com/wiki/XIAO-BLE/BQ25101.pdf}{BQ25101} chip supported lithium battery charge management
+  \item Rich interface: 1x Reset button, Ix UART, 1x IIC, 1x SPI, 1x NFC, 1x SWD, 11x GPIO, 6x ADC, 1x Three-in-one LED,1x User LED
+  \item Onboard 2 MB flash
+  \item Onboard \HREF{https://files.seeedstudio.com/wiki/XIAO-BLE/mic-MSM261D3526H1CPM-ENG.pdf}{microphone}
+  \item Onboard \HREF{https://files.seeedstudio.com/wiki/XIAO-BLE/ST_LSM6DS3TR_Datasheet.pdf}{6-axis IMU}
+  \item Single-sided components, surface mounting design
+  \item Corresponded to TinyML AI project: Sensing, Processing, Communication 3 in 1 Node
+\end{itemize}
+
+\HREF{https://www.seeedstudio.com/catalogsearch/result/?q=XIAO+}{Click here} to learn more about the \HREF{https://www.seeedstudio.com/catalogsearch/result/?q=XIAO+}{XIAO family}!
+
+
+
+\chapter{Community Projects}
+
+Of course, the TinyML community doesn’t just consist of professionals – countless makers around the world, even those with little to no experience, are already having fun with TinyML to create interesting and creative projects! Below are just two examples to give you a gist of what’s available; If you’d like to see more community projects, be sure to visit the wide range of contributions on platforms like Hackster!
+
+\section{Artificial Nose that Detects Scents}
+
+It’s fairly straightforward to detect specific gasses with the help of specialised sensors, but different combinations of gasses often indicate different conclusions in the real world. Since it’s too complicated to account for all the possibilities with hard-programming, Benjamin Cabe decided to create a TinyML powered artificial nose that can recognise different scents, including coffee, whisky and more!
+
+
+\bigskip
+
+Materials Needed:
+
+\begin{itemize}
+  \item Wio Terminal
+  \item Grove Multichannel Gas Sensor
+\end{itemize}
+
+Keen to explore further? Get tinkering with this project by having a look at Benjamin’s GitHub repo for the project here!
+
+\section{Build Handwriting Recognition with Wio Terminal \& Edge Impulse}
+
+Do you think it’s possible to perform handwriting recognition with just a single distance sensor? The answer to that is, well, sort of! This project uses machine learning on time series data from just one ToF sensor to recognise handwriting gesture patterns! While it’s very much a proof of concept project and far from actual implementation, I hope this inspires you to think of crazy ideas for your own project!
+
+\bigskip
+
+Materials Needed:
+
+\begin{itemize}
+  \item Wio Terminal
+  \item Grove ToF VL53L0X Distance Sensor
+\end{itemize}
+
+If you'd like to try this for yourself, feel free to follow the full step-by-step tutorial here!
+
+\section{Hack Your Car With Wio Terminal and CAN Bus by Longan Labs}
+
+This project mainly used the Serial CAN Bus Module by Longan Labs who builds this project and the Wio Terminal main control board by Seeedstudio. You can read the cycling speed, rotation speed, and oil temperature, and other information displayed on the Wio Terminal screen. 
+
+The Serial CAN Bus Module uses UART to communicate with the single-chip microcomputer. It is compact and easy to use.
+
+\section{A device that can find the signs of fungal pneumonia in someone’s breath by detecting the Volatile Organic Compounds that are markers for the disease}
+
+
+
+
+\section{Summary \& More Resources}
+In this one-stop guide to TinyML, we’ve covered the basics of what TinyML is, its benefits, applications, and various resources that can help you achieve your next smart application! Be it hardware, software or learning resources, I hope that you’ve now gotten a clearer idea of where to start and are excited to enter the exciting world of TinyML! Got any more questions? Feel free to let me know down below!
+
+To wrap up, I strongly encourage you to visit the following resources to learn more!
+
+
+\begin{itemize}
+  \item \HREF{https://www.seeedstudio.com/blog/2021/04/02/edge-ai-what-is-it-and-what-can-it-do-for-edge-iot/}{Edge AI – What is it and What can it do for Edge IoT?}
+%  \item \href{}{How to Choose Hardware for Edge Machine Learning!}
+%  \item \href{}{What is an Edge Server? – Edge Computing Embedded Systems}
+  \item \HREF{https://www.seeedstudio.com/wio-terminal-tinyml.html}{Explore Wio Terminal – Hello World of AI}
+  \item \HREF{https://www.seeedstudio.com/blog/2020/06/04/resource-roundup-for-wio-terminal/}{Resource Roundup for Wio Terminal – Tutorials, Reviews, and Projects from Community}
+\end{itemize}
+
+\subsection{Learn TinyML with Wio Terminal Series}
+
+\begin{itemize}
+  \item \HREF{https://www.seeedstudio.com/blog/2021/01/19/tiny-ml-with-wio-terminal-1-intro/}{Learn TinyML using Wio Terminal and Arduino IDE \#1 – Intro}
+  \item \HREF{https://www.seeedstudio.com/blog/2021/02/03/learn-tinyml-using-wio-terminal-and-arduino-ide-2-audio-scene-recognition-and-mobile-notifications/}{Learn TinyML using Wio Terminal and Arduino IDE \#2 – Audio Scene Recognition and Mobile Notifications}
+  \item \HREF{https://www.seeedstudio.com/blog/2021/02/26/tinyml-with-wio-terminal-3-people-counting-and-azure-iot-central-integration/}{Learn TinyML using Wio Terminal and Arduino IDE \#3 – People Counting and Azure IoT Central Integration}
+  \item \HREF{https://www.seeedstudio.com/blog/2021/03/18/learn-tinyml-using-wio-terminal-and-arduino-ide-4-weather-prediction-with-tensorflow-lite-for-microcontrollers-a-k-a-i-just-like-data/}{Learn TinyML using Wio Terminal and Arduino IDE \#4 – Weather prediction with Tensorflow Lite for Microcontrollers a.k.a. I just like data}
+  \item \HREF{https://www.seeedstudio.com/blog/2021/05/30/learn-tinyml-using-wio-terminal-and-arduino-ide-5-anomaly-detection-for-predictive-maintenance-with-new-blynk-iot-platform-release/}{Learn TinyML using Wio Terminal and Arduino IDE \#5 – Anomaly detection for Predictive maintenance with new Blynk IoT Platform}
+\end{itemize}

@@ -1,0 +1,89 @@
+\section{Evaluation}
+With the demonstrator assembled, the goal is to verify each stage of the signal chain. First, the force signal from the strain gauges is recorded as raw (HX711 counts to grams). Next, the filtered trace shows the same signal after the moving-average filter. it should retain the trend while reducing noise, with a small, measurable delay. The PD trace then adds proportional–derivative shaping. It should respond faster to changes and suppress overshoot. These three software signals are compared in time and fulfill the expected wave-curves (see figure \ref{fig:PDFilter}). The filter depth was set to 10 here Kp was set as 6 and Kd as 0.02. Optional the values can be changed to get more accuracy from the signals.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{../../../Images/Syde/HTA/DAC/PDFilter}
+	\caption[Comparison Raw, Filtered, and PD controlled Signal]{Comparison Raw, Filtered, and PD controlled Signal}
+	\label{fig:PDFilter}
+\end{figure}
+
+To evaluate how the DAC output affects the LM358, the DAC signal (Vout) and the output of the amplifier’s B channel (Pin7) are measured simultaneously and displayed on an oscilloscope. Three operating stages are examined separately: first the raw strain-gauge data applied to the DAC , second the moving-average filter applied, and afterwards the PD control applied. By toggling these stages on and off in the HTA system dashboard, the resulting waveforms can be compared directly. 
+
+\begin{figure}[H]
+	\centering
+	\newlength{\subfigH}
+	\setlength{\subfigH}{4.0cm}
+	
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\subfigH,keepaspectratio]{../../../Images/Syde/HTA/DAC/DACRaw1}
+		\caption{MCP4725 Output (Yellow) and LM358 Output (Blue).}
+		\label{fig:DACRaw1}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\subfigH,keepaspectratio]{../../../Images/Syde/HTA/DAC/DACRaw1Area}
+		\caption{HTA Dashboard: Raw Strain Gauge Data (Yellow).}
+		\label{fig:DACRaw1Area}
+	\end{subfigure}
+	
+	\caption{Comparison of DAC/LM358 Output with Raw Strain Gauge Data.}
+	\label{fig:DACRaw1Compare}
+\end{figure}
+
+The objective is to map the DAC’s \(0\text{–}5\,\mathrm{V}\) range to the amplifier’s \(\pm 10\,\mathrm{V}\) output. In the raw mode (see figure \ref{fig:DACRaw1Compare}), the oscilloscope shows the DAC trace (yellow) stepping through commands while the LM358 output (blue) follows with a gain of approximately four and a mid-scale alignment such that \(V_{\text{DAC}}\approx 2.5\,\mathrm{V}\) corresponds to \(V_{\text{amp}}\approx 0\,\mathrm{V}\). The edges on the amplifier output appear shortly after the DAC steps, indicating the intrinsic propagation through the analogue path without additional conditioning. The highlighted dashboard interval matches the timing of the oscilloscope capture, confirming that the recorded staircase commands are reproduced at the amplifier output with the intended scaling and offset.
+
+\begin{figure}[H]
+	\centering
+	% same visual height for both subfigures
+	\newlength{\subfigHfilter}
+	\setlength{\subfigHfilter}{4.0cm}
+	
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\subfigHfilter,keepaspectratio]{../../../Images/Syde/HTA/DAC/DACFilter}
+		\caption{MCP4725 Output (Yellow) and LM358 Output (Blue).}
+		\label{fig:DACFilter}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\subfigHfilter,keepaspectratio]{../../../Images/Syde/HTA/DAC/DACFilterArea}
+		\caption{HTA Dashboard: Filtered Strain Gauge Data (Green).}
+		\label{fig:DACFilterArea}
+	\end{subfigure}
+	
+	\caption{Comparison of DAC/LM358 Output with Filtered Strain Gauge Data.}
+	\label{fig:DACFilterCompare}
+\end{figure}
+
+With the moving-average filter enabled (see figure \ref{fig:DACFilterCompare}), the DAC command becomes visibly smoother and the amplifier output exhibits correspondingly gentler transitions. The waveform retains the same overall scaling and mid-point mapping, but a consistent phase shift appears between the filtered measurement and the analogue output, as expected from the filter’s group delay. The oscilloscope capture taken during the dashboard’s filtered segment shows these rounded edges and steady plateaus, demonstrating that the low-pass conditioning stabilizes the drive signal while preserving the \(0\text{–}5\,\mathrm{V}\rightarrow\pm 10\,\mathrm{V}\) mapping.
+
+\begin{figure}[H]
+	\centering
+	% enforce equal visual height for both subfigures
+	\newlength{\subfigHpd}
+	\setlength{\subfigHpd}{4.0cm}
+	
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\subfigHpd,keepaspectratio]{../../../Images/Syde/HTA/DAC/DACPD}
+		\caption{MCP4725 Output (Yellow) and LM358 Output (Blue).}
+		\label{fig:DACPD}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{0.48\linewidth}\vspace{0pt}
+		\centering
+		\includegraphics[height=\subfigHpd,keepaspectratio]{../../../Images/Syde/HTA/DAC/DACPDArea}
+		\caption{HTA Dashboard: PD-controlled Strain Gauge Data (Orange).}
+		\label{fig:DACPDArea}
+	\end{subfigure}
+	
+	\caption{Comparison of DAC/LM358 Output with PD-controlled Strain Gauge Data.}
+	\label{fig:DACPDCompare}
+\end{figure}
+
+With PD control active (see figure \ref{fig:DACPDCompare}), the DAC trace presents brief transition spikes superimposed on the commanded levels, and the amplifier output tracks these changes as controlled, damped steps. The short impulses represent the derivative kick that accelerates at the start of a change and brakes near the target, leading to faster settling while maintaining the established gain of four and the \(2.5\,\mathrm{V}\) mid-scale reference. The oscilloscope record aligns with the dashboard’s PD interval: transition assistance is visible at each edge, the steady sections remain at the expected levels, and the overall behaviour meets the goal of producing a clean, bidirectional drive based on the DAC’s \(0\text{–}5\,\mathrm{V}\) command.
+
+Taken together, the dashboard and oscilloscope views make it clear that both the moving-average filter and the PD controller beneficially shape the drive signal, one by improving signal quality, the other by improving dynamic response while maintaining the required \(0\text{--}5\,\mathrm{V}\rightarrow\pm 10\,\mathrm{V}\) mapping and the \(2.5\,\mathrm{V}\) mid-scale reference.
+
+\newpage

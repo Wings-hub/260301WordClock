@@ -1,0 +1,39 @@
+\chapter{AI Hat Setup and TPU Verification}
+
+This chapter documents the preparatory steps required to enable and verify the M.2 AI Hat on the Raspberry Pi 5. 
+While the AI Hat was physically installed as part of the system hardware, hardware-accelerated TPU inference was 
+not utilized in the final deployed pipeline. The following steps therefore represent optional validation and future 
+extension capabilities rather than the active inference configuration used in this project.
+
+\section{Verifying TPU Detection}
+Detection of the Edge TPU can be verified at the operating system level using standard Linux utilities:
+\begin{verbatim}
+	lsusb | grep -i google
+	dmesg | grep -i edgetpu
+\end{verbatim}
+
+These commands confirm whether the AI Hat is recognized by the system kernel and PCIe subsystem. 
+In this project, inference was performed using CPU-based TensorFlow Lite execution.
+
+\section{Installing TPU Libraries}
+Support libraries for the Edge TPU can be installed using the system package manager:
+\begin{verbatim}
+	sudo apt install python3-edgetpu python3-pycoral -y
+\end{verbatim}
+
+These libraries are required only when deploying models compiled specifically for TPU execution and were not required 
+for the final implementation.
+
+\section{Running TPU Inference}
+A sample command for validating TPU-based inference is shown below for completeness:
+\begin{verbatim}
+	python3 -m pycoral.examples.classify_image \
+	--model mobilenet_v2_edgetpu.tflite \
+	--labels imagenet_labels.txt \
+	--input test.jpg
+\end{verbatim}
+
+This example demonstrates standalone TPU inference using a precompiled Edge TPU model. 
+The deployed bird recognition system instead used a standard TensorFlow Lite model executed on the Raspberry Pi CPU, 
+ensuring compatibility with the implemented Python inference pipeline.
+

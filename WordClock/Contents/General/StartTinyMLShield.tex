@@ -1,0 +1,49 @@
+%%%
+%
+% $Autor: Malena Wilken $
+% $Date: 2026-01-20 $
+% $File: FlowchartDeployment.tex$
+% $Version: 1 $
+% !TeX spellcheck = en_US
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+\chapter{Getting started with the TinyML Shield}
+
+When using the TinyML Shield, the first step is to mount the Arduino Nano 33 BLE Sense and the OV7675 camera module into the designated headers on the shield, as shown in Figure \ref{fig:TinyMLShieldConfig}. During this process, contact with the surface-mounted components on both boards should be avoided in order to prevent mechanical or electrostatic damage. Correct orientation is essential: the USB port marking on the PCB silkscreen must correspond to the physical USB connector of the Arduino board. Once aligned, the camera module pins should be carefully inserted into the headers and pressed down evenly until the module sits flush on top of the connectors. After installation, the downward-facing pins should no longer be visible. As with the microcontroller board, unnecessary contact with the camera module components should be minimized to reduce the risk of inadvertent damage \cite{ICTP:2022}.
+
+
+\begin{center}
+	\begin{tikzpicture}
+		
+		\ArduinoNanoShieldTikz
+		\coordinate (BoardOrigin) at (6.8,28.1);
+		\coordinate (BoardOriginNano) at (2.4,29.4);
+		
+		\begin{scope}[scale=0.65, rotate=-90, shift={(BoardOrigin)},every node/.style={opacity=0}]
+			\CameraOV
+		\end{scope}
+		
+		\begin{scope}[scale=0.48, rotate=-90,shift={(BoardOriginNano)},every node/.style={opacity=0}]
+			\ArduinoNanoBLESenseRev
+		\end{scope}
+		
+		
+	\end{tikzpicture}
+	\captionof{figure}[Integration of Arduino Nano 33BLE Sense and Camera OV7675 on the TinyML Shield]{Integration of Arduino Nano 33BLE Sense and Camera OV7675 on the TinyML Shield}\label{fig:TinyMLShieldConfig}
+\end{center}
+
+\section{Uploading Code to the Arduino Nano 33 BLE Sense}
+
+Use an USB cable with a Type-A to micro-B connector to connect the Arduino Nano 33 BLE Sense to the host computer. If the computer is equipped exclusively with USB Type-C ports, an appropriate adapter is required. When only peripherals integrated on the Nano 33 BLE Sense itself are used, such as the microcontroller or the inertial measurement unit, operation without the TinyML Shield is possible. If the Nano board or the camera module needs to be removed from the shield, the board should be grasped firmly on both sides and detached using a gentle back-and-forth rocking motion to gradually release the pins from the headers \cite{ICTP:2022}. 
+
+
+
+
+%\section{Libraries used with the Tiny ML Shield}
+%
+%For interacting with the Arduino Nano 33 BLE Sense the Arduino IDE is used. The installation and setup process of the IDE is described in chapter \ref{ArduinoIDE2}. When using the Tiny Machine Learning Shield, several software libraries should be taken into consideration, as they provide essential functionality for operating the attached hardware and for enabling embedded machine learning workflows. These libraries abstract low-level hardware interactions, offer standardized interfaces for sensors and peripherals, and support the execution of machine learning models on resource-constrained systems \cite{ICTP:2022}.
+

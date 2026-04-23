@@ -1,0 +1,25 @@
+\chapter{Loadcell}
+To verify whether this approach works in practice, the first experiment involves mounting a load cell onto the beam of the pallet truck’s handle. The idea is that when a user pulls or pushes the pallet truck, the beam bends slightly under the applied load. This bending generates a measurable shear force within the structure. By placing the load cell at a strategically chosen point on the beam, the resulting deformation is captured and converted into an electrical signal. The expectation is that the measured shear force correlates directly with the user’s input, allowing the system to interpret the operator’s intention—whether to move forward or backward. 
+
+Load cells are specialized force transducers designed for weighing applications\ref{fig:Loadcell}. Rather than relying on the total displacement of a structure to determine the load, strain gauge load cells measure load by detecting localized strain within their material\cite[see][1]{Sirohi:1991}. The change in resistance and the resulting small voltage variation from the strain gauges must be amplified before it can be processed by the ESP32 on the Hypatia board. For this purpose, an HX711 load cell amplifier module is used, which is widely employed in such applications. A more detailed description of how strain gauges and a HX711 Module work, will be provided in the following chapters.    
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/Setup/Loadcell}
+	\caption[Loadcell]{Loadcell}
+	\label{fig:Loadcell}
+\end{figure}
+
+The purpose of the first test was to determine whether the idea of using load cells was feasible and whether they would perform better when positioned closer to the point of human interaction or closer to the load on the beam. Therefore, a prototype test code was developed to control the load cell and to display the data on a website. The website was included from the beginning, as having the ability to maintain a good overview of the project at a later stage was considered valuable.
+
+\section{Code}
+Before uploading any code to the Arduino IDE, it is necessary to install the HX711 library. This library is available in the Library Manager of the Arduino IDE. In this case, version 0.5.2 of the library is used (see Figure \ref{fig:HX711LibraryInstall}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\linewidth]{../../../Images/Syde/HTA/HX711LibraryInstall}
+	\caption[HX711 Library Install]{HX711 Library Install}
+	\label{fig:HX711LibraryInstall}
+\end{figure}
+
+

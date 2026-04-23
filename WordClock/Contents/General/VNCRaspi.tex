@@ -1,0 +1,62 @@
+%%%%%%
+%
+% $Autor: Bakke $
+% $Datum: 2021-07-15 16:20:45Z $
+% $Pfad: WuSt/Skript/Produktspezifikation/powerpoint/ImageProcessing.tex $
+% $Version: 4620 $
+%
+%%%%%%
+
+\chapter{Virtual Network Computing (VNC)}
+\label{chap:VNC}
+
+
+VNC\textregistered \space Connect is a collection of  free to use remote access software, and is an alternative to SSH. Instead of just having access to the Raspberry Pi's command line on a remote device, VNC gives you full access to the Raspberry Pi's graphical interface. You can essentially see everything you would see by connecting the Raspberry Pi to a monitor. If the only application you will use on the Raspberry Pi is the terminal window, then connecting via SSH is preferred. Refer to \autoref{chap:SSH} for a guide to setting up an SSH-connection.
+
+
+\section{VNC Server}
+
+VNC Server is the software that needs to be installed on the host device. Luckily, the standard installation of Raspberry Pi OS comes with VNC Server already installed, all you need to do is activate VNC in the settings.
+
+\subsection{Enabling VNC on the Raspberry Pi}
+
+\subsubsection{system settings}
+
+If the Raspberry Pi is running the default distribution Raspberry Pi OS, VNC access can be enabled via the system settings. To do this, open \glqq Settings - Raspberry Pi Configuration\grqq from the Start menu, go to the \glqq Interfaces\grqq{} tab and set the \glqq VNC\grqq{} item.
+must be set to \glqq Enabled\grqq{}. After confirmation, VNC is also permanently available.
+
+\subsubsection{terminal}
+
+If you are working on the Raspberry Pi at the terminal level, enable VNC access via the Raspberry Pi OS configuration program. To open this, enter this command:
+
+\medskip
+
+\SHELL{sudo raspi-config}
+
+\medskip
+
+
+Using the arrow keys on the keyboard, the menu item \glqq Interfacing Options\grqq{} can be opened. There
+the item \glqq vnc\grqq{} can be activated. Now the system must be restarted:
+
+\medskip
+
+\SHELL{sudo reboot}
+
+\bigskip
+
+When VNC is activated, a VNC-symbol will appear in the top right corner of the Raspberry Pi's UI. If clicked, VNC Server will automatically open, where the Raspberry Pi's IP address will be displayed.
+
+
+
+\section{VNC Viewer}
+
+\href{https://www.realvnc.com/en/connect/download/viewer/}{\color{blue}{VNC Viewer}} is a software that needs to be installed on the device you wish to access the Raspberry Pi from. 
+
+\subsection{Connecting to the Raspberry Pi with VNC Viewer}
+
+Open VNC Viewer. Select File$\rightarrow$New connection. Enter the IP address of the Raspberry Pi, give it a recognizable name, and select OK. The new connection will then appear in the main window. When you double-click the connection, you will be prompted for the username and password of the Raspberry Pi, which by default is "pi" and "raspberry" respectively. If the prompt doesn't appear and the connection fails, make sure the Raspberry Pi is turned on, and that both devices are connected to the same Ethernet/WLAN. After the username and password is typed in select ok, and a window with the Raspberry Pi's graphical UI should appear. From this window you will have complete control of all the functions available to the Raspberry Pi. 
+
+\medskip
+
+Now all you need to use the Raspberry Pi is to connect it to a power source. It should connect to any previously used WLAN-networks that it has access to automatically, and as long as your device is connected to the same network, you can access it by selecting the connection in VNC Viewer.

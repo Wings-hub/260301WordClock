@@ -1,0 +1,363 @@
+\section{Strain Gauge Data Acquisition and Transmission}
+To apply the \ac{HTA} system to the demonstrator, tensile and compressive loads between the external force system and the \ac{HTA}-integrating trailer are measured. The following describes how the measurement is performed, which installation steps are necessary, and how the data will be collected and transformed for implementation in the \ac{HTA} systems’s drive system.
+
+\subsection{Strain Measurement under Tensile and Compressive Loads}
+Stress analysis is the evaluation of stress distribution within a body, focusing on determining the type, magnitude, and direction of the stresses involved. For complex geometries, theoretical stress analysis becomes less reliable because many assumptions must be made, also the mathematics become highly complicated. In such cases, experimental stress analysis is used \cite[see][75]{Sirohi:1991}. Direct measurement of mechanical stress is not possible, so strain is typically measured and subsequently converted into the corresponding stress values using established relationships \cite[see][16]{Murray:1992}. To understand the use of these relationships, it is important to first understand what strain is:  
+
+When a force is applied to an object, it causes a deformation that depends on the object's shape, the material it is made of, and the way the force is applied. Figure \ref{fig:ForceOnBar}  illustrates the most optimal version of applied forces in the demonstrators system: a force acting on a beam in uniaxial tension. In this case, the resulting deformation is a straightforward axial elongation \cite[see][1]{Holister:1967}.
+
+\[
+P\,(\mathrm{lb}) = \sigma \times A\,(\mathrm{in}^2)
+\]
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/StrainGauge/ForceOnBar}
+	\caption[Simple System of Loading]{Simple System of Loading \cite[1]{Holister:1967}}
+	\label{fig:ForceOnBar}
+\end{figure}
+
+
+In the market, a variety of different strain gauges can be found. In addition to mechanical methods, opto-mechanical methods and electrical strain gauges, there are also measurement techniques and methods such as the grid method, the Moiré Fringe Technique, the interferometry, and the photoelasticity to be considered \cite[see][75]{Sirohi:1991}. It is reasonable to assume that a single strain gauge cannot fulfill all desired specifications at once, especially when demanding conditions such as high-temperature environments are involved. However, for general use, the electrical resistance strain gauge meets most requirements \cite[see][17,18]{Murray:1992}, and it is well suited for integration into the \ac{HTA} system, as the sensor provides the flexibility required for different use cases. This adaptability becomes particularly important when the \ac{HTA} system is applied to a pallet truck or extended to other projects in the future, where varying mechanical structures and operating conditions demand a sensing element that can be reliably configured without significant redesign. 
+
+\subsection{Electrical Resistance Strain Gauges}
+Electrical resistance strain gauges detect strain by measuring changes in electrical resistance. There are two main types: unbonded and bonded strain gauges. In the unbonded version, two to twelve loops of wire are connected between both a stationary and a movable structure (see figure \ref{fig:UnbondedElectricalStrainGauge}). These gauges are primarily used as components in force and pressure transducers, as well as in accelerometers, rather than as direct strain measurement devices \cite[see][79]{Sirohi:1991}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/StrainGauge/UnbondedElectricalStrainGauge}
+	\caption[Unbonded Electrical Strain Gauge]{Unbonded Electrical Strain Gauge \cite[see][79]{Sirohi:1991}}
+	\label{fig:UnbondedElectricalStrainGauge}
+\end{figure}
+
+The bonded electrical resistance strain gauge, on the other hand, is cemented directly onto the surface of the body and is therefore subjected to the same strain as the material itself. The figure \ref{fig:BondedElectricalStrainGauge} shows different types of bonded strain gauges. One is mounted on a paper carrier, another on a Bakelite base, and a third on a plastic or rubberized, strippable base, as often used for foil gauges. In the case of foil gauges, the carrier is typically stripped away before the gauge is cemented directly onto the test object.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{../../../Images/Syde/HTA/StrainGauge/BondedElectricalStrainGauge}
+	\caption[Types of Bonded Electrical Strain Gauges]{Types of Bonded Electrical Strain Gauges \cite[see][80]{Sirohi:1991}}
+	\label{fig:BondedElectricalStrainGauge}
+\end{figure}
+
+The bonded electrical resistance strain gauge is used in case of the demonstrator. As described before it comes with the flexibility needed and the installation process, although it requires accuracy and a special technique, it is implementable to different surfaces and objects.  
+
+\subsection{Installation of Bonded Electrical Resistance Strain Gauges}
+When describing the installation process, a test object is used. As mentioned, the process needs some accuracy and proper installation needs training, when it comes to the demonstrator. 
+
+For the installation of two strain gauges on a steel beam, the guideline \grqq{Strain Gauge Installation on Steel} \cite[see][]{Brown:2016} by SEL was used as a reference. However, slightly different materials and equipment were employed. 2011 Araldite, a two-component adhesive by Huntsman, Magic Tape by Scotch, and neutral RTV silicone by Visbella were utilized during the bonding process. Subsequently, the strain gauges were covered with Butyl waterproof tape by ADHES for additional protection.
+The strain gauges used for the initial prototype were of model BF350-3AA by YOUMILE \cite{ICStation:2017}, which come with thin wires pre-soldered to the contact pads. 
+
+
+\begin{enumerate}
+	\item The intended location for the strain gauge should be clearly marked on the steel surface. An area measuring approximately 2,5 × 5 cm is recommended to ensure sufficient space for installation and handling.
+	\item An angle grinder equipped with a flapper wheel is recommended to remove any mill scale from the steel surface if necessary. Care must be taken to avoid excessive grinding, as this could reduce the cross-sectional area of the steel and compromise its structural integrity.
+	\item A grinder and a die grinder with a stone attachment are used to smooth the area designated for the strain gauge. The surface should be uniformly smooth but does not require a mirror-like finish (see figure\ref{fig:BodyPrepare}). As in the previous step, care must be taken to avoid removing excessive material, which could compromise the cross-sectional area of the steel. Alternatively, a 100-grit sanding disk mounted on a pneumatic tool can also be used for this purpose.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.3\linewidth]{../../../Images/Syde/HTA/StrainGauge/BodyPrepare}
+		\caption[Surface Preparation]{Surface Preparation}
+		\label{fig:BodyPrepare}
+	\end{figure}
+	
+	\item The steel surface must be thoroughly cleaned. For this purpose, acetone is used in combination with non-woven sponges. The sponge is moistened with acetone—direct application of acetone to the surface is avoided, as it evaporates rapidly. The prepared sponge is then used to wipe the surface in a single, consistent direction. A new sponge is used each time, until it remains visibly clean (white) after wiping. Care must be taken not to touch unpolished areas with the sponge, in order to prevent contamination or damage. As acetone is highly flammable, appropriate safety precautions must be observed. This includes wearing safety goggles and ensuring adequate ventilation to avoid inhalation of acetone vapors.
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.3\linewidth]{../../../Images/Syde/HTA/StrainGauge/MarkSteel}
+		\caption[Mark Steel]{Mark Steel}
+		\label{fig:MarkSteel}
+	\end{figure}
+	\item The next step is to mark the exact location for the strain gauge on the surface using a pencil or marker (see figure \ref{fig:MarkSteel}). One straight line perpendicular to the beam should be visible, so that the two arrows of the strain gauge can later be aligned to it (see figure \ref{fig:Positioning}). To prevent any contamination, the surface is cleaned with acetone again afterwards.
+	\item Before attaching the strain gauge, it is essential to ensure that the surface remains clean. If there has been a delay between the preparation steps and the installation, an additional cleaning with acetone is recommended, as dust and other contaminants can accumulate quickly. In cases where the delay exceeds one to two days, a fine sanding disc should be used to lightly refresh the surface and ensure it remains smooth and free of contamination. 
+	
+	\begin{itemize}
+		\item The following figure \ref{fig:StrainGaugeTop} serves to identify the top and bottom sides of the strain gauge. In this case, the soldering points clearly indicate that the second strain gauge is correctly oriented. Additionally, the shiny appearance of the wires in the first strain gauge suggests the upper side of the Strain Gauge. It is crucial to avoid touching the bottom surface, as this is the bonding side. Any contact may lead to contamination and compromise the quality of the adhesion.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/StrainGauge/StrainGaugeTop}
+			\caption[Strain Gauge Top and Bottom]{Strain Gauge 1 Bottom an 2 Top}
+			\label{fig:StrainGaugeTop}
+		\end{figure}
+		
+		\item When removing the strain gauge from its protective plastic backing, it is attached to a piece of transparent Magic tape on the top side. A transparent, low-adhesive tape is needed, which is why Magic tape is used in this case. Ideally, strain gauge installation tape should be chosen. The tape allows safe handling and precise positioning without direct contact. The gauge should be properly centered on the tape. To facilitate handling and ensure sufficient flexibility during the subsequent installation steps, the tape should be at least 5 cm in length. If there is a delay before installation, the taped gauge can be temporarily placed on a clean glass surface to preserve its condition. By utilizing the tape, the gauge can be positioned and repositioned precisely at the previously marked location (see figure \ref{fig:Positioning}). When removing the tape from any surface, it must always be lifted at a steep angle. This minimizes the risk of damaging the strain gauge.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.7\linewidth]{../../../Images/Syde/HTA/StrainGauge/Positioning}
+			\caption[Strain Gauge Positioning]{Strain Gauge Positioning}
+			\label{fig:Positioning}
+		\end{figure}
+		
+		\item In the next step, the tape is partially peeled back, starting from the end where the soldering pads of the strain gauge are located, until the entire bonding surface of the gauge is exposed. The tape is not removed completely to ensure that the position of the strain gauge remains fixed and does not shift during the bonding process.		
+		\item A very small amount of adhesive is now applied between the strain gauge and the steel surface (see figure \ref{fig:GlueProcess}). Using a smooth and continuous sliding motion with the thumb, the strain gauge is carefully repositioned into its final location. Once in place, firm and steady pressure is applied with the thumb for approximately one minute, to press the gauge into the adhesive layer and to eliminate any trapped air bubbles, ensuring proper adhesion.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/StrainGauge/GlueProcess}
+			\caption[Strain Gauge Glue Process]{Strain Gauge Glue Process}
+			\label{fig:GlueProcess}
+		\end{figure}
+	
+		
+		\item After the curing time of the adhesive, the tape can be slowly and carefully removed to avoid damaging the strain gauge or attached wires (see figure \ref{fig:GluedStrainGauge}). Unbounded areas may now be identified by the presence of air bubbles or slight differences in color between bonded and unbounded regions. If such areas appear near the edges of the gauge, additional adhesive can be applied. In these cases as well, firm pressure must be applied to ensure proper contact and to allow the adhesive to fully bond.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/StrainGauge/GluedStrainGauge}
+			\caption[Glued Strain Gauge]{Glued Strain Gauge}
+			\label{fig:GluedStrainGauge}
+		\end{figure}
+		
+		\item The strain gauge wires should be securely fixed to the steel surface to prevent them from touching each other or being accidentally pulled off or damaged. For this purpose, painter’s tape or a similarly lightly adhesive tape is recommended.  
+		
+	\end{itemize}
+	\item A waterproofing and mechanical protection layer is applied over the strain gauge to shield the adhesive bond from degradation caused by atmospheric moisture. This protective coating ensures the long-term durability of the installation and safeguards the gauge against environmental and mechanical influences (see figure \ref{fig:Silikon}). For the protective layer, silicone is used.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/StrainGauge/Silikon}
+		\caption[Strain Gauge Silikon as a protective Layer]{Silikon as a Protective Layer}
+		\label{fig:Silikon}
+	\end{figure}
+	
+	\item In this case, a half Wheatstone bridge is required to properly measure the axial strain on the beam. Therefore, the procedure is repeated on the exact opposite side (see figure \ref{fig:BeamStrainGauge}). The concept of the Wheatstone bridge is explained in the following chapter \ref{WheatstoneBridge}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/StrainGauge/BeamStrainGauge}
+		\caption[Beam with two Strain Gauges]{Beam with two Strain Gauges}
+		\label{fig:BeamStrainGauge}
+	\end{figure}
+	
+	The strain gauges are now wired according to the following wiring diagram (see figure \ref{fig:StrainGaugeWiring}). It is important to ensure that the wires do not touch the metal of the beam in order to keep the system insulated. Therefore, a protective layer of silicone is applied around the soldered connections (see figure \ref{fig:SiliconeLayer}).
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/StrainGauge/StrainGaugeWiring}
+		\caption[Strain Gauge Wiring]{Strain Gauge Wiring \cite{[HBM:2019]}}
+		\label{fig:StrainGaugeWiring}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/StrainGauge/SiliconeLayer}
+		\caption[Silicone Layer around Strain Gauge Wiring]{Silicone Layer around Strain Gauge Wiring}
+		\label{fig:SiliconeLayer}
+	\end{figure}
+	
+	\item The electrical resistance of the strain gauge is measured to ensure that it is not unintentionally electrically connected to the steel. This quality control step is essential, as in the worst-case scenario, a faulty installation would require the strain gauge to be removed and replaced. Using a multimeter set to measure resistance, the reading between each pair of wires of the strain gauge wires should correspond to the nominal resistance of the gauge, which is $350\Omega$ in this case. Additionally, the resistance between the steel and each individual wire should display an overload or infinite resistance, confirming that there is no unintended electrical connection to the structure.
+	
+	After confirming that the strain gauges have been installed correctly and that no unintended contact with the metal occurs, two resistors with a value close to, or identical to the nominal resistance of the strain gauges can be connected to a circuit within a Wheatstone bridge, and then be connected to a HX711 amplifier (see figure \ref{fig:WheatstoneAmp}), which is futher described in the following section \ref{DataAcquisitionAndTransmission}. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/StrainGauge/WheatstoneCircuit}
+		\caption[Wheatstone Bridge connected to Amplifier]{Wheatstone Bridge connected to Amplifier}
+		\label{fig:WheatstoneAmp}
+	\end{figure}
+	
+\end{enumerate}
+
+
+\subsection{Data Analysis and Processing}\label{DataAcquisitionAndTransmission}
+Wire-shaped conductors have the characteristic that their electrical resistance is directly proportional to their length and inversely proportional to their cross-sectional area. This relationship is described by the formula 
+\[ R=\rho \cdot \frac{l}{A} \]
+where $R$ is the resistance, $l$ is the length of the conductor, $A$ is the cross-sectional area, and $\rho$ is a material-dependent constant known as the electrical resistivity. This coefficient reflects the inherent resistance of a material to the flow of electric current and depends on both the material itself and the units used for length and area. The formula confirms that increasing the length of a wire increases its resistance \cite[see][231]{Riecke:1896}.
+
+When measuring with a strain gauge, two main types of signal conditioning are typically required. First, the strain gauge’s resistance change must be converted into a voltage signal that can be processed. This involves using a Wheatstone bridge circuit, which translates the small resistance variations into a corresponding out-of-balance voltage. Second, the resulting voltage signal often needs to be amplified to an appropriate millivolt level. Signals from the strain gauge must be increased to volts if they are to be digitized by an analog-to-digital converter. Together, these steps ensure the signal is both in the correct form and at a suitable level for further processing and accurate measurement \cite[see][78-79]{Bolton:2019}.
+
+\subsubsection{Wheatstone Bridge}\label{WheatstoneBridge}
+The Bonded Electrical resistance Strain Gauge used, exhibits a change in resistance when subjected to mechanical strain. To enable a microcontroller like the ESP32-S3 to read this change, the resistance variation must be converted into a corresponding voltage signal. For this purpose, a Wheatstone bridge is employed  (see figure \ref{fig:WheatstoneBridge}), which translates the resistance change into a measurable voltage difference.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/StrainGauge/WheatstoneBridge}
+	\caption[Wheatstone Bridge]{Wheatstone Bridge \cite[see][93]{Bolton:2019}}
+	\label{fig:WheatstoneBridge}
+\end{figure}
+
+To understand the principle of the Wheatstone bridge, Kirchhoff’s laws as well as Ohm’s law are essential. These laws help clarify how voltages, currents, and resistances interact in the circuit. By applying them, the relationship between the resistors in the Wheatstone configuration becomes clear.
+
+When analyzing the Wheatstone bridge, the following facts emerge:
+\begin{itemize}
+	\item The total current is equal to the sum of $I_{1}$ and $I_{2}$: 
+	\[ I_{s} = I_{1} + I_{2} \] \cite[149]{Woan:2000}\\
+	\item The supply voltage $V_{s}$ is equal to the sum of the voltage drop across $R_{1}$ and across $R_{2}$ as well as to the sum of the voltage drop across $R_{3}$ and across $R_{4}$: 
+	\[ V_{s} = V_{1,2} = V_{3,4}  \]\cite[149]{Woan:2000}
+	\item The voltage drop across one resistor in the Wheatstone bridge results from its resistance relative to the total resistance of its series branch. It can be calculated using the voltage divider rule: \[ V_{1}= V_{s}\cdot R_{1}/(R_{1}+R_{2}) \] \cite[see][119]{Patrick:2000}
+	\item The potential difference between points B and D can be calculated by subtracting $V_{D}$ from $V_{B}$. This is equivalent to subtracting the voltage drop across $R_{4}$ from the voltage drop across $R_{2}$ \cite[see][92]{Bolton:2019}
+	\item The resulting formula for the potential therefore is: 
+	\[ V_{B} - V_{D} = V_{s}\cdot R_{2}/(R_{1}+R_{2}) - V_{s}\cdot R_{4}/(R_{3}+R_{4}) \] 
+	\item which concludes to:  
+	\[ V_{s}\cdot (R_{2}/(R_{1}+R_{2}) - R_{4}/(R_{3}+R_{4})) \]
+	
+\end{itemize}
+
+The primary goal of the Wheatstone bridge is to measure the potential difference between points B and D. This measurement allows us to draw conclusions about the relationship between the resistors, particularly when one of them is unknown or subject to change as in the usage of strain gauges.
+
+The concept of a “balanced” Wheatstone bridge refers to the condition in which the potential difference between B and D is zero. In this state, the voltage across the bridge diagonal vanishes, indicating that the ratio of resistors in both branches is equal.
+
+With the Wheatstone bridge being balanced, one more statements can be made \cite[see][92-93]{Bolton:2019}: 
+\begin{itemize}
+	\item With $ V_{s} = 0$ follows $R_{2}/(R_{1}+R_{2}) - R_{4}/(R_{3}+R_{4}) = 0 $ according to Zero Property of Multiplication
+	\item Hence: 
+	\[ R_{2}\cdot (R_{3}+R_{4}) = R_{4}\cdot(R_{1}+R_{2})  \]
+	\item When applying distributive law: \[ R_{2}\cdot R_{3} + R_{2} R_{4} = R_{4}\cdot  R_{1} + R_{4}\cdot R_{2} \]
+	\item The result is an equation that describes the relationship among the four resistors in a Wheatstone bridge: 
+	\[ R_{1}/R_{2}=R_{3}/R_{4} \] 
+\end{itemize} 
+
+\paragraph{Bridge configurations}
+A Wheatstone bridge can be configured in three ways: quarter-bridge, half-bridge, and full-bridge. In the quarter-bridge (see figure \ref{fig:QuarterBridge} (3) ) configuration, three fixed resistors and one active strain-sensitive resistor form the bridge. The half-bridge (see figure \ref{fig:QuarterBridge} (2)) uses two active strain-sensitive resistors and two fixed resistors, enhancing measurement sensitivity and reducing temperature-related errors. The full-bridge configuration (see figure \ref{fig:QuarterBridge} (1)), where all four resistors are active strain-sensitive elements, provides the highest sensitivity and best temperature compensation. In both the half- and full-bridge configurations, the active resistors are aligned so that one experiences compression while the other experiences tension, allowing the system to measure both positive and negative pressures \cite[see][73]{Tandeske:1991}.
+
+For the demonstrator, a diagonal half-bridge configuration (see figure \ref{fig:StrainGaugeWiring}) is employed. As the focus lies on measuring unidirectional force effects, two strain gauges are mounted on opposite sides of the tensile–compressive bar like presented in the installation process of the strain gauges. Although the diagonal arrangement does not eliminate temperature-induced errors \cite[see]{HBM:2019}, the required level of accuracy for the demonstrator is still achieved with close to none extreme temperature changes in the demonstrators environment. Now the next step will be to amplify the signal coming from the Wheatstone configuration.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/StrainGauge/WheatstoneConfigurations}
+	\caption[Full, Half and Quarter Wheatstone Bridge]{Full, half and quarter Wheatstone Bridge \cite[see][5]{HBM:2019}}
+	\label{fig:QuarterBridge}
+\end{figure}
+
+
+\subsubsection{Programmable Gain Amplifier}
+An amplifier can be described as a system with an input and an output, whose purpose is to increase the magnitude of a signal (see figure \ref{fig:Amplifier}). Its voltage gain is defined as the ratio of the output voltage to the input voltage, each measured relative to the earth. Additionally, the input impedance of an amplifier is calculated by dividing the input voltage by the input current, while the output impedance is the output voltage divided by the output current \cite[see][79]{Bolton:2019}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../../../Images/Syde/HTA/StrainGauge/Amplifier}
+	\caption[Working System of an Amplifier]{Working System of an Amplifier\cite[see][79]{Bolton:2019}}
+	\label{fig:Amplifier}
+\end{figure}
+
+For the demonstrator, an HX711 module \cite{Avia:2009} is employed as the front end for the load-cell bridge. The HX711 combines a precision 24-bit \ac{ADC} with an on-chip \ac{PGA}, allowing a strain-gauge Wheatstone bridge to be connected directly and amplified before high-resolution conversion \cite[see][1]{Avia:2009}. The following sections discuss the working principle of the HX711 Device.
+
+While traditional operational amplifiers are widely used for many general-purpose tasks, there are also specialty amplifiers based on their design and used for more specific applications. These include \acp{PGA} \cite[see][121]{Jung:2005}.  
+
+An operational amplifier is a differential input, single-ended output amplifier used with external feedback elements to perform various operations. On top of this basic amplifier concept, a \ac{PGA} adds an important feature: the ability to control its gain, its amplification factor, in a predictable and adjustable way. Since \acp{ADC} typically have full-scale input voltage ranges between 2V and 10V, it is important that the input signals are adjusted close to this range to achieve the \acp{ADC} full precision. Sensors, however, generate output voltages over a wide range, which means that a fixed gain could either fail to amplify small signals sufficiently or cause large signals to saturate the \ac{ADC} or amplifier.
+
+The \ac{PGA} is usually placed between the sensor and the  \ac{ADC} to ensure that the  \ac{ADC} receives signals within its optimal range. In some cases, additional signal conditioning may be required before or after the \ac{PGA}, but generally, it is preferable to place the \ac{PGA} first to minimize errors introduced by further signal conditioning \cite[see][151-152]{Jung:2005}. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../../../Images/Syde/HTA/StrainGauge/PGALogic}
+	\caption[PGA in a Data Acquisition System]{PGA in a Data Acquisition System \cite[see][152]{Jung:2005}}
+	\label{fig:FullBridge}
+\end{figure}
+
+\subsubsection{Analog to Digital Conversion}
+Analog circuits can already handle a wide range of signal processing tasks effectively. Many functions, such as audio amplification, filtering, and radio transmission, are straightforward enough that analog processing provides sufficient performance. However, when more advanced functionality is required, \ac{DSP} becomes indispensable, offering critical extensions of capabilities that go beyond the reach of analog circuits. The advantages of digital signal processing include perfect storage of digitized signals, an effectively unlimited signal-to-noise ratio, the ability to perform complex calculations, and the flexibility to adapt algorithms to changing circumstances. To leverage these benefits, it is essential to convert analog signals into digital form at an early stage of the processing chain, and to do so with high precision.
+
+In analog systems, signals exist as continuous variations with respect to a physical reference. In contrast, digital systems represent signals as discrete numerical values within the limited word width of the digital format. The \ac{ADC} continuously strives to provide an optimal digital representation of the incoming analog signal at any given moment, despite the inherent rounding errors that must be accepted during the conversion process. Digital signals differ fundamentally from analog signals because they are both sampled and quantized. Sampling means that digital signals only have defined values at discrete time intervals set by the sampling frequency. Quantization, on the other hand, introduces finite resolution, mapping each sample to one of a limited set of digital values, which introduces small errors in the representation (see figure \ref{fig:ADCFunctions}) \cite[see][2]{Pelgrom:2010}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../../../Images/Syde/HTA/StrainGauge/ADCFunctions}
+	\caption[Functions of the Analog-to-Digital Converter: Sampling, Quantizing and Linking to a Reference]{Functions of the Analog-to-Digital Converter: Sampling, Quantizing and Linking to a Reference \cite[see][2]{Pelgrom:2010}}
+	\label{fig:ADCFunctions}
+\end{figure}
+
+By implementing a Wheatstone bridge and an HX711 load cell amplifier with an integrated \ac{ADC}, the strain gauge resistance is converted to a proportional voltage, enabling the Hypatia Board to read the strain values. The micro-controller board can then use these values in software, and the raw data gets to be visualized in the dashboard. An additional filter and PD control are applied to minimize noise and errors in the measured data.
+
+\subsubsection{Moving-Average Filter}\label{MovingAverageFilter}
+In digital signal processing, noise in measured signals often leads to fluctuations around the true values of the underlying waveform \ref{fig:MovingAverageFilterL5}. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../../../Images/Syde/HTA/StrainGauge/MovingAverageFilterL5}
+	\caption[Performance of Moving-Average Filter depending on Filter Length]{Performance of Moving-Average Filter depending on Filter Length \cite[35]{Gan:2007}}
+	\label{fig:MovingAverageFilterL5}
+\end{figure}
+
+A straightforward method of reducing this noise is to average several adjacent samples. The moving-average filter (see figure \ref{fig:MovingAverageFilterL5}) represents one of the simplest forms of digital filters. An $L$-point moving-average filter is described by the input–output relation, where each output value $y(n)$ is obtained as the arithmetic mean of $L$ consecutive input samples \cite[see][34]{Gan:2007}. 
+
+\[
+y(n) = \frac{1}{L}\bigl[x(n)+x(n-1)+\cdots+x(n-L+1)\bigr]
+= \frac{1}{L}\sum_{l=0}^{L-1} x(n-l)\,.
+\]
+
+
+
+Increasing the filter length $L$ improves the smoothing effect (see figure \ref{fig:MovingAverageFilter}): for example shown in the following picture is the impact of different filter length on the curve. With $L=5$ the noise reduction is moderate, while $L=10$ produces stronger smoothing but at the cost of amplitude attenuation. For sufficiently large $L$, such as $L=20$, the sinusoidal component of the signal can be completely suppressed.
+
+	
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/StrainGauge/MovingAverageFilter}
+	\caption[Comparison of different Filter Length]{Comparison of different Filter Length \cite[35]{Gan:2007}}
+	\label{fig:MovingAverageFilter}
+\end{figure}
+
+The direct implementation of this equation requires $L-1$ additions per output sample and a buffer of $L$ memory locations to store the sequence of recent inputs. To improve computational efficiency, the recursive structure of the moving average can be exploited. At each new time step $n$, the set of $L$ samples used to compute $y(n)$ differs from that of $y(n-1)$ by only one element: the oldest sample $x(n-L)$ is discarded and replaced with the newest $x(n)$ (see figure \ref{fig:FilterLengthVisualization}). 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../../../Images/Syde/HTA/StrainGauge/FilterLengthVisualization}
+	\caption[Concept of Filter Window]{Concept of Filter Window \cite[37]{Gan:2007}}
+	\label{fig:FilterLengthVisualization}
+\end{figure}
+
+After applying the filter on the Strain Gauge data, a PD Control is used to shorten the rise time, damp oscillations, and reduce overshoot by having the derivative term reflect the rate of change of the error.
+
+\subsubsection{PD Controller}
+\ac{PID} is extensively applied in industry because of their intuitive structure, relative simplicity, and ability to deliver reliable performance across a wide range of processes. They have become the standard solution in industrial control tasks and are implemented in almost every form of control-equipment. Beyond their primary role, \acp{PID} frequently serve as the foundation for more advanced control strategies, particularly in cases where a basic control-law is insufficient to address complex system requirements \cite[see][1]{Visioli:2006}.
+
+\acp{PID} consist of proportional, integral, and derivative actions, each fulfilling a distinct role. The proportional term reacts to the current error, the integral term responds to accumulated past errors, and the derivative term anticipates the future trend of the error \cite[see][3]{Visioli:2006}.
+ 
+\paragraph{Proportional Action}  
+The proportional component produces a control signal directly proportional to the instantaneous error between the reference input $r(t)$ and the measured output $y(t)$. The proportional gain $K_p$ scales this error and determines the strength of the corrective action applied by the controller. A higher $K_p$ results in stronger correction and typically faster response, but it may also increase the risk of overshoot and oscillations if chosen too large. Conversely, a smaller $K_p$ leads to smoother but slower system behavior and may leave a larger steady-state error \cite[see][3]{Visioli:2006}.  
+
+The proportional control law is expressed as:
+\[
+u(t) = K_p e(t) = K_p \bigl( r(t) - y(t) \bigr),
+\]  
+where $e(t)$ denotes the instantaneous error.  
+
+In the Laplace domain, the corresponding transfer function of the proportional term is:
+\[
+C(s) = K_p.
+\]  
+
+Proportional action alone is insufficient to eliminate steady-state error for certain input types, such as step references, but it forms the foundation upon which integral and derivative actions can build to achieve more robust control performance \cite[see][3-4]{Visioli:2006}.
+
+\paragraph{Integral Action}  
+The integral component generates a control signal proportional to the time integral of the error:
+\[
+u(t) = K_i \int_{0}^{t} e(\tau)\, d\tau.
+\]  
+Its transfer function is:
+\[
+C(s) = \frac{K_i}{s}.
+\]  
+This introduces a pole at the origin, thereby eliminating steady-state error in response to a step reference or a disturbance. Automatic adjustment of the bias term, also known as reset, is commonly applied. The main advantage is the elimination of steady-state error, while the drawback is the potential occurrence of integrator windup under actuator saturation \cite[see][5]{Visioli:2006}.
+
+\paragraph{Derivative Action}  
+The derivative action anticipates the future trend of the error signal by reacting to its rate of change, thereby introducing a predictive element into the control system. This makes derivative control particularly effective in reducing overshoot, damping oscillations, and improving overall system stability \cite[see][6]{Visioli:2006}.  
+
+An ideal derivative control law is expressed as:
+\[
+u(t) = K_d \frac{de(t)}{dt},
+\]
+where \(K_d\) denotes the derivative gain. The corresponding transfer function in the Laplace domain is:
+\[
+C(s) = K_d s.
+\]
+
+The rationale behind this control principle can be explained by considering the Taylor series expansion of the error signal \(e(t)\) at a small prediction interval \(T_d\) ahead in time:
+\[
+e(t + T_d) \approx e(t) + T_d \frac{de(t)}{dt}.
+\]
+This approximation shows that the future error can be estimated as the sum of the current error and its rate of change, scaled by \(T_d\). If the controller applies a control law proportional to this predicted error, the result is:
+\[
+u(t) = K_p \Biggl( e(t) + T_d \frac{de(t)}{dt} \Biggr),
+\]
+which corresponds to a \ac{PD}. By addressing not only the present magnitude of the error but also its tendency, the derivative term provides foresight that helps stabilize dynamic systems and improve transient response \cite[see][6]{Visioli:2006}.
+
+
+In selecting a controller structure, practical considerations often justify choices simpler than full PID. A proportional controller generally leaves a non-zero steady-state error, yet this may be acceptable. When the process is low order, a higher proportional gain can deliver a fast transient with a small residual error, making P control attractive for its simplicity. If the plant already exhibits integral behavior and significant load disturbances are unlikely, adding integral action in the controller is unnecessary to eliminate offset. In such cases, introducing derivative action to form a PD controller provides phase lead, increases closed-loop bandwidth, and accelerates the response to set-point changes \cite[see][15]{Visioli:2006}. Therefore its chosen to be integrated into the demonstrators software. 
+
+With tensile and compressive loads now acquired on the Hypatia board and conditioned in software (moving average filter and PD control), the next step is to translate these values into motor drive commands so the unit responds directly to the measured force. In this scheme, the signed load becomes a signed command: tensile force maps to one drive direction, compressive force to the opposite, with an adjustable offset to create a neutral “no-drive” region around zero. To ensure stable behaviour, the signal path includes gentle smoothing to tame residual noise, a deadband to prevent chatter near zero load, and saturation limits to protect the drive. The \ac{PD} term adds damping and faster rise without overshoot, so the motor output tracks changes in measured load cleanly. In operation, this closes the loop from structure to traction: increases in tensile or compressive load are reflected immediately in the motor’s torque and direction, allowing the demonstrator to act in accordance with the forces it senses.
+\newpage

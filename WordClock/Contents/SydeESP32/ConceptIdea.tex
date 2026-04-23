@@ -1,0 +1,42 @@
+\section{Demonstrators Functionality and Architecture} \label{Demonstrators Functionality and Architecture}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/DemonstratorFlowChart}
+	\caption[Flowchart of Demonstrator Systems and their Interactions]{Flowchart of Demonstrator Systems and their Interactions}
+	\label{fig:DemonstratorFlowChart}
+\end{figure}
+The demonstrator consists of three interconnected subsystems. At its core is the \ac{HTA} system, implemented within a trailer and designed in accordance with the previously described architecture. Complementing this setup is a dashboard, realized as a mobile application, which connects to the system via WiFi to provide monitoring and interaction capabilities. The trailer itself is pulled by a mobile system that applies the external force required for the \ac{HTA} module to operate. This mobile system is controlled independently through a dedicated remote control, ensuring flexible maneuverability. The flowchart presented in the following figure \ref{fig:DemonstratorFlowChart} illustrates the overall structure of the demonstrator. By analyzing each subsystem in detail, the interaction and data exchange between the hardware components can be clearly understood.
+
+The External Force system is controlled by a Remote Control Unit \ref{FlowChartController}, which is equipped with two KY-023 Joystick modules \cite{JoyIT:2017}, each managing the speed and direction of one motor of the system. A SSD1315 display \cite{Seed:2025} provides overview of the real-time velocity of the demonstrator. Additionally, a power switch and a push button are included to initiate an ESP-NOW connection \cite[170]{Karuppusamy:2022} with the External Force system for wireless data exchange.This remote is as well built around a Hypatia board, serving as both the communication hub and the control unit for the connected hardware components.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/FlowChartController}
+	\caption[Flowchart of Remote Control System]{Flowchart of Remote Control System}
+	\label{fig:FlowChartController}
+\end{figure}
+
+The External Force system applies tensile and compressive loads to the \ac{HTA} system by towing the wagon. In this system (see figure \ref{fig:FlowChartExtForce}) a second Hypatia board receives throttle input and controls two independently driven motors via an MOTODRIVER2, featuring a L298N H-bridge driver \cite{SBC-MotoDriver2:2025} and regulating both power and direction. Motor velocity feedback is provided by two LM393 \cite{Rajguru:2017} encoders. Similar to the main system, a switch and LED enable power control and status monitoring. The system is powered by four 1.5V batteries and a 5V power bank.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/FlowChartExtForce}
+	\caption[Flowchart of External Force System]{Flowchart of External Force System}
+	\label{fig:FlowChartExtForce}
+\end{figure}
+
+The main system (see figure \ref{FlowChartHTA}) is the wagon including the \ac{HTA} system and a WiFi dashboard that provides graphical visualization of measurement data and enables real-time adjustment of control parameters. The \ac{HTA} system measures tensile and compressive loads using a strain gauge configured in a Wheatstone bridge, connected to an HX711 analog-to-digital converter \cite{Avia:2009}. The acquired data is processed through a software-implemented filter and a PD control algorithm, then output via an MCP4725 digital-to-analog converter \cite{Microchip:2009}.
+The analog output is amplified by an LM358 operational amplifier \cite{LM2596:2023} and fed into a transistor-based H-bridge, allowing control of two motors operating simultaneously. Motor velocity is monitored by two LM393 encoders \cite{Rajguru:2017}, closing the feedback loop. A switch and LED provide system power control and status indication.
+The Power management is handled by a TPS5430 module \cite{TexasInstruments:2006} providing +/-12V in combination with a LM2596HVS Step-Down Voltage Regulator \cite{TexasInstruments:2023} adding a 5V power source to the System. These two modules are powered by a 12.6V rechargeable LiPo battery and the Hypatia Board has a 5V power bank as recourse.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/FlowChartHTA}
+	\caption[Flowchart of HTA System]{Flowchart of HTA System}
+	\label{fig:FlowChartHTA}
+\end{figure}
+
+Having this introduction into the systems and architectures of the demonstrator in mind, the main focus will be on the data transmission throughout the \ac{HTA} system, starting with measuring tensile and compressive loads.
+
+\newpage

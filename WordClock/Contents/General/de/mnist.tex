@@ -1,0 +1,37 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Automatisierung/Skript/Produktspezifikation/Powerpoint/AMF.tex $
+% $Version: 4250 $
+%
+%%%%%%%%%%%%
+
+
+\subsection{Datensatz MNIST}
+
+Der Datensatz MNIST\index{Datensatz!MNIST} ist zum freien Gebrauch verfügbar und enthält 70.000 Bilder von handgeschriebenen Ziffern mit den entsprechenden korrekten Klassifikation. \cite{Deng:2009,Deng:2012} Der Name des Datensatzes begründet aus der Herkunft, da es sich um ein \textbf{m}odifizierten Datensatz aus zwei Datensätzen des US \textbf{N}ational \textbf{I}nstitute of \textbf{S}tandards and \textbf{T}echnology handelt. Diese enthalten handgeschriebene Ziffern von 250 verschiedenen Personen, bestehend aus Angestellte des US Census Bureau und Schülern einer High School. Die so gesammelten Datensätze \ac{sd-3} und \ac{sd-1} wurden zusammengelegt, da der erstere Datensatz der Büroangestellten  sauberere und leichter zu erkennende Daten enthält. Zunächst wurde \ac{sd-3} als Trainingsset und \ac{sd-1} als Testset verwendet, doch auf Grund der Unterschiede ist eine Vermengung beider sinnvoller. Der Datensatz ist bereits in 60.000 Trainingsbilder und 10.000 Testbilder aufgeteilt. \cite{LeCun:2013,Nielsen:2015}
+
+Die Daten werden in vier Dateien zur Verfügung gestellt, zwei für den Trainingsdatensatz und zwei für den Testdatensatz, wovon eine Datei die Bilddaten 
+und die andere die zugehörigen Labels enthält:
+
+
+\begin{itemize}
+    \item \FILE{train-images-idx3-ubyte.gz}:  Bilder zum Training (9912422 bytes)
+    \item \FILE{train-labels-idx1-ubyte.gz}:  Klassifikation der Trainingsdaten(28881 bytes)
+    \item \FILE{t10k-images-idx3-ubyte.gz}:  Testbilder (1648877 bytes)
+    \item \FILE{t10k-labels-idx1-ubyte.gz}:  Klassifikation der Testbilder (4542 bytes)
+\end{itemize}
+
+
+Bei den Bildern im Datensatz MNIST\index{Datensatz!MNIST} handelt es sich um Graustufenbilder der Größe $28 \times 28$ Pixel.\cite{LeCun:2013} Die Daten liegen im Dateiformat IDX vor und können so nicht standardmäßig geöffnet und visualisiert werden. Man kann aber ein Programm schreiben, um die Daten in das Format CSV zu überführen oder direkt von anderen Webseiten eine Variante im Format CSV laden. \cite{Redmon:2020}
+
+
+Die Bibliothek TensorFlow stellt den Datensatz MNIST\index{Datensatz!MNIST} unter \PYTHON{tensorflow\_datasets} zur Verfügung. Dies ist nicht der einzige Datensatz der von TensorFlow zur Verfügung gestellt wird. Eine Liste aller Datensätze, die über so geladen werden können, findet sich im \href{https://www.tensorflow.org/datasets/catalog/overview#all_datasets}{Katalog der Datensätze}\index{Datensatz!TensorFlow}.
+
+
+\begin{figure}
+    \GRAPHICSC{0.6}{1.0}{TensorFlow/MNISTDataset2}
+    \caption{Beispiele aus dem Trainingssatz des Datensatzes MNIST\index{Datensatz!MNIST} \cite{Siddique:2019}}
+\end{figure}
+

@@ -1,0 +1,53 @@
+
+\chapter{HX711}
+
+\begin{itemize}
+	\item general
+	\subitem Why do we need an Amplifier
+	\subitem What is a Amplifier
+	\item CJMCU-711 
+	\subitem how different to other HX711 Modules 
+	\item HX711 Library
+		\subitem Describtion
+		\subitem Installation
+	\item Calibration
+		\subitem Simple Code
+		\subitem Simple Application
+		
+\end{itemize}
+The HX711 Load Cell Amplifier Module is a 24-bit analog-to-digital converter (ADC) designed to interface directly with bridge-type sensors such as load cells, making it ideal for weigh scales and industrial measurement applications. It offers two input channels: Channel A, which has a programmable gain amplifier (PGA) with selectable gains of 128 or 64 for small sensor signals, and Channel B, which has a fixed gain of 32 for larger input signals. The small voltage signal produced by the load cell is fed into the HX711, where it is selected by a multiplexer, amplified by the PGA, and then digitized by a high-precision sigma-delta ADC. The resulting 24-bit digital output is transmitted through a simple two-wire serial interface (DOUT and PD\_SCK) to a microcontroller such as an Arduino or ESP32.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/Setup/HX711front}
+	\caption[HX711 front]{HX711 front}
+	\label{fig:HX711front}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/Setup/HX711back}
+	\caption[HX711 back]{HX711 back}
+	\label{fig:HX711back}
+\end{figure}
+
+
+The HX711 also includes an analog supply regulator, a bandgap voltage reference for signal stability, and an internal oscillator, though an external crystal can be connected for more accurate timing if needed. Additionally, the output data rate can be configured via the RATE pin to either 10 Hz or 80 Hz, providing flexibility depending on the application requirements. With its ability to amplify and digitize very small signals, the HX711 simplifies the process of integrating load cells into digital systems and enables highly accurate force or weight measurements with minimal external components \ref{fig:HX711BlockDiagramm}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../Images/Syde/HTA/Setup/HX711BlockDiagramm}
+	\caption[HX711 Block Diagramm]{HX711 Block Diagramm}
+	\label{fig:HX711BlockDiagramm}
+\end{figure}
+
+\section{Example Code HX711}
+To verify that the setup is functioning correctly and to gain a better understanding of how the load cell operates, the Arduino IDE provides an example code. This example can be found under File > Examples > HX711 and is titled HX\_kitchen\_scale, as shown in the image below\ref{fig:HXKitchenScaleCode}. The example code was authored by Rob Tillaart, and at the top of the script, a URL is provided that links to a GitHub page containing further details about the HX711 library.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../../../Images/Syde/HTA/HXKitchenScaleCode}
+	\caption[HX711 Kitchen Scale Code]{HX711 Kitchen Scale Code}
+	\label{fig:HXKitchenScaleCode}
+\end{figure}
+

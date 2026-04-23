@@ -1,0 +1,124 @@
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{ATCommandblue}{HTML}{548DD4}
+\definecolor{ATCommandred}{HTML}{FF0107}
+\chapter{LoRa}
+\section{Explaination}
+
+\subsection{sub-GHz ISM}
+%https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/
+%https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country/
+
+Sub-GHz wireless communication refers to data transmission that takes place over radio frequencies below 1 gigahertz, typically within the ISM (Industrial, Scientific, and Medical) bands such as 433 MHz, 868 MHz, or 915 MHz. These frequencies are commonly used in low-power, long-range communication systems, particularly in the context of the Internet of Things (IoT). Unlike higher-frequency systems such as Wi-Fi or Bluetooth, which operate around 2.4 GHz, sub-GHz systems offer better range and penetration through physical obstacles like walls and buildings. They are well-suited for applications that involve small data packets, such as sensor readings or control signals, where power efficiency and coverage are more important than bandwidth.
+
+Frequencies used for sub-GHz wireless communication, such as LoRa, differ between continents due to region-specific regulatory requirements. Each region has its own governing body responsible for managing radio spectrum usage—for example, ETSI in Europe, the FCC in the United States, and ARIB in Japan. These authorities define which parts of the ISM (Industrial, Scientific, and Medical) bands can be used without a license and under what conditions, such as maximum output power, duty cycle restrictions, and channel widths.
+
+As a result, the same LoRa module must be configured differently depending on the country or region in which it is used. In Europe, the allowed frequency range is typically 863 to 870 MHz (EU868), while in the United States and Australia, the band ranges from 902 to 928 MHz (US915 and AU915). Other regions, such as Asia, use variations like AS923, which includes frequencies from 915 to 928 MHz but may differ slightly between countries. China and South Korea have their own narrower and more restricted bands, such as CN470 and KR920.
+
+\subsection{OTTA vs ABP}
+
+\subsection{APP EUI}
+\subsection{DEV EUI}
+\subsection{APP KEY}
+
+
+\section{LSM100A}
+%https://github.com/Support-SJI/LSM100A/blob/main/Document/%5BSJIT%5D_LSM100A_UserManual_v1.12_240626.pdf
+The LSM100A is a compact radio module developed by SJI Co., Ltd. It operates in the sub-GHz ISM band and supports both LoRa and Sigfox modulation schemes. The module measures 14 x 15 x 2.8 mm can be configured to operate in LoRa or Sigfox mode. It is designed for use in frequency bands such as EU863–870, which can be adjusted depending on the target region.
+
+
+\section{Hypatia Code}
+This Arduino sketch transforms the Hypatia Board into a serial bridge and command handler for the onboard LSM100A LoRa module. It's main purpose is to allow the ESP32 to send and receive messages using the LoRa radio protocol, specifically to interact with a LoRa gateway that will later be connected to The Things Network (TTN). The ESP32 communicates with the LoRa module using UART2 (GPIO13 as RX and GPIO14 as TX) at a baud rate of 9600. 
+
+In the setup routine, the sketch sends a series of AT commands to configure the LoRa module. It starts with a soft reset (ATZ), then switches the module into LoRa mode using AT+MODE=1, ensuring that LoRa – not Sigfox – is used as the modulation scheme. Next, the frequency band is set to EU868 (AT+BAND=5), which matches the regulations and requirements for LoRaWAN in Europe. A basic ping (AT) checks whether the module is responsive, and AT+JOIN=1 assigns the node a device ID and prepares it for communication with the gateway.
+
+After initialization, the program continuously runs two functions in the main loop. The first, handleLoRaToSerial(), reads any incoming data from the LoRa module—typically downlink messages from the gateway—and prints them to the serial terminal. The second, handleSerialToLoRa(), listens for user input via the USB serial connection. If the input begins with “AT”, the ESP32 treats it as a direct AT command and forwards it to the LoRa module. If the input is a regular text message, the sketch automatically converts it to a hexadecimal string and formats it into an AT+SEND=1:0:<hex> command. This command is then sent to the LoRa module, which transmits it over the air to the gateway.
+
+
+
+\lstinputlisting[
+caption= LoRaWan End Devicee,
+label={lst:LoRaWan End Device},
+language=C++,
+backgroundcolor=\color{backcolour},   
+commentstyle=\color{codegreen},
+keywordstyle=\color{magenta},
+numberstyle=\tiny\color{codegray},
+stringstyle=\color{codepurple},
+basicstyle=\ttfamily\footnotesize,
+breakatwhitespace=false,         
+breaklines=true,                 
+keepspaces=true,                 
+numbers=left,       
+numbersep=5pt,                  
+showspaces=false,                
+showstringspaces=false,
+showtabs=false,                  
+tabsize=2]{../../Code/Syde/Test/TestLora/LoRaSenderHex/LoRaSenderHex.ino}
+
+
+
+
+
+\section{AT Shortcuts}
+
+\section{Gateway}
+%https://www.thethingsnetwork.org/docs/gateways/
+A LoRaWAN gateway is a device that acts as a bridge between LoRa-enabled end devices, such as sensors, and the internet. It receives wireless data packets sent by end devices over the LoRa radio protocol and forwards this data to a network server—such as The Things Network (TTN)—using an internet connection. In the opposite direction, it can also receive downlink messages from the network server and transmit them back to the appropriate end devices via LoRa.
+
+In addition to basic data forwarding, a gateway provides metadata such as signal strength, reception time, and device identifiers, which are used by the network server for routing and processing.
+
+\subsection{The Things Indoor Gateway Configuration}
+%https://iot-shop.de/ttig-onboarding
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.1\linewidth]{../../../Images/Syde/LoRa/Gateway}
+	\caption[Gateway]{Gateway}
+	\label{fig:Gateway}
+\end{figure}
+
+To install and connect The Things Indoor Gateway (TTIG) to The Things Network (TTN), the process begins by recording the essential information printed on the label on the back of the gateway \ref{fig:GatewayInfo}. This includes the Gateway ID, the Wi-Fi password, and the device’s EUI, all of which are needed during configuration. Once this information is noted, the gateway is plugged into a power outlet. If required, it can be reset by pressing the reset button on the underside of the device for approximately five seconds, until the LED on top starts blinking red and green.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.1\linewidth]{../../../Images/Syde/LoRa/GatewayInfo}
+	\caption[Gateway Info]{Gateway Info}
+	\label{fig:GatewayInfo}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.1\linewidth]{../../../Images/Syde/LoRa/GatewayReset}
+	\caption[Gateway Reset]{Gateway Reset}
+	\label{fig:GatewayReset}
+\end{figure}
+
+To enter configuration mode, the user presses and holds the setup button on the top of the gateway for around ten seconds, which causes the LED to blink rapidly in red. This indicates that the device is ready to be configured. On a nearby computer or smartphone, the user then connects to the gateway’s Wi-Fi network, typically named "MINIHUB-XXXXXX", using the password printed on the label. After establishing the connection, a web browser is used to access the gateway’s local configuration interface via the IP address 192.168.4.1.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.1\linewidth]{../../../Images/Syde/LoRa/GatewaySetup}
+	\caption[Gateway Setup]{Gateway Setup}
+	\label{fig:GatewaySetup}
+\end{figure}
+
+On this page, the user selects the local Wi-Fi network and enters its password. After saving and rebooting, the gateway attempts to connect. While doing so, the LED shows alternating red and green lights. When the LED turns solid green, the gateway has successfully connected to the internet.
+
+The next step is to register the gateway with TTN. This involves creating a TTN account, navigating to the “Gateways” section, and selecting “Claim Gateway.” The user must enter the Gateway EUI, which is derived from the MAC address found on the device. Specifically, the EUI is formed by inserting “FFFE” in the middle of the MAC address. The Wi-Fi password from the label is used again, this time as the claim authentication code.
+
+Finally, the user chooses a unique Gateway ID and selects the appropriate frequency plan, such as “Europe 863–870 MHz (SF9 for RX2 – recommended).” Once all information is submitted and accepted, the gateway is fully registered and ready to operate on The Things Network, allowing it to forward LoRaWAN messages between end devices and the TTN backend.
+
+\section{Gateway EUI}
+
+\section{TTN}
+\subsection{Device Registration}
+\subsection{Gateway Registration}
+
+\subsection{Google Cloud}
+\subsection{SKD}
+\subsection{API}
+\subsection{Webhook}
+\subsection{End Device Activation}

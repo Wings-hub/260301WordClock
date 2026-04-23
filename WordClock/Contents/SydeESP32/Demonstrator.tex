@@ -1,0 +1,15 @@
+The demonstrator comprises three interconnected systems: a trailer attached to a mobile unit controlled via a remote interface.
+
+1. Main System – Wagon with HTA System and Wi-Fi Dashboard
+The central unit is the wagon, integrating the HTA system with a Wi-Fi-based dashboard that provides graphical visualization of measurement data and enables real-time adjustment of control parameters.
+The HTA system measures tensile and compressive loads using a strain gauge configured in a Wheatstone bridge, connected to an HX711 analog-to-digital converter. The acquired data is processed through a software-implemented filter and a PD control algorithm, then output via an MCP4725 digital-to-analog converter.
+The analog output is amplified by an LM385 operational amplifier and fed into a transistor-based H-bridge, allowing control of two motors operating simultaneously. Motor velocity is monitored by two encoders, closing the feedback loop. A switch and LED provide system power control and status indication.
+Power management is handled by a TSPxxx module in combination with a 12 V–5 V step-down converter. The system is powered by a 12.6 V rechargeable LiPo battery and a 5 V power bank.
+\Mynote{Board und Hardware namen überprüfen}
+2. External Force System
+This unit applies tensile and compressive loads to the HTA system by towing the wagon. The Hypatia board receives throttle input and controls two independently driven motors via an L298N motor driver, regulating both power and direction. Motor velocity feedback is provided by two encoders. Similar to the main system, a switch and LED enable power control and status monitoring. The system is powered by four 1.5 V batteries and a 5 V power bank.
+
+3. Remote Control Unit
+The remote control is equipped with two joysticks, each managing the speed and direction of one motor in the External Force System. A display provides real-time encoder data from the external system. Additionally, a power switch and a push button are included to initiate an ESP-NOW connection with the External Force System for wireless data exchange.
+
+Each system is built around a Hypatia board—an ESP32-based microcontroller platform—serving as both the communication hub and the control unit for the connected hardware components.

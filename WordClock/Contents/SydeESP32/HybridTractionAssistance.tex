@@ -1,0 +1,35 @@
+\section{Hybrid Traction Assistance System}\label{HybridTractionAssistanceSystem}
+The Hybrid Traction Assistant \ac{HTA} \ref{fig:HTAPatent} is an electrical aid system designed for animal-drawn vehicles or machines. It is mounted on a frame that is connected to the animal by fastening means and integrates several key components that work together to reduce the pulling effort required while ensuring safety and efficiency. At its core, the system includes a load measurement device, typically a load cell, which continuously records the tensile force exerted by the animal, capturing both its value and direction \cite[see][11]{SydeHTA:2021}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/HTAPatent}
+	\caption[Hybrid Traction Assistance]{Hybrid Traction Assistance \cite[2]{BrevettiHTA:2022}}
+	\label{fig:HTAPatent}
+\end{figure}
+
+The system functions by combining load measurement with wheel motion data to manage traction in real time. A load cell continuously records the tensile force applied by the animal, including its value and direction. Simultaneously, wheel sensors provide independent information on speed and travel direction (see figure\ref{fig:AlgorithHTA}). These inputs are processed by the central control unit, which determines the vehicle’s actual motion state and identifies the corresponding traction condition. Depending on whether the animal is pulling with positive force or undergoing compression, the control unit commands the electric motor to deliver the required corrective action. This may involve providing traction support, applying resistance, or activating aid based on predefined fatigue thresholds \cite[see][15]{SydeHTA:2021}. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/AlgorithHTA}
+	\caption[Algorithm of the HTA System]{Algorithm of the HTA System \cite[6]{BrevettiHTA:2022}}
+	\label{fig:AlgorithHTA}
+\end{figure}
+
+Building on the system previously developed instrument for use with horses, the aim is to enable its implementation as a modular solution. Such a module could, for instance, be adapted for integration into pallet trucks or, potentially, deployed as a stand-alone vehicle. To support this broader applicability, a dedicated system architecture has been designed (see figure \ref{fig:HTAArchitecture}) \cite[see][15]{BrevettiHTA:2022}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../../../Images/Syde/HTA/HTAArchitecture}
+	\caption[Architecture of HTA System]{Architecture of HTA System \cite[see][15]{BrevettiHTA:2022}}
+	\label{fig:HTAArchitecture}
+\end{figure}
+
+At the center of the architecture is a processing unit that orchestrates power management, sensing, actuation, and safety features. A battery feeds the platform, and its output is routed through dedicated modules that distribute conditioned power to the processor, a motor-driver interface, and the motor driver that commands two motors (M1 and M2). The processor exchanges real-time signals with the motor-driver interface, a sensor interface that fuses rotary-encoder and load-cell data, and an auxiliary-circuit interface responsible for operator alerts, the emergency stop, and battery status. In everyday use, a handheld remote links to the processing unit so the operator can steer and intervene without touching the hardware. Together, these elements turn raw measurements into motor commands while keeping the system transparent and safe \cite[see][15]{BrevettiHTA:2022}.
+
+Based on the concept for an module with integrated HTA System, the architecture of the demonstrator has been developed to emphasize both modularity and functionality. Each subsystem is designed as an independent yet interconnected unit. To provide a comprehensive understanding, the following sections describe the different modules and systems of the demonstrator, outlining their roles and interactions within the integrated setup.
+
+\newpage
+
+

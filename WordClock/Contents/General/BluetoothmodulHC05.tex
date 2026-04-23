@@ -1,0 +1,1379 @@
+%%%%%%%%%%%%
+%
+% $Autor: A25-01
+% $Datum: 2025-03-05 08:03:15Z $
+% $Pfad: BluetoothModulHC05 $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+% Structure
+\chapter{Sensorbeschreibung Bluetooth-Modul HC-05}\label{Bluetoothmodul HC-05}
+
+
+\section{Bluetooth}
+
+Bluetooth ist eine Funktechnologie zur drahtlosen Kommunikation zwischen verschiedenen Geräten wie Smartphones, Notebooks und Peripheriegeräten. Es arbeitet im 2,4-GHz-ISM-Band und nutzt Frequency Hopping (FH) mit 79 Kanälen, die bis zu 1600-mal pro Sekunde durchlaufen werden. Die Bluetooth-Standards basieren auf IEEE 802.15.1 und bieten je nach Version unterschiedliche Reichweiten und Datenraten. Ursprünglich unterstützte Bluetooth eine maximale Datenrate von 0,7 MBit/s, mit Bluetooth 2.0 wurde die \ac{edr} mit bis zu 2,1 MBit/s eingeführt. Bluetooth 1.2 brachte Adaptive Frequency Hopping (AFH), um Störungen mit anderen 2,4-GHz-Geräten zu minimieren, während Bluetooth 3.0 einen nie umgesetzten High-Speed-Kanal vorsah. Geräte kommunizieren innerhalb eines Piconets, wobei ein Master bis zu sieben Slaves verwalten kann. Zur Sprachübertragung stehen drei Kanäle mit jeweils 64 kBit/s zur Verfügung. Bluetooth ist in verschiedenen Leistungsklassen verfügbar, mit einer maximalen Reichweite von bis zu 100 m in Klasse 1. Die Abwärtskompatibilität zwischen den Versionen gewährleistet die Interoperabilität, wobei neue Funktionen nur genutzt werden können, wenn beide Geräte die jeweilige Version unterstützen. \cite{Dembowski:2013,IEEE:2005}
+
+\section{\ac{ble}}
+
+\ac{ble}, auch als Bluetooth Smart bekannt, wurde mit Bluetooth 4.0 im Jahr 2010 eingeführt und zielt explizit auf einen möglichst geringen Leistungsverbrauch ab. BLE nutzt den gleichen physischen Übertragungskanal wie klassisches Bluetooth, unterstützt jedoch nur eine maximale Datenrate von 1 MBit/s und eine Reichweite von etwa 10 m. Im Gegensatz zu früheren Bluetooth-Versionen verwendet \ac{ble} nur noch 40 statt 79 Kanäle mit einer Bandbreite von jeweils 1 MHz für das Frequenzsprungverfahren. \ac{ble}-Geräte organisieren sich in einem Piconet, wobei das Gerät, das die Verbindung initialisiert, automatisch als Master fungiert. Ein Rollenwechsel zwischen Master und Slave ist nicht möglich. Aufgrund grundlegender Änderungen im Protokoll-Stack und in der physikalischen Schicht besteht keine direkte Kompatibilität zwischen klassischem Bluetooth und \ac{ble}. Geräte mit Dual-Mode-Chips, die sowohl klassisches Bluetooth als auch \ac{ble} unterstützen, werden als "Smart Ready" gekennzeichnet. Weiterentwicklungen wie Bluetooth 4.1 und 4.2 verbesserten den Energieverbrauch und die Sicherheit, während Bluetooth 5.0 eine höhere Reichweite und Datenrate bietet. \cite{Dembowski:2013}
+
+\section{Bluetooth-Standards und -Versionen}
+
+Bluetooth gibt es in verschiedenen Versionen \cite{Brandao:2018}, die jeweils ihre eigenen Spezifikationen und Normen umfassen. Nachfolgend eine Übersicht der verschiedenen Bluetooth-Technologien und -Versionen:
+
+\begin{enumerate}
+	\item \textbf{Bluetooth 1.0 bis 1.2}:
+
+	Diese frühen Versionen wurden 1999 (1.0) bis 2003 (1.2) veröffentlicht. Sie definieren die grundlegenden Funkstandards und die Übertragungsraten von bis zu 721 kbit/s ohne große Sicherheitsmechanismen.
+
+	\item \textbf{Bluetooth 2.0 + \ac{edr}}:
+
+	2004 eingeführt, bietet eine Übertragungsrate von bis zu 2 Mbit/s.
+
+	\item \textbf{Bluetooth 3.0 + HS (High Speed)}:
+
+	2009 veröffentlicht, ermöglicht die Nutzung von Wi-Fi für höhere Datenraten (bis zu 3 Mbit/s), wenn nötig.
+
+	\item \textbf{Bluetooth 4.0 (Low Energy - \ac{ble})}:
+
+	2010 eingeführt, insbesondere mit dem Fokus auf energieeffiziente Anwendungen. \ac{ble} ist besonders nützlich für \ac{iot}-Anwendungen.
+
+	\item \textbf{Bluetooth 5.0}:
+
+	Seit 2016 verfügbar, mit weiteren Verbesserungen in Reichweite (bis zu 40 m), Geschwindigkeit (bis zu 2 Mbit/s) und Datenkapazität.
+
+\end{enumerate}
+
+\section{Typische Anwendungen}
+
+\subsection{Kabellose Kopfhörer und Audio-Streaming}
+Bluetooth wird häufig in kabellosen Kopfhörern und Lautsprechern verwendet, um Audiosignale von einem Smartphone, Tablet oder Computer zu empfangen.
+
+\subsubsection{Beschreibung}
+Kabellose Kopfhörer, die Bluetooth nutzen, ermöglichen es den Nutzern, Musik, Podcasts oder Anrufe ohne die Einschränkungen von Kabeln zu hören. Bluetooth 4.0 und höher bieten eine stabile Verbindung und eine akzeptable Reichweite von bis zu 10 Metern, was für die meisten Anwendungen wie Sport, Pendeln oder zu Hause ausreichend ist. Geräte wie Apple AirPods, Sony WH-1000XM4 oder Bose QuietComfort 35 setzen Bluetooth ein, um Audio ohne Verzögerung zu streamen.  \cite{Gaum:2023}
+
+\begin{itemize}
+	\item \textbf{Vorteile:}
+	\begin{itemize}
+		\item \textbf{Bewegungsfreiheit:} Nutzer können sich ohne Einschränkung durch Kabel bewegen.
+		\item \textbf{Komfort:} Bluetooth ermöglicht eine einfache Kopplung zwischen Geräten, ohne dass Kabel angeschlossen werden müssen.
+		\item \textbf{Energieeffizienz (insbesondere bei \ac{ble}):} Moderne Bluetooth-Kopfhörer haben eine lange Akkulaufzeit dank der Verwendung von \ac{ble}.
+	\end{itemize}
+		\item \textbf{Nachteile:}
+	\begin{itemize}
+		\item \textbf{Latenz:} Bei Audio-Streaming kann es in einigen Fällen zu einer minimalen Verzögerung kommen, was vor allem bei Videoinhalten auffallen kann.
+		\item \textbf{Reichweite:} Wenn die Reichweite überschritten wird, können Verbindungsabbrüche auftreten.
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Smart Home Geräte}
+Bluetooth wird auch in Smart Home Systemen verwendet, um Geräte wie Thermostate, Lichtschalter, Smart Locks und Sicherheitskameras miteinander zu verbinden.
+
+\subsubsection{Beschreibung}
+
+In einem Smart Home können Geräte wie Lampen, Thermostate und Türschlösser über Bluetooth miteinander verbunden werden. Zum Beispiel kann ein Benutzer ein Smart Lock über eine Bluetooth-Verbindung mit seinem Smartphone koppeln und die Tür von seinem Telefon aus sperren oder entsperren. Mit Bluetooth-fähigen Thermostaten können Nutzer die Temperatur in ihren Räumen steuern, indem sie über eine App auf ihrem Smartphone eine Verbindung herstellen.  \cite{Gaum:2023}
+
+\begin{itemize}
+	\item \textbf{Vorteile:}
+	\begin{itemize}
+		\item \textbf{Einfache Einrichtung:} Die Einrichtung und Kopplung von Geräten erfolgt schnell und ohne viel Aufwand.
+		\item \textbf{Energieeffizienz:} \ac{ble} sorgt für einen geringen Energieverbrauch, sodass Geräte lange mit einer Batterie betrieben werden können.
+		\item \textbf{Vielseitigkeit:} Durch die Unterstützung von Multipoint-Verbindungen können mehrere Geräte gleichzeitig verbunden und gesteuert werden.
+	\end{itemize}
+	\item \textbf{Nachteile:}
+	\begin{itemize}
+		\item \textbf{Reichweite:} Die Reichweite von Bluetooth in einem Smart Home kann begrenzt sein, was besonders bei größeren Häusern problematisch sein kann.
+		\item \textbf{Kompatibilität:} Einige Geräte erfordern spezielle Apps oder Softwareversionen, was die Interoperabilität zwischen verschiedenen Herstellern und Geräten einschränken kann.
+	\end{itemize}
+\end{itemize}
+
+\section{\ac{uart}}
+
+\ac{uart} steht für Universal Asynchronous Receiver/Transmitter. Es ist ein Baustein, der zur seriellen Datenübertragung genutzt wird – also zur Übertragung von Datenbitfolgen über eine Leitung. \glqq Asynchron\grqq{} bedeutet, dass kein gemeinsames Taktsignal zwischen Sender und Empfänger nötig ist. Stattdessen muss der Empfänger den Datenfluss allein aus dem empfangenen Signal erkennen und interpretieren.
+
+
+In der Mikrocontroller-Welt ist \ac{uart} wichtig, damit z.B. eine Verbindung zwischen einem Mikrocontroller und einem PC hergestellt werden kann – meist über \ac{usb}-Adapter. Diese liefern passende Signalpegel (z.B. 3,3~V) und erlauben eine direkte Verbindung. Alte serielle PC-Ports arbeiten hingegen mit deutlich höheren Spannungen und umgekehrter Logik, was eine direkte Verbindung verhindert.
+Für eine \ac{uart}-Verbindung werden typischerweise drei Leitungen benötigt:
+\begin{itemize}
+	\item \ac{tx} (sendet Daten)
+	\item \ac{rx} (empfängt Daten)
+	\item \ac{gnd} (Masse)
+\end{itemize}
+Optional gibt es noch Steuerleitungen wie \ac{rts} und \ac{cts} , die den Datenfluss kontrollieren können. \cite{Gehrke:2022}
+
+\section{Wireless Modul HC-05}
+
+Das Wireless Modul HC-05 (Abb. \ref{Bluetooth Modul HC-05-26.1}) ist ein kompaktes Bluetooth-Gerät, das auf dem Standard Bluetooth 2.0 arbeitet. Die Kommunikation findet im lizenzfreien 2,4 GHz ISM-Band statt und erfolgt über eine serielle Schnittstelle \ac{uart}, wodurch eine einfache Anbindung an Mikrocontroller ermöglicht wird.
+
+
+\begin{center}
+	\centering
+	\includegraphics  [width=10cm]{BluetoothModulHC05/HC05}
+	\captionof{figure}[Bluetooth Modul HC-05]{ \cite{ITeadStudio:2010}}\label{Bluetooth Modul HC-05-26.1}
+\end{center}
+
+Ausgelegt für serielle Punkt-zu-Punkt-Verbindungen unterstützt es das \ac{spp}, das die drahtlose Kommunikation zwischen Mikrocontrollern und Bluetooth-fähigen Geräten wie PCs oder Smartphones ermöglicht. Die maximale Baudrate beträgt 460.800 bps, während standardmäßig 9.600 bps verwendet werden. Eine integrierte Antenne sorgt für stabile Verbindungen ohne zusätzliche Komponenten. \cite{ITeadStudio:2010}
+
+\section{Spezifikationen}
+
+Das Modul arbeitet mit einer Betriebsspannung von 3,3 V bis 6 V, wobei 5 V als empfohlener Wert gelten. Bei freier Sichtverbindung liegt die Reichweite bei bis zu 10 Metern. Über die \ac{uart}-Schnittstelle mit den Pins \ac{rx}, \ac{tx}, \ac{gnd} und \ac{vcc} lässt sich das Modul in bestehende Systeme integrieren. Zwei Betriebsmodi stehen zur Verfügung: Im AT-Modus kann es konfiguriert werden (z.B. Baudrate, Name oder Rolle als Master/Slave), während der Datenmodus für den Austausch von Nutzdaten genutzt wird. \cite{ITeadStudio:2010}
+Die Verbindung zwischen dem Arduino Nano 33 BLE Sense und dem Wireless Modul ist der Tabelle (Tabelle \ref{Tabelle Pinbelegung Bluetoothmodul HC-05 und Arduino Nano 33 BLE Sensel}) und dem Schaltplan (Abb. \ref{fig:Schaltplan Verbindung Bluetootmodul HC-05 mit Arduino Nano 33BLE Sense}) zu entnehmen.
+
+\begin{center}
+	\input{../../Images/BluetoothModulHC05/BluetootmodulHC05.tex}
+	\captionof{figure}{Schaltplan Verbindung Bluetootmodul mit Arduino Nano 33 BLE Sense}
+	\label{fig:Schaltplan Verbindung Bluetootmodul HC-05 mit Arduino Nano 33BLE Sense}
+\end{center}
+
+\begin{center}
+	\captionof{table}{Pinbelegung für Wireless Modul}
+	\begin{tabular}{l|l}
+		Arduino-Pinbelegung & HC-05-Pinbelegung \\ \hline
+		\ac{gnd}& \ac{gnd}\\
+		3V3 & \ac{vcc} \\
+		TX &   RXD\\
+		RX & TXD\\
+	\end{tabular}
+	\label{Tabelle Pinbelegung Bluetoothmodul HC-05 und Arduino Nano 33 BLE Sensel}
+\end{center}
+
+
+\section{Bibliothek}
+
+Für die Nutzung des Moduls, wird die RemoteXY-Bibliothek genutzt. Eine Beschreibung hierzu findet sich in \ref{RemoteXYBibliothek}
+
+\subsection{Beispiel - Erklärung}
+
+Der nachfolgende Code (Code \ref{Code:Beispielcode für die RemoteXY-Bibliothek})erstellt eine drahtlose Steuerung für einen Mikrocontroller über eine mobile App, die mit der RemoteXY-Bibliothek arbeitet. Er ermöglicht es, Eingabewerte von der App (z. B. Tasten- und Schalterzustände) zu empfangen und mit dem Mikrocontroller zu interagieren. Die Kommunikation erfolgt über eine serielle Verbindung, wobei die RemoteXY-Bibliothek die Steueroberfläche auf der App generiert und die Eingabewerte an den Mikrocontroller überträgt.
+
+
+\subsection{Beispiel - Code Erklärung}
+
+	\subsubsection{Bibliotheken und Verbindungsmodi}
+	Der Code bindet zwei Bibliotheken ein:
+	\begin{itemize}
+		\item \FILE{SoftwareSerial.h}: Diese Bibliothek ermöglicht die serielle Kommunikation über virtuelle Pins (\ac{rx} und \ac{tx}) auf einem Mikrocontroller.
+		\item \FILE{RemoteXY.h}: Diese Bibliothek ermöglicht die Kommunikation zwischen dem Mikrocontroller und der RemoteXY-App.
+	\end{itemize}
+	Der Verbindungsmodus wird auf \PYTHON{SOFTSERIAL} gesetzt, um Software-Serial zu verwenden. Dadurch wird die serielle Kommunikation über die Pins 2 und 3 des Mikrocontrollers (\ac{rx} und TX\ac{tx}) ermöglicht.
+
+	\subsubsection{Verbindungseinstellungen}
+	Die Verbindungseinstellungen werden wie folgt definiert:
+	\begin{itemize}
+		\item \PYTHON{REMOTEXY\_SERIAL\_RX} und \PYTHON{REMOTEXY\_SERIAL\_TX}: Diese definieren die Pins für den Empfang (\ac{rx}) und die Übertragung (\ac{tx}) von Daten.
+		\item \PYTHON{REMOTEXY\_SERIAL\_SPEED}: Die Baudrate für die serielle Kommunikation wird auf 9600 festgelegt.
+	\end{itemize}
+
+	\subsubsection{Konfiguration der RemoteXY-Benutzeroberfläche}
+	
+	Der Array \PYTHON{RemoteXY\_CONF[]} enthält die Konfiguration für die Benutzeroberfläche der RemoteXY-App. Diese Konfiguration bestimmt, welche Steuerelemente (z.B. Buttons) auf der App angezeigt werden. In diesem Fall wird eine einfache Steueroberfläche mit einem Button definiert.
+
+	\subsubsection{RemoteXY-Struktur}
+	
+	Die Struktur RemoteXY enthält die Variablen, die für die Steuerung des Mikrocontrollers verwendet werden:
+	\begin{itemize}
+		\item \PYTHON{button\_01}: Ein Wert, der den Zustand eines Buttons (1 = gedrückt, 0 = nicht gedrückt) speichert.
+		\item \PYTHON{connect\_flag}: Ein Flag, das den Verbindungsstatus anzeigt (1 = verbunden, 0 = nicht verbunden).
+	\end{itemize}
+
+	\subsubsection{Setup-Funktion}
+	In der \PYTHON{setup()}-Funktion wird die Verbindung zur RemoteXY-Bibliothek durch den Aufruf von \PYTHON{RemoteXY\_Init()} hergestellt. Diese Funktion sorgt dafür, dass der Mikrocontroller mit der RemoteXY-App verbunden wird. Weitere Initialisierungsschritte können hier hinzugefügt werden.
+
+	\subsubsection{Loop-Funktion}
+	In der \PYTHON{loop()}-Funktion wird die \PYTHON{RemoteXY\_Handler()}-Funktion kontinuierlich aufgerufen, um Eingaben von der RemoteXY-App zu verarbeiten. Hier können auch benutzerdefinierte Logiken hinzugefügt werden, um auf die Eingaben zu reagieren. Anstelle von \PYTHON{delay()} sollte \PYTHON{RemoteXY\_delay()} verwendet werden, um eine blockierungsfreie Kommunikation zu gewährleisten.
+
+
+
+\subsection{Beispiel - Code}
+
+\begin{center}
+	\captionof{figure}{Beispielcode für die RemoteXY-Bibliothek}
+	\ArduinoExternal{}{../../Code/Arduino/RemoteXY/RemoteXY.ino}
+	\label{Code:Beispielcode für die RemoteXY-Bibliothek}
+\end{center}
+
+\section{Verwendung der SoftwareSerial Bibliothek}
+
+
+	Die SoftwareSerial-Bibliothek ermöglicht serielle Kommunikation über beliebige digitale Pins eines Arduino-Boards. Dabei wird die serielle Funktionalität per Software nachgebildet.
+	Es ist möglich, mehrere solche Software-Schnittstellen gleichzeitig zu verwenden, mit Übertragungsraten von bis zu 115200 bps.
+	Ein optionaler Parameter erlaubt auch invertierte Signalübertragung, falls das angeschlossene Gerät dieses Protokoll benötigt. \cite{Arduino:2022SoftwareSerial}
+
+\subsection{Installation der SoftwareSerial-Bibliothek}
+
+Eine zusätzliche Installation der SoftwareSerial-Bibliothek ist nicht nötig, da diese in der ArduinoIDE-Entwicklungsumgebung standardmäßig integriert ist.
+
+\subsection{SoftwareSerial-Bibliothek: Zentrale Funktionen}
+
+\begin{itemize}
+	\item\textbf{\PYTHON{SoftwareSerial(rxPin, txPin);}}
+
+Erstellt ein neues SoftwareSerial-Objekt. Die Pins muessen digitale Pins sein.
+
+\begin{itemize}
+	\item \PYTHON{rxPin}: Empfangspin
+	\item \PYTHON{txPin}: Sendepin
+\end{itemize}
+
+\item \textbf{\PYTHON{begin(baudrate);}}
+
+Initialisiert die Kommunikation mit der angegebenen Baudrate.
+
+\item \textbf{\PYTHON{read();}}
+
+Liest ein einzelnes Byte aus dem Empfangspuffer. Sollte nur verwendet werden, wenn \texttt{available()} > 0 ist.
+
+\item \textbf{\PYTHON{write(data);}}
+
+Sendet ein Byte oder einen String über die serielle Verbindung.
+
+\item \textbf{\PYTHON{print()} und \PYTHON{println();}}
+
+Gibt Text, Zahlen oder Zeichenketten aus. \PYTHON{println()} fügt einen Zeilenumbruch hinzu.
+
+\item \textbf{\PYTHON{available();}}
+
+Gibt die Anzahl der empfangenen Bytes zurück, die zum Lesen bereitstehen.
+
+\item \textbf{\PYTHON{listen();}}
+
+Aktiviert diese Instanz fuer den Empfang. Nur eine \texttt{SoftwareSerial}-Verbindung kann gleichzeitig aktiv empfangen.
+
+\item \textbf{\PYTHON{isListening();}}
+
+Gibt \PYTHON{true} zurück, wenn die Instanz aktuell aktiv empfängt.
+
+\item \textbf{\PYTHON{end();}}
+
+
+Beendet die Kommunikation dieser Instanz und gibt die Pins frei. \cite{Arduino:2022SoftwareSerial}
+\end{itemize}
+
+
+\subsection{Beispiele - Erklärung}
+Der Code (Code \ref{Code:Beispielcode für die SoftwareSerial-Bibliothek}) dieses Beispieles ermöglicht die serielle Kommunikation zwischen einem Arduino und einem externen Gerät, wie beispielsweise einem Bluetooth-Modul. Er sendet und empfängt Nachrichten, überprüft den Verbindungsstatus und gibt empfangene Daten an das Gerät zurück. Dadurch wird eine bidirektionale Kommunikation mit dem angeschlossenen Gerät aufrechterhalten, während der Arduino kontinuierlich auf neue Daten wartet und diese verarbeitet.
+
+\subsection{Beispiele - Code Erklärung}
+
+
+\subsubsection{SoftwareSerial-Objekt}
+Zu Beginn des Codes wird ein \PYTHON{SoftwareSerial}-Objekt mit den Pins 10 (\ac{rx}) und 11 (\ac{tx}) des Arduinos erstellt:
+
+\PYTHON{
+	SoftwareSerial mySerial(10, 11);
+}
+
+Dies ermöglicht die Kommunikation zwischen dem Arduino und einem externen Gerät über diese Pins.
+
+\subsubsection{Setup-Funktion}
+Die \PYTHON{setup()}-Funktion wird einmalig zu Beginn des Programms aufgerufen und führt folgende Aufgaben aus:
+
+\begin{itemize}
+	\item Die serielle Kommunikation wird mit einer Baudrate von 9600 gestartet:
+
+		\begin{Arduino}
+			{mySerial.begin(9600)};
+		\end{Arduino}
+
+	\item Eine Nachricht wird an das externe Gerät gesendet, die die erfolgreiche Aktivierung der Kommunikation bestätigt:
+
+		\begin{Arduino}
+			{mySerial.println("SoftwareSerial aktiv!");}
+		\end{Arduino}
+
+	\item Der Verbindungsstatus wird überprüft. Falls die Verbindung aktiv ist, wird eine Bestätigung ausgegeben:
+
+	\begin{Arduino}
+			if (mySerial.isListening()) {
+				mySerial.println("Verbindung aktiv.");
+			} else {
+				mySerial.println("Verbindung inaktiv.");
+			}
+	\end{Arduino}
+\end{itemize}
+
+\subsubsection{Loop-Funktion}
+Die \PYTHON{loop()}-Funktion wird kontinuierlich ausgeführt und überwacht die serielle Kommunikation. Folgende Operationen werden durchgeführt:
+
+\begin{itemize}
+	\item Es wird überprüft, ob eingehende Daten verfügbar sind. Wenn Daten empfangen werden, wird das erste Zeichen gelesen:
+	\begin{Arduino}
+		char eingang = mySerial.read();
+	\end{Arduino}
+	\item Das empfangene Zeichen wird mit der Nachricht \texttt{Empfangen: } zurückgesendet:
+	\begin{Arduino}
+		mySerial.print("Empfangen: ");
+		mySerial.println(eingang);
+	\end{Arduino}
+	\item Falls keine Daten empfangen wurden, wird die Nachricht \texttt{Keine Daten empfangen.} gesendet:
+	\begin{Arduino}
+		if (mySerial.available() == 0) {
+			mySerial.println("Keine Daten empfangen.");
+		}
+	\end{Arduino}
+	\item Zusätzlich wird regelmäßig eine Nachricht an das externe Gerät gesendet:
+	\begin{Arduino}
+		mySerial.print("Nachricht: Hallo, wie geht's?");
+	\end{Arduino}
+	\item Am Ende wird \PYTHON{mySerial.listen()} aufgerufen, um sicherzustellen, dass der Arduino weiterhin auf neue Eingaben hört:
+	\begin{Arduino}
+		mySerial.listen();
+	\end{Arduino}
+	\item Eine kurze Pause von 100 Millisekunden wird eingefügt, um die Belastung des Mikrocontrollers zu verringern:
+	\begin{Arduino}
+		delay(100);
+	\end{Arduino}
+\end{itemize}
+
+
+
+\subsection{Beispiele - Code}
+
+\Mynote{Erklärung fehlt}
+\begin{center}
+	\captionof{figure}{Beispielcode für die SoftwareSerial-Bibliothek}
+	\ArduinoExternal{}{../../Code/Arduino/SerialBib/SerialBib.ino}
+	\label{Code:Beispielcode für die SoftwareSerial-Bibliothek}
+\end{center}
+
+\section{Verwendung von HardwareSerial}
+
+Die Klasse HardwareSerial ermöglicht die serielle Kommunikation zwischen einem Mikrocontroller und externen Geräten über \ac{uart}-Hardware-Schnittstellen \cite{Arduino:2025HardwareSerial}. Sie nutzt serielle Schnittstellen, die in den Mikrocontroller integriert sind, was eine zuverlässige und stabile Datenübertragung gewährleistet. HardwareSerial ist effizienter und störungsresistenter als SoftwareSerial, insbesondere bei höheren Baudraten \cite{Monk:2016}.
+
+\subsection{Installation von HardwareSerial}
+
+Eine zusätzliche Installation von HardwareSerial ist nicht nötig, da dies in der ArduinoIDE-Entwicklungsumgebung standardmäßig integriert ist. \cite{Arduino:2025HardwareSerialb}
+
+\subsection{Zentrale Funktionen von HardwareSerial}
+
+Die Klasse \PYTHON{HardwareSerial} ermöglicht die serielle Kommunikation über Hardware-\ac{uart}-Schnittstellen. Im Folgenden sind die wichtigsten Funktionen zusammengefasst:
+
+\begin{itemize}
+	\item \textbf{\PYTHON{begin(unsigned long baud);}}
+
+	 Initialisiert die serielle Schnittstelle mit der angegebenen Baudrate, z. B. 9600 Baud.
+
+	\item \textbf{\PYTHON{end();}}
+
+	 Beendet die serielle Kommunikation und gibt alle Ressourcen frei.
+
+	\item \textbf{\PYTHON{available();}}
+
+	Gibt die Anzahl der Bytes zurück, die im Empfangspuffer zum Lesen bereitstehen.
+
+	\item \textbf{\PYTHON{read();}}
+
+	 Liest das nächste Byte aus dem Empfangspuffer und gibt es zurück.
+
+	\item \textbf{\PYTHON{peek();}}
+
+	 Gibt das nächste Byte im Empfangspuffer zurück, ohne es zu entfernen.
+
+	\item \textbf{\PYTHON{flush();}}
+
+	 Wartet, bis alle im Sendepuffer befindlichen Daten übertragen wurden.
+
+	\item \textbf{\PYTHON{write(uint8\_t byte);}}
+
+	Sendet ein einzelnes Byte über die serielle Schnittstelle.
+
+	\item \textbf{\PYTHON{write(const uint8\_t *buffer, size\_t size);}}
+
+	 Sendet ein Array von Bytes über die serielle Schnittstelle.
+
+	\item \textbf{\PYTHON{print();} / \PYTHON{println();}}
+
+	Sendet Daten in verschiedenen Formaten (z. B. Text oder Zahlen) als ASCII-Text. \PYTHON{println()} fügt zusätzlich einen Zeilenumbruch an.
+\end{itemize}
+
+Diese Funktionen bilden die Grundlage für die zuverlässige Kommunikation über Hardware-\ac{uart}-Ports in Mikrocontroller-Anwendungen. \cite{Arduino:2025HardwareSerial}
+
+\subsection{Beispiele - Code Erklärung}
+
+Das nachfolgende Programm (Code \ref{Code:Beispielcode für HardwareSerial}) stellt eine serielle Kommunikation zwischen dem Mikrocontroller und einem externen Gerät über die Hardware-Schnittstelle \PYTHON{Serial1} her. Nach dem Start sendet das System eine Begrüßungsnachricht, um die erfolgreiche Verbindung zu signalisieren. Während des Betriebs werden empfangene Zeichen erkannt, zurückgesendet und zusätzlich im seriellen Monitor angezeigt. Darüber hinaus wird regelmäßig eine Testnachricht an das angeschlossene Gerät übertragen.
+
+\subsection{Beispiele - Code}
+\begin{center}
+	\captionof{figure}{Beispielcode für HardwareSerial}
+	\ArduinoExternal{}{../../Code/Arduino/SerialBibHW/SerialBibHW.ino}
+	\label{Code:Beispielcode für HardwareSerial}
+\end{center}
+
+\section{Kalibrierung}
+
+Für eine zuverlässige Bluetooth-Kommunikation mit dem HC-05-Modul ist eine grundlegende Kalibrierung nötig. Besonders wichtig ist die richtige Baudrate, die sich mit dem Befehl \PYTHON{AT+UART} prüfen und anpassen lässt. Sie muss mit der des Mikrocontrollers übereinstimmen, da es sonst zu Übertragungsfehlern kommt. Auch der Modulname lässt sich mit \PYTHON{AT+NAME }ändern, um das Gerät beim Koppeln leichter identifizieren zu können. Der aktuelle Verbindungsstatus kann mit \PYTHON{AT+STATE} abgefragt werden.
+
+Um diese Einstellungen vorzunehmen, muss das HC-05-Modul in den sogenannten AT-Modus gebracht werden. Das gelingt, indem man das Modul beim Einschalten über die kleine integrierte Taste startet. Leuchtet die Status-\ac{led} anschließend in einem langsameren Takt, befindet sich das Modul im AT-Modus und ist bereit, Konfigurationsbefehle entgegenzunehmen. In diesem Zustand kommuniziert das Modul in der Regel mit einer festen Baudrate von 38400 bps über die serielle Schnittstelle.
+
+Darüber hinaus können weitere  Anpassungen vorgenommen werden: etwa das Ändern der Bluetooth-PIN mit \PYTHON{AT+PSWD=}, das Festlegen der Betriebsrolle als Master oder Slave über \PYTHON{AT+ROLE=}, sowie das Deaktivieren automatischer Wiederverbindungen mit \PYTHON{AT+CMODE=0}. Abschließend sorgt ein Neustart mit \PYTHON{AT+RESET} dafür, dass alle Einstellungen übernommen werden. \cite{lastminuteengineers:2023} \cite{ITeadStudio:2010}
+
+\subsection{Durchführung Kalibrierung}
+
+Zur Kalibrierung ist das Wireless Modul an den Arduino anzuschließen. Dieser ist dann mit dem Laptop zu verbinden. Anschließend muss die Arduino IDE geöffnet werden.
+
+\begin{enumerate}
+	\item
+		Auswählen des Ports, an welchen der Arduino angeschlossen ist (Abb. \ref{fig:PortAuswahl Kalibrierung}).
+
+    	\menu{Werkzeuge > Port: > COM3}
+    	
+		\begin{center} 
+			\includegraphics[width=8cm]{BluetoothModulHC05/Port}
+			\captionof{figure}{Auswahl des benutzten Ports}
+			\label{fig:PortAuswahl Kalibrierung}
+		\end{center}
+
+	\item
+		Öffnen des seriellen Monitors (Abb. \ref{fig:SeriellenMonitoroeffnen}).
+
+		\menu{Werkzeuge > Serieller Monitor}
+		
+		\begin{center} 
+			\includegraphics  	[width=8cm]{BluetoothModulHC05/SeriellenMonitor}
+			\captionof{figure}{Öffnen des seriellen Monitors}
+			\label{fig:SeriellenMonitoroeffnen}
+		\end{center}
+
+		\item
+		\menu{Kein Zeilenende} auswählen (Abb. \ref{fig:Keinzeilenende}).
+
+		\begin{center} 
+			\includegraphics  	[width=8cm]{BluetoothModulHC05/NoLineEnd}
+			\captionof{figure}{\texttt{Kein Zeilenende} auswählen}
+			\label{fig:Keinzeilenende}
+		\end{center}
+
+		\item
+			\menu{9600 Baud} auswählen (Abb. \ref{fig:Baudrateeinstellen}).
+
+		\begin{center}
+			\centering
+			\includegraphics  	[width=8cm]{BluetoothModulHC05/Baudrate}
+			\captionof{figure}{Einstellen der Baudrate}
+			\label{fig:Baudrateeinstellen}
+		\end{center}
+
+		\item
+		\menu{AT+NAMEgewünschter Gerätename} in das Eingabefeld eingeben (Abb. \ref{fig:Namenaender}).
+
+		\begin{center}
+			\centering
+			\includegraphics  	[width=8cm]{BluetoothModulHC05/ATName}
+			\captionof{figure}{Ändern des Gerätenamens}
+			\label{fig:Namenaender}
+		\end{center}
+
+		\item
+		Wenn die Namensänderung erfolgreich ist, wird 	\texttt{OKsetname} ausgegeben  (Abb. \ref{fig:Namenaenderok}).
+
+		\begin{center} 
+			\centering
+			\includegraphics  	[width=2cm]{BluetoothModulHC05/ATNameOk}
+			\captionof{figure}{Bestätigung über Namensänderung}
+			\label{fig:Namenaenderok}
+		\end{center}
+
+		\item
+		Für weitere Befehle ist wie bei Schritt 5 und 6 vorzugehen. \cite{ITeadStudio:2015}
+\end{enumerate}
+
+
+\section{Testprogram}
+
+Das folgende Programm (Code \ref{Code:TestprogrammSerielleVerbindung}) initialisiert das Bluetooth-Modul (HC-05) und konfiguriert es über serielle AT-Befehle, um grundlegende Einstellungen wie Name, PIN und Arbeitsmodus festzulegen. Anschließend ermöglicht es die Kommunikation zwischen dem Mikrocontroller und einem externen Gerät über eine serielle Bluetooth-Verbindung. Dabei können empfangene Daten erkannt und einfache Nachrichten ausgetauscht werden. Auf diese Weise kann die Funktion getestet werden.
+
+\begin{center}
+	\captionof{figure}{TestprogrammSerielleVerbindung \cite{JayRCee:2020}}
+	\ArduinoExternal{}{../../Code/Arduino/SerialBibTest/SerialBibTest.ino}
+	\label{Code:TestprogrammSerielleVerbindung}
+\end{center}
+
+\section{Einfache Anwendung}
+
+Der nachfolgende Code (Code \ref{Code:TestBluetooth}) stellt eine Verbindung zwischen einem Arduino und einem mobilen Gerät über Bluetooth her, um eine grafische Benutzeroberfläche (\ac{gui}) zu steuern, die mit der RemoteXY-App erstellt wurde. Über die RemoteXY-App (Abb. \ref{GUIBluetoothtestBib}) können Benutzer Eingaben wie Schieberegler- und Joystick-Bewegungen tätigen, die dann auf dem Arduino verarbeitet und über die serielle Verbindung ausgegeben werden. Der Code wartet kontinuierlich auf Eingaben von der App, verarbeitet diese und gibt die entsprechenden Werte über die serielle Schnittstelle aus. \cite{ConradElectronicSE:2020}
+
+    \begin{center} 
+	\centering
+	\includegraphics  [width=12cm]{BluetoothModulHC05/BluetoothGUITest}
+	\captionof{figure}{\ac{gui} für eine einfache Anwendung}
+	\label{GUIBluetoothtestBib}
+\end{center}
+
+\begin{center}
+	\captionof{figure}{Bluetoothverbindungstest \cite{JayRCee:2020}}
+	\ArduinoExternal{}{../../Code/Arduino/Bluetooth/BluetoothTest/BluetoothTest.ino}
+	\label{Code:TestBluetooth}
+\end{center}
+
+
+\section{Further Readings}
+\begin{itemize}
+
+\item Weitere Informationen zu dem speziellen Sensor finden sich in Let's Get IoT-fied! 30 IoT Projects for All Levels. \cite{Juluru:2022}
+
+\item Die Webseite RemoteXY bietet weitere Informationen zu der RemoteXY-App wie z.B. Beispielanwendungen. \cite{EVCodeLabs:2025b}
+
+\item Die spezielle Interessengruppe Bluetooth SIG, Inc. bietet einige grundlegende Informationen rund um das Thema Bluetooth,  z. B. Standards. \cite{Bluetooth:2025}
+
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Bluetoothmodul HC05}
+\label{chap:HC05}
+\subsection{Domänenwissen}
+Bluetooth ist eine Funktechnologie zur drahtlosen Kommunikation zwischen verschiedenen Geräten wie Smartphones, Notebooks und Peripheriegeräten. Es arbeitet im 2,4-GHz-ISM-Band und nutzt Frequency Hopping (FH) mit 79 Kanälen, die bis zu 1600-mal pro Sekunde durchlaufen werden. Die Bluetooth-Standards basieren auf IEEE 802.15.1 und bieten je nach Version unterschiedliche Reichweiten und Datenraten. Ursprünglich unterstützte Bluetooth eine maximale Datenrate von 0,7 MBit/s, mit Bluetooth 2.0 wurde die Enhanced Data Rate (EDR)) mit bis zu 2,1 MBit/s eingeführt. Bluetooth 1.2 brachte Adaptive Frequency Hopping (AFH), um Störungen mit anderen 2,4-GHz-Geräten zu minimieren, während Bluetooth 3.0 einen nie umgesetzten High-Speed-Kanal vorsah. Geräte kommunizieren innerhalb eines Piconets, wobei ein Master bis zu sieben Slaves verwalten kann. Zur Sprachübertragung stehen drei Kanäle mit jeweils 64 kBit/s zur Verfügung. Bluetooth ist in verschiedenen Leistungsklassen verfügbar, mit einer maximalen Reichweite von bis zu 100 m in Klasse 1. Die Abwärtskompatibilität zwischen den Versionen gewährleistet die Interoperabilität, wobei neue Funktionen nur genutzt werden können, wenn beide Geräte die jeweilige Version unterstützen \cite{Heydon:2012, Afaneh:2018,IEEE:2005}. 
+
+\subsection{Bluetooth Low Energy (BLE)}
+
+BLE, auch als Bluetooth Smart bekannt, wurde mit Bluetooth 4.0 im Jahr 2010 eingeführt und zielt explizit auf einen möglichst geringen Leistungsverbrauch ab. BLE nutzt den gleichen physischen Übertragungskanal wie klassisches Bluetooth, unterstützt jedoch nur eine maximale Datenrate von 1 MBit/s und eine Reichweite von etwa 10 m. Im Gegensatz zu früheren Bluetooth-Versionen verwendet BLE nur noch 40 statt 79 Kanäle mit einer Bandbreite von jeweils 1 MHz für das Frequenzsprungverfahren. BLE-Geräte organisieren sich in einem Piconet, wobei das Gerät, das die Verbindung initialisiert, automatisch als Master fungiert. Ein Wechsel zwischen Master- und Slave-Rolle ist nicht möglich. Aufgrund grundlegender Änderungen im Protokoll-Stack und in der physikalischen Schicht besteht keine direkte Kompatibilität zwischen klassischem Bluetooth und BLE. Geräte mit Dual-Mode-Chips, die sowohl klassisches Bluetooth als auch BLE unterstützen, werden als Smart Ready gekennzeichnet. Weiterentwicklungen wie Bluetooth 4.1 und 4.2 verbesserten den Energieverbrauch und die Sicherheit, während Bluetooth 5.0 eine höhere Reichweite und Datenrate bietet \cite{Afaneh:2018}.
+
+\subsection{ Bluetooth-Standards und -Versionen}
+Bluetooth gibt es in verschiedenen Versionen \cite{Brandao:2018}, die jeweils ihre eigenen Spezifikationen und Normen umfassen. Nachfolgend eine Übersicht der verschiedenen Bluetooth-Technologien und-Versionen: 
+\begin{itemize}
+	\item \textbf{Bluetooth 1.0 bis 1.2:}  
+	Diese frühen Versionen wurden 1999 (1.0) bis 2003 (1.2) veröffentlicht. Sie definieren die grundlegenden Funkstandards und die Übertragungsraten von bis zu 721\,kbit/s ohne große Sicherheitsmechanismen.
+	\item \textbf{Bluetooth 2.0 + EDR:}  
+	2004 eingeführt, bietet eine Übertragungsrate von bis zu 2\,Mbit/s.
+	\item \textbf{Bluetooth 3.0 + HS (High Speed):}  
+	2009 veröffentlicht, ermöglicht die Nutzung von Wi-Fi für höhere Datenraten (bis zu 3\,Mbit/s), wenn nötig.
+	\item \textbf{Bluetooth 4.0 (Low Energy – BLE):}  
+	2010 eingeführt, insbesondere mit dem Fokus auf energieeffiziente Anwendungen. BLE ist besonders nützlich für IoT-Anwendungen.
+	\item \textbf{Bluetooth 5.0:}  
+	Seit 2016 verfügbar, mit weiteren Verbesserungen in Reichweite (bis zu 40\,m), Geschwindigkeit (bis zu 2\,Mbit/s) und Datenkapazität.
+\end{itemize}
+\cite{Brandao:2018}
+
+\subsection{Typische Anwendungen}
+\subsubsection{Kabellose Kopfhörer und Audio-Streaming}
+Bluetooth wird häufig in kabellosen Kopfhörern und Lautsprechern verwendet, um Audiosignale von einem Smartphone, Tablet oder Computer zu empfangen. Kabellose Kopfhörer, die Bluetooth nutzen, ermöglichen es den Nutzern, Musik, Podcasts oder Anrufe, ohne die Einschränkungen von Kabeln zu hören. Bluetooth 4.0 und höher bieten eine stabile Verbindung und eine akzeptable Reichweite von bis zu 10 Metern, was für die meisten Anwendungen ausreichend ist. Geräte wie Apple AirPods, Sony WH-1000XM4 oder Bose QuietComfort 35 setzen Bluetooth ein, um Audio ohne Verzögerung zu streamen \cite{Gaum:2023}.
+
+\subsubsection{Smart Home Geräte}
+Bluetooth wird auch in Smart Home Systemen verwendet, um Geräte wie Thermostate, Lichtschalter, Smart Locks und Sicherheitskameras miteinander zu verbinden. Zum Beispiel kann ein Benutzer ein Smart Lock über eine Bluetooth-Verbindung mit seinem Smartphone koppeln und die Tür von seinem Telefon aus sperren oder entsperren. Mit Bluetooth-fähigen Thermostaten können Nutzer die Temperatur in ihren Räumen steuern, indem sie über eine App auf ihrem Smartphone eine Verbindung herstellen \cite{Gaum:2023}.
+
+\subsection{Universal Asynchronous Receiver Transmitter (UART)}
+UART steht für Universal Asynchronous Receiver/Transmitter. Es ist ein Baustein, der zur seriellen Datenübertragung genutzt wird– also zur Übertragung von Datenbitfolgen über eine Leitung. „Asynchron“ bedeutet, dass kein gemeinsames Taktsignal zwischen Sender und Empfänger nötig ist. Stattdessen muss der Empfänger den Datenfluss allein aus dem empfangenen Signal erkennen und interpretieren. In der Mikrocontroller-Welt ist UART wichtig, damit z.B. eine Verbindung zwischen einem Mikrocontroller und einem PC hergestellt werden kann– meist über Universal Serial Bus USB-Adapter. Diese liefern passende Signalpegel z.B. 3,3 V und erlauben eine direkte Verbindung. Alte serielle PC-Ports arbeiten hingegen mit deutlich höheren Spannungen und umgekehrter Logik, was eine direkte Verbindung verhindert \cite{Gehrke:2022}. Für eine UART-Verbindung werden typischerweise drei Leitungen benötigt:
+\begin{itemize}
+	\item \textbf{Transmit (TX):} Sendet Daten.
+	\item \textbf{Receive (RX):} Empfängt Daten.
+	\item \textbf{GND (Masse):} Bezugspotential bzw. Masseanschluss.
+\end{itemize} 
+
+Optional gibt es noch Steuerleitungen wie Request to Send (RTS) und Clear to Send (CTS), die den Datenfluss kontrollieren können. \cite{Gehrke:2022}
+
+\subsection{Wireless Modul HC-05}
+Das Wireless Modul HC-05 \ref{fig:HC05} ist ein kompaktes Bluetooth-Gerät, das auf dem Standard Bluetooth 2.0 arbeitet. Die Kommunikation findet im lizenzfreien 2,4 GHz ISM-Band statt und erfolgt über eine serielle Schnittstelle UART, wodurch eine einfache Anbindung an Mikrocontroller ermöglicht wird.
+
+
+\begin{figure}[!ht]
+	\centering
+	\resizebox{0.6\textwidth}{!}{%
+		\begin{circuitikz}
+			\tikzstyle{every node}=[font=\Large]
+			
+			\draw [ fill={rgb,255:red,54; green,178; blue,231} ] (5,15) rectangle (17.25,10.25);
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,14.5) {Key};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,13.75) {VCC};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,13) {GND};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,12.25) {TXD};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,11.5) {RXD};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,10.75) {State};
+			\draw [ fill={rgb,255:red,40; green,183; blue,21} ] (5.25,14.5) rectangle (14.25,10.75);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (9.25,13.5) rectangle (11.5,11.75);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (12.25,13.5) rectangle (13.75,11.75);
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (10.25,13) {HC05};
+			\node [font=\normalsize, color={rgb,255:red,255; green,255; blue,255}] at (10.25,12.25) {Bluetooth};
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,14) rectangle (7.25,13.75);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,14) rectangle (6,13.25);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,13.25) rectangle (7,13.5);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (7,13.5) rectangle (6.75,12.75);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (7,12.75) rectangle (5.75,13);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,13) rectangle (6,12.25);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,12.25) rectangle (7,12.5);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (7,12.5) rectangle (6.75,11.75);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (7,11.75) rectangle (5.75,12);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,12) rectangle (6,11.25);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (6,11.25) rectangle (7,11.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,13) rectangle (14.5,13.25);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,13.5) rectangle (14.5,13.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,14) rectangle (14.5,14.25);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,12.75) rectangle (14.5,12.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,12.25) rectangle (14.5,12);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,11.75) rectangle (14.5,11.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,11) rectangle (14.5,11.25);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (13.75,14.25) rectangle (13.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (13.25,14.25) rectangle (13,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (12.75,14.25) rectangle (12.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (12.25,14.25) rectangle (12,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (11.75,14.25) rectangle (11.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (11.25,14.25) rectangle (11,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (10.75,14.25) rectangle (10.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (10.25,14.25) rectangle (10,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (9.75,14.25) rectangle (9.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (9.25,14.25) rectangle (9,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (8.75,14.25) rectangle (8.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (8.25,14.25) rectangle (8,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (7.75,14.25) rectangle (7.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (13.75,11) rectangle (13.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (13.25,11) rectangle (13,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (12.75,11) rectangle (12.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (12.25,11) rectangle (12,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (11.75,11) rectangle (11.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (11.25,11) rectangle (11,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (10.75,11) rectangle (10.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (10.25,11) rectangle (10,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (9.75,11) rectangle (9.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (9.25,11) rectangle (9,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (8.5,11) rectangle (8.75,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (8.25,11) rectangle (8,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (7.75,11) rectangle (7.5,10.5);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,14.5) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,13.75) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,13) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,12.25) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,11.5) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,10.75) circle (0.25cm);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,14.5) -- (18,14.5);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,13.75) -- (18,13.75);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,13) -- (18,13);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,12.25) -- (18,12.25);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,11.5) -- (18,11.5);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,10.75) -- (18,10.75);
+		\end{circuitikz}
+	}%
+	\captionof{figure}{HC05}
+	\label{fig:HC05}
+\end{figure}
+
+
+Ausgelegt für serielle Punkt-zu-Punkt-Verbindungen unterstützt es das Serial Port Profile (SPP) das die drahtlose Kommunikation zwischen Mikrocontrollern und Bluetooth-fähigen Geräten wie PCs oder Smartphones ermöglicht. Die maximale Baudrate beträgt 460.800 bps, während standardmäßig 9.600 bps verwendet werden. Eine integrierte Antenne sorgt für stabile Verbindungen ohne zusätzliche Komponenten. \cite{Iterative:2020}
+
+\subsubsection{Spezifikationen}
+Das Modul arbeitet mit einer Betriebsspannung von 3,3\,V bis 6\,V, wobei 5\,V als empfohlener Wert gelten. Bei freier Sichtverbindung liegt die Reichweite bei bis zu 10 Metern. Über die UART-Schnittstelle mit den Pins RX, TX, GND und Voltage at the Common Collector (VCC) lässt sich das Modul in bestehende Systeme integrieren. Zwei Betriebsmodi stehen zur Verfügung: Im AT-Modus kann es konfiguriert werden (z.B. Baudrate, Name oder Rolle als Master/Slave), während der Datenmodus für den Austausch von Nutzdaten genutzt wird. [ITe10] Die Verbindung zwischen dem Arduino Nano 33 BLE Sense und dem Wireless Modul ist der Tabelle (Tabelle 23.1) und dem Schaltplan \ref{fig:HC05Anschluss} zu entnehmen. \cite{ITeadStudio:2010,ITeadStudio:2016}
+
+\begin{figure}[!ht]
+	\centering
+	\resizebox{0.7\textwidth}{!}{%
+		\begin{circuitikz}
+			\tikzstyle{every node}=[font=\Large]
+			
+			\draw [ fill={rgb,255:red,54; green,178; blue,231} ] (5,15) rectangle (17.25,10.25);
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,14.5) {Key};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,13.75) {VCC};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,13) {GND};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,12.25) {TXD};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,11.5) {RXD};
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (15.5,10.75) {State};
+			\draw [ fill={rgb,255:red,40; green,183; blue,21} ] (5.25,14.5) rectangle (14.25,10.75);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (9.25,13.5) rectangle (11.5,11.75);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (12.25,13.5) rectangle (13.75,11.75);
+			\node [font=\Large, color={rgb,255:red,255; green,255; blue,255}] at (10.25,13) {HC05};
+			\node [font=\normalsize, color={rgb,255:red,255; green,255; blue,255}] at (10.25,12.25) {Bluetooth};
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,14) rectangle (7.25,13.75);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,14) rectangle (6,13.25);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,13.25) rectangle (7,13.5);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (7,13.5) rectangle (6.75,12.75);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (7,12.75) rectangle (5.75,13);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,13) rectangle (6,12.25);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,12.25) rectangle (7,12.5);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (7,12.5) rectangle (6.75,11.75);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (7,11.75) rectangle (5.75,12);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (5.75,12) rectangle (6,11.25);
+			\draw [ color={rgb,255:red,254; green,204; blue,22} , fill={rgb,255:red,255; green,213; blue,0}] (6,11.25) rectangle (7,11.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,13) rectangle (14.5,13.25);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,13.5) rectangle (14.5,13.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,14) rectangle (14.5,14.25);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,12.75) rectangle (14.5,12.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,12.25) rectangle (14.5,12);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,11.75) rectangle (14.5,11.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (14,11) rectangle (14.5,11.25);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (13.75,14.25) rectangle (13.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (13.25,14.25) rectangle (13,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (12.75,14.25) rectangle (12.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (12.25,14.25) rectangle (12,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (11.75,14.25) rectangle (11.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (11.25,14.25) rectangle (11,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (10.75,14.25) rectangle (10.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (10.25,14.25) rectangle (10,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (9.75,14.25) rectangle (9.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (9.25,14.25) rectangle (9,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (8.75,14.25) rectangle (8.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (8.25,14.25) rectangle (8,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (7.75,14.25) rectangle (7.5,14.75);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (13.75,11) rectangle (13.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (13.25,11) rectangle (13,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (12.75,11) rectangle (12.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (12.25,11) rectangle (12,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (11.75,11) rectangle (11.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (11.25,11) rectangle (11,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (10.75,11) rectangle (10.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (10.25,11) rectangle (10,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (9.75,11) rectangle (9.5,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (9.25,11) rectangle (9,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (8.5,11) rectangle (8.75,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (8.25,11) rectangle (8,10.5);
+			\draw [ color={rgb,255:red,107; green,107; blue,107} , fill={rgb,255:red,163; green,163; blue,163}] (7.75,11) rectangle (7.5,10.5);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,14.5) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,13.75) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,13) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,12.25) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,11.5) circle (0.25cm);
+			\draw [ fill={rgb,255:red,0; green,0; blue,0} ] (16.75,10.75) circle (0.25cm);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,14.5) -- (18,14.5);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,13.75) -- (18,13.75);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,13) -- (18,13);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,12.25) -- (18,12.25);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,11.5) -- (18,11.5);
+			\draw [ color={rgb,255:red,196; green,171; blue,171}, line width=2pt, short] (16.75,10.75) -- (18,10.75);
+			\node [font=\Large] at (21,13.75) {+3V3};
+			\node [font=\Large] at (21,13) {GND};
+			\node [font=\Large] at (20.75,12.25) {RX};
+			\node [font=\Large] at (20.75,11.5) {TX};
+			\node [font=\Large, color={rgb,255:red,166; green,166; blue,166}] at (21,15) {Arduino Pins:};
+			\draw [ color={rgb,255:red,74; green,74; blue,74}, line width=2pt, short] (18,13.75) -- (20.25,13.75);
+			\draw [ color={rgb,255:red,74; green,74; blue,74}, line width=2pt, short] (18,13) -- (20.25,13);
+			\draw [ color={rgb,255:red,74; green,74; blue,74}, line width=2pt, short] (18,12.25) -- (20.25,12.25);
+			\draw [ color={rgb,255:red,74; green,74; blue,74}, line width=2pt, short] (18,11.5) -- (20.25,11.5);
+		\end{circuitikz}
+	}%
+	\captionof{figure}{HC05 Anschluss an Arduino Nano 33 BLE Sense Lite}
+	\label{fig:HC05Anschluss}
+\end{figure}
+
+\subsection{Bibliothek \PYTHON{RemoteXY}}\label{RemoteXYBibliothek}
+
+Die Bibliothek \PYTHON{RemoteXY}  ist eine Bibliothek, die speziell entwickelt wurde, um die Kommunikation zwischen Mikrocontrollern (wie Arduino) und mobilen Geräten über Bluetooth oder Wireless Fidelity (WiFi) zu erleichtern. Sie ermöglicht es, eine grafische Benutzeroberfläche (Graphical User Interface (GUI)) zu erstellen, die über eine App auf einem mobilen Gerät (Android) gesteuert wird. Diese Bibliothek wird benötigt, weil sie eine einfache und benutzerfreundliche Möglichkeit bietet, drahtlose Steuerungen und Visualisierungen zu erstellen. \cite{EVCodeLabs:2025c}
+
+\subsubsection{Beschreibung der Bibliothek \PYTHON{RemoteXY}}
+
+Die Bibliothek \PYTHON{RemoteXY.h} ermöglicht die einfache Erstellung benutzerdefinierter GUIs für mobile Endgeräte. Über eine intuitive API können Eingabekomponenten wie Tasten, Schieberegler oder Joysticks definiert werden, die per Bluetooth mit dem Mikrocontroller kommunizieren. \PYTHON{RemoteXY} übernimmt dabei die komplette Verbindungs- und Datenverwaltung, wodurch komplexe Implementierungen eigener Bluetooth-Protokolle entfallen. Die Bibliothek erleichtert so die Entwicklung interaktiver Steuerungen mit Echtzeitreaktion. \cite{Hareendran:2022,EVCodeLabs:2025c}
+
+
+\subsubsection{Installation}
+Für die Installation der Bibliothek \PYTHON{RemoteXY.h} in der Arduino-IDE stehen zwei Methoden zur Verfügung: Die Installation erfolgt am einfachsten über den integrierten Bibliotheksmanager. Hierzu wird die Arduino-IDE geöffnet und zu \menu{Sketch > Bibliothek einbinden > Bibliotheken verwalten} navigiert \ref{BibliothekEinbindenRemoteXY} Nach der Suche nach \menu{RemoteXY} wird die Bibliothek \PYTHON{RemoteXY}  von Evgeny Shemanuev Version 3.1.14 ausgewählt und durch Klicken auf \menu{Installieren} hinzugefügt \ref{InstallationRemoteXY}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=5cm]{BlueToothModulHC05/LibRemoteXY}
+	\captionof{figure}{Drop-Down-Menü zur Installation von Bibliotheken}\label{BibliothekEinbindenRemoteXY}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=5cm]{BlueToothModulHC05/RemoteXYInstallation}
+	\captionof{figure}{Installation der RemoteXY Bibliothek}
+	\label{InstallationRemoteXY}
+\end{figure}
+Alternativ kann die Bibliothek \PYTHON{RemoteXY} manuell als ZIP-Datei installiert werden, falls Probleme mit dem Bibliotheksmanager auftreten sollten.
+
+
+\subsubsection{Funktionen der Bibliothek \PYTHON{RemoteXY}}
+
+Die Bibliothek \PYTHON{RemoteXY.h} stellt die Verbindung zwischen einem Mikrocontroller z.B. Arduino und der RemoteXY-App her. Im Folgenden werden die zentralen Funktionen und Strukturen aufgeführt \cite{EVCodeLabs:2025c}. 
+
+
+\begin{table}[h]
+	\centering
+	\renewcommand{\arraystretch}{1.5}
+	\setlength{\tabcolsep}{10pt}
+	\caption{Funktionen der \PYTHON{RemoteXY} Bibliothek \cite{EVCodeLabs:2025c,Hareendran:2022}}
+	\label{FunktionenRemoteXY}
+	\begin{tabular}{|m{6cm}|m{7cm}|}
+		\hline 
+		\rowcolor{black!12}\textbf{Funktion} & \textbf{Beschreibung} \\ \hline
+		\PYTHON{RemoteXY\_Init()} & Initialisiert die RemoteXY-Schnittstelle entsprechend der Konfiguration (z.\,B. Bluetooth, WiFi). Muss einmalig im \PYTHON{setup()} aufgerufen werden. \\ \hline
+		\PYTHON{RemoteXY\_Handler()} & Diese Funktion muss zyklisch in der \PYTHON{loop()}-Funktion aufgerufen werden. Sie verarbeitet eingehende Steuerbefehle und aktualisiert die zugehörigen Variablen. \\ \hline
+		\PYTHON{RemoteXY\_delay(200)} & Alternative zu \PYTHON{delay()}. Diese Funktion pausiert das Programm, ohne die Verarbeitung der RemoteXY-Verbindung zu blockieren. \\ \hline
+		\PYTHON{uint8\_t RemoteXY\_CONF[] = ... } & Dieses Array wird automatisch vom RemoteXY-Editor generiert und enthält die GUI-Struktur in binärer Form. \\ \hline
+	\end{tabular}
+\end{table}
+
+\subsubsection{Einfacher Beispiel-Code}
+Der gezeigte Arduino-Code demonstriert die grundlegende Verwendung der \PYTHON{RemoteXY.h} Bibliothek zur drahtlosen Steuerung eines Mikrocontrollers über eine benutzerdefinierte GUI. Die wichtigsten Funktionen werden im Code durch Doxygen-Kommentare dokumentiert.
+Zunächst wird in der Funktion \PYTHON{setup()} die Funktion \PYTHON{RemoteXY\_Init()} aufgerufen, welche die RemoteXY-Schnittstelle initialisiert und die Verbindung zur App oder dem Interface aufbaut. In der \PYTHON{loop()}-Funktion sorgt \PYTHON{RemoteXY\_Handler()} für die zyklische Verarbeitung von Steuerbefehlen sowie die Aktualisierung von Steuerelementen. Die Funktion \PYTHON{RemoteXY\_delay()} stellt eine nicht-blockierende Alternative zu \PYTHON{delay()} dar und ermöglicht somit eine stabile Kommunikation während Wartezeiten.
+Zudem enthält der Code das automatisch vom RemoteXY-Editor generierte Konfigurationsarray \PYTHON{RemoteXY\_CONF[]}, welches die grafische Struktur der Benutzeroberfläche beschreibt. Dieses Array ist für die korrekte Funktion der RemoteXY-Verbindung unerlässlich.
+
+{
+	\captionof{code}{Einfacher Beispielcode für RemoteXY}
+	\ArduinoExternal{}{../../Code/Arduino/RemoteXY/Example/Example.ino}
+}
+
+\subsubsection{Einfache Applikation}
+Die App \FILE{RemoteXYLEDControl.ino} ermöglicht die Steuerung einer LED über eine mobile Benutzeroberfläche, die mit der RemoteXY-App erstellt wurde. In dieser Anwendung wird ein Arduino-Board verwendet, um die LED zu steuern, die an einem digitalen Pin angeschlossen ist. Die Kommunikation zwischen der App und dem Arduino erfolgt über Bluetooth, wodurch eine einfache Fernsteuerung ermöglicht wird. In der RemoteXY-App befindet sich ein Button, der es dem Benutzer erlaubt, die LED ein- oder auszuschalten. Wenn der Button in der App gedrückt wird, sendet die App ein Signal an das Arduino, das den Zustand der LED entsprechend ändert. Sobald der Button losgelassen wird, wird die LED wieder ausgeschaltet. Diese einfache Steuerung ermöglicht eine intuitive Interaktion mit dem Arduino-System und bietet eine praktische Möglichkeit, Hardware über Bluetooth zu bedienen.
+
+{
+	\captionof{code}{Einfache Applikation für RemoteXY}
+	\pythonexternal[language=c++]{../../Code/Arduino/RemoteXY/LEDControl/LEDControl.ino}
+}
+
+\subsection{BiSoftwareSerial.h}
+\label{SoftwareSerialBibliothek}
+Die \PYTHON{SoftwareSerial.h} Bibliothek ermöglicht serielle Kommunikation über beliebige digitale Pins eines Arduino-Boards. Dabei wird die serielle Funktionalität per Software nachgebildet. Es ist möglich, mehrere solche Software-Schnittstellen gleichzeitig zu verwenden, mit Übertragungsraten von bis zu 115200 bps. Ein optionaler Parameter erlaubt auch invertierte Signalübertragung, falls das angeschlossene Gerät dieses Protokoll benötigt \cite{Arduino:2022}.
+
+
+\begin{table}[h]%[H]
+	\centering
+	\renewcommand{\arraystretch}{1.5}
+	\setlength{\tabcolsep}{10pt}
+	\caption{Funktionen der \PYTHON{SoftwareSerial.h} Bibliothek \cite{Arduino:2022}}
+	\label{SoftwareSerialFunktionen}
+	\begin{tabular}{|m{6cm}|m{7cm}|}
+		\hline 
+		\rowcolor{black!12}\textbf{Funktion} & \textbf{Beschreibung} \\ \hline
+		\PYTHON{SoftwareSerial(rxPin, txPin)} & Erstellt ein neues SoftwareSerial-Objekt. Die Pins müssen digitale Pins sein – rxPin: Empfangspin, txPin: Sendepin. \\ \hline
+		\PYTHON{begin(baudrate)} & Initialisiert die Kommunikation mit der angegebenen Baudrate. \\ \hline
+		\PYTHON{read()} & Liest ein einzelnes Byte aus dem Empfangspuffer. Sollte nur verwendet werden, wenn \PYTHON{available()} > 0 ist. \\ \hline
+		\PYTHON{write(data)} & Sendet ein Byte an den seriellen Port. \\ \hline
+		\PYTHON{print()} und \PYTHON{println()} & Gibt Text, Zahlen oder Zeichenketten aus. \PYTHON{println()} fügt einen Zeilenumbruch hinzu. \\ \hline
+		\PYTHON{available()} & Gibt die Anzahl der empfangenen Bytes zurück, die zum Lesen bereitstehen. \\ \hline
+		\PYTHON{listen()} & Aktiviert diese Instanz für den Empfang. Nur eine SoftwareSerial-Verbindung kann gleichzeitig aktiv empfangen. \\ \hline
+		\PYTHON{isListening()} & Gibt \texttt{true} zurück, wenn die Instanz aktuell aktiv empfängt. \\ \hline
+		\PYTHON{end()} & Beendet die Kommunikation dieser Instanz und gibt die Pins frei. \\ \hline
+	\end{tabular}
+\end{table}
+
+\subsubsection{Installation \PYTHON{SoftwareSerial}}
+
+Eine zusätzliche Installation der Bibliothek \PYTHON{SoftwareSerial} ist nicht notwendig, da diese in der ArduinoIDE-Entwicklungsumgebung standardmäßig integriert ist \cite{Arduino:2022}.
+
+\subsubsection{Einfacher Beispiel-Code}
+
+Der nachfolgende Beispielcode demonstriert die grundlegende Verwendung der  Bibliothek  \PYTHON{SoftwareSerial.h} zur Einrichtung einer alternativen seriellen Schnittstelle über digitale Pins eines Arduino-Mikrocontrollers. Ein \PYTHON{SoftwareSerial}-Objekt wird unter Verwendung der Pins \PYTHON{10} (RX) und \PYTHON{11} (TX) initialisiert. Die Methode \PYTHON{begin(9600)} startet die serielle Kommunikation mit einer Baudrate von 9600.
+Innerhalb der Funktion \PYTHON{loop()} wird in regelmäßigen Abständen eine Zeichenkette mit \PYTHON{println()} über die Software-Schnittstelle gesendet. Gleichzeitig überprüft das Programm mit \PYTHON{available()}, ob empfangene Daten vorliegen. Falls vorhanden, werden diese mit \PYTHON{read()} gelesen und über den primären USB-Serial-Port mittels \PYTHON{Serial.println()} ausgegeben.
+Die Implementierung verwendet außerdem die Methoden \PYTHON{listen()} und \PYTHON{isListening()}, um sicherzustellen, dass die korrekte Schnittstelle aktiv ist. Der strukturierte Aufbau und die ergänzenden Doxygen-Kommentare erleichtern das Verständnis und die automatische Generierung einer Funktionsdokumentation.
+
+{
+	\captionof{code}{SowtwareSerial.h einfacher Beispielcode}
+	\ArduinoExternal{}{../../Code/Arduino/SoftwareSerial/Example/Example.ino}
+}
+
+\subsubsection{Einfache Applikation}
+Der folgende Beispielcode veranschaulicht eine einfache Applikation, bei der ein Mikrocontroller über einen digitalen Kommunikationskanal mit einem externen Sensor kommuniziert. Die serielle Verbindung wird über die Bibliothek \PYTHON{SoftwareSerial} realisiert. Dabei wird ein Objekt \PYTHON{SoftwareSerial} mit \PYTHON{sensorSerial(10, 11)} erzeugt, welches die Pins \PYTHON{10} (RX) und \PYTHON{11} (TX) verwendet.
+Im Block \PYTHON{setup()} wird neben dem primären USB-Serial-Port mit \PYTHON{Serial.begin(9600)} auch die Software-Schnittstelle mit  \PYTHON{sensorSerial.begin(9600)} initialisiert. Die Methode \PYTHON{sensorSerial.listen()} stellt sicher, dass die Software-Schnittstelle aktiv ist.
+In der \PYTHON{loop()}-Funktion wird mit \PYTHON{sensorSerial.available()} geprüft, ob neue Sensordaten vorliegen. Sobald Daten erkannt werden, liest die Methode \PYTHON{readStringUntil('\\n')} die Zeichenkette bis zum Zeilenumbruch ein. Diese wird anschließend über \PYTHON{Serial.println()} an den seriellen Monitor ausgegeben.
+
+Diese Applikation bietet eine einfache und robuste Möglichkeit zur Integration externer Sensoren in bestehende Systeme und eignet sich besonders für prototypische Anwendungen.
+
+{
+	\captionof{code}{Einfache Applikation für \PYTHON{SoftwareSerial}}
+	\ArduinoExternal{}{../../Code/Arduino/SoftwareSerial/SensorReceiver/SensorReceiver.ino}
+}
+
+
+\subsection{Kalibrierung}
+Für eine zuverlässige Bluetooth-Kommunikation mit dem HC-05-Modul ist eine grundlegende Kalibrierung nötig. Besonders wichtig ist die richtige Baudrate, die sich mit dem Befehl \PYTHON{AT+UART} prüfen und anpassen lässt. Sie muss mit der des Mikrocontrollers übereinstimmen, da es sonst zu Übertragungsfehlern kommt. Auch der Modulname lässt sich mit \PYTHON{AT+NAME} ändern, um das Gerät beim Koppeln leichter identifizieren zu können. Der aktuelle Verbindungsstatus kann mit \PYTHON{AT+STATE} abgefragt werden. Um diese Einstellungen vorzunehmen, muss das HC-05-Modul in den sogenannten AT-Modus gebracht werden. Das gelingt, indem man das Modul beim Einschalten über die kleine integrierte Taste startet. Leuchtet die Status-LED anschließend in einem langsameren Takt, befindet sich das Modul im AT-Modus und ist bereit, Konfigurationsbefehle entgegenzunehmen. In diesem Zustand kommuniziert das Modul in der Regel mit einer festen Baudrate von 38400 bps über die serielle Schnittstelle. Darüber hinaus können weitere Anpassungen vorgenommen werden: etwa das Ändern der Bluetooth-PIN mit \PYTHON{AT+PSWD=}, das Festlegen der Betriebsrolle als Master oder Slave über \PYTHON{AT+ROLE=}, sowie das Deaktivieren automatischer Wiederverbindungen mit \PYTHON{AT+CMODE=0}. Abschließend sorgt ein Neustart mit \PYTHON{AT+RESET} dafür, dass alle Einstellungen übernommen werden \cite{ITeadStudio:2010}. 
+
+\subsubsection{Durchführung Kalibrierung} 
+ 
+Zur Kalibrierung muss das Wireless-Modul mit dem Arduino verbunden werden, welcher anschließend per USB an den Laptop angeschlossen wird. Danach wird die Arduino IDE geöffnet. Über das Menü \menu{Werkzeuge > Port} wird der Port ausgewählt, an dem der Arduino angeschlossen ist \ref{AuswahlPorts}. Anschließend wird der serielle Monitor über \menu{Werkzeuge > Serieller Monitor} geöffnet \ref{SeriellerMonitor}. Im seriellen Monitor ist die Option \menu{Kein Zeilenende} auszuwählen \ref{Zeilenende}, und zudem muss die Baudrate auf \menu{9600 Baud} eingestellt werden \ref{9600Baud}. Im Eingabefeld kann nun der Befehl \menu{AT+NAME\textless gewünschterName\textgreater} eingegeben werden, um den Namen des Bluetooth-Moduls zu ändern \ref{Geraetname}. Nach erfolgreicher Umbenennung erscheint die Bestätigung \menu{OKsetname} \ref{setname}.
+
+\begin{center}
+	\includegraphics[width=8cm]{BluetoothModulHC05/Port}
+	\captionof{figure}{Auswahl des benutzten Ports}
+	\label{AuswahlPorts}
+\end{center}
+
+\begin{center}
+	\includegraphics[width=8cm]{BluetoothModulHC05/SeriellenMonitor}
+	\captionof{figure}{Öffnen des seriellen Monitors}
+	\label{SeriellerMonitor}
+\end{center}
+
+\begin{center}
+	\includegraphics[width=8cm]{BluetoothModulHC05/NoLineEnd}
+	\captionof{figure}{Kein Zeilenende auswählen}
+	\label{Zeilenende}
+\end{center}
+
+\begin{center}
+	\includegraphics[width=8cm]{BluetoothModulHC05/Baudrate}
+	\captionof{figure}{Einstellen der Baudrate}
+	\label{9600Baud}
+\end{center}
+
+\begin{center}
+	\includegraphics[width=8cm]{BluetoothModulHC05/Name}
+	\captionof{figure}{Ändern des Gerätenamens}
+	\label{Geraetname}
+\end{center}
+
+\begin{center}
+	\includegraphics[width=4cm]{BluetoothModulHC05/ATNameOk}
+	\captionof{figure}{Bestätigung der Namensänderung}
+	\label{setname}
+\end{center}
+
+\subsection{Weiterführende Literatur}\label{WeiterführendeLiteraturHC05}
+
+Ein weiteres Werk, das sich intensiv mit dem Einsatz von Sensoren in der Robotik beschäftigt, ist das \textit{Robot Design Handbook} von Hassan et al. \cite{Hashim:2020}. Hier werden sensorbasierte Steuerungsmechanismen im Kontext autonomer Systeme erläutert.
+
+Die Webseite der Plattform \texttt{RemoteXY} bietet darüber hinaus zahlreiche Informationen zur gleichnamigen App, einschließlich praxisnaher Beispielanwendungen, Tutorials und der Integration in Arduino-Projekte \cite{EVCodeLabs:2025h}.
+
+
+Der Artikel von Jaap C. Haartsen \cite{Haartsen:2001} bietet eine umfassende Einführung in die Bluetooth-Technologie. Dabei werden die grundlegenden Konzepte, die Architektur sowie die verschiedenen Protokollschichten der Technologie dargestellt. Besondere Aufmerksamkeit gilt den Betriebsmodi, der Netzwerkbildung (Piconets), den Frequenzsprungverfahren sowie sicherheitsrelevanten Aspekten. Der Artikel eignet sich als fundierte Quelle für das Verständnis der technischen Grundlagen und Anwendungen von Bluetooth in drahtlosen Kommunikationssystemen.
+
+
+Das Buch von Robin Heydon \cite{Heydon:2012} bietet einen umfassenden Überblick über Bluetooth Low Energy (BLE) und richtet sich speziell an Entwickler, Systemdesigner und Ingenieure. Es erläutert die Designziele, die zugrunde liegende Architektur sowie die Einsatzmöglichkeiten von BLE, etwa in Bereichen wie Gesundheitswesen und Transport. Neben der Funktionsweise der BLE-Komponenten (Controller und Host) werden auch sicherheitsrelevante Aspekte, Testverfahren sowie die Entwicklung und Qualifizierung von BLE-Geräten behandelt. Das Werk ist eine praxisorientierte Ergänzung zur offiziellen BLE-Spezifikation.
+
+
+\chapter{Bluetooth-Modul HC-05} \label{Bluetooth}
+
+\section{Einleitung}
+Bluetooth-Module sind elektronische Komponenten, die drahtlose Kommunikation zwischen Geräten ermöglichen. Sie wandeln elektrische Signale in Funkwellen um und sorgen so für eine  zuverlässige Datenübertragung über kurze Distanzen. Grundsätzlich unterscheidet man Bluetooth Classic (für kontinuierliche Verbindungen wie Audio-Streaming) und Bluetooth Low Energy (BLE) (energiesparend für Geräte mit begrenzter Akkulaufzeit). Ihre Hauptaufgabe ist es, Geräte wie Kopfhörer, Sensoren oder Smart-Home-Systeme einfach und kabellos ohne komplexe Infrastruktur zu vernetzen \cite{Sauter:2022}.
+
+\section{Grundlegende Informationen}
+Bluetooth-Module sind spezialisierte Hardwarekomponenten, die eine drahtlose Kommunikation zwischen Geräten über kurze Distanzen ermöglichen. Typischerweise decken sie Reichweiten von 10 bis 30 Metern ab, abhängig von Umgebungsfaktoren wie Wänden oder Störquellen. Im Kern bestehen diese Module aus einem Bluetooth-Chip, einer Antenne sowie unterstützender Elektronik wie Spannungsreglern oder Schnittstellen-ICs. Um Platz und Energie zu sparen, werden sie häufig als System-on-a-Chip (SoC) realisiert, bei dem alle notwendigen Komponenten in einem einzigen, kompakten Bauteil integriert sind.
+Die Technologie nutzt das 2,4-GHz-ISM-Band (2400–2483,5 MHz), ein lizenzfreies Frequenzspektrum, das auch von WLAN, Mikrowellen und anderen Funkstandards genutzt wird. Um Interferenzen zu vermeiden, setzt Bluetooth auf Frequency Hopping: Das Modul wechselt bis zu 1600-mal pro Sekunde zwischen 79 definierten Kanälen, wobei jeder Kanal eine Bandbreite von 1 MHz besitzt. Die genaue Frequenz eines Kanals k lässt sich durch die Gleichung
+\begin{equation}
+    f_k =2402+k \: [MHz] 
+\end{equation}
+berechnen, wobei k Werte von 0 bis 78 annimmt. Dieser dynamische Kanalwechsel sorgt für eine robuste Verbindung, selbst in frequenzbelasteten Umgebungen \cite{Sauter:2022}.
+
+\subsection{Bluetooth-Varianten}
+
+Grundsätzlich unterscheidet man zwei Bluetooth-Varianten: 
+Bluetooth Classic und Bluetooth Low Energy (BLE).
+
+\begin{itemize}
+    \item Bluetooth Classic ist für Anwendungen mit hohen Datenraten ausgelegt, etwa Audio-Streaming für Kopfhörer oder Lautsprecher, und erreicht bis zu 3 Mbps (Megabit pro Sekunde) durch Erweiterungen wie EDR (Enhanced Data Rate).
+    
+    \item BLE hingegen wurde für Geräte entwickelt, die extrem energieeffizient arbeiten müssen, wie Wearables oder Sensoren in IoT-Netzwerken. Hier liegt die maximale Datenrate bei 1 Mbps, während der Stromverbrauch im Standby-Modus oft unter 15 µA bleibt – ideal für Batteriebetrieb über Monate oder Jahre.
+    
+\end{itemize}
+
+\subsection{Reichweite und Sendeleistung}
+
+Die Reichweite eines Bluetooth-Moduls hängt maßgeblich von seiner Sendeleistung (TX Power) ab. 
+
+\begin{itemize}
+    \item Klasse 1 Geräte (bis 100 mW Sendeleistung)  können theoretisch bis zu 100 m überbrücken.
+    \item Klasse 2 Geräte (2,5 mW Sendeleistung) sind auf  etwa 10 m begrenzt.
+    \item Klasse 3 Geräte (1 mW Sendeleistung)  sind auf etwa 1 m begrenzt.
+\end{itemize}
+
+In der Praxis reduzieren Hindernisse wie Wände oder elektronische Störquellen diese Werte jedoch deutlich  \cite{Sauter:2022}.
+
+\subsection{Datenübertragung}
+Ein kritischer Aspekt ist die Sicherheit. Bluetooth verwendet AES-128-Verschlüsselung, um Daten vor unbefugtem Zugriff zu schützen. Beim Verbindungsaufbau (Pairing) kommen zudem Protokolle wie Elliptic Curve Diffie-Hellman (ECDH) zum Einsatz, die einen sicheren Schlüsselaustausch ermöglichen und Man-in-the-Middle-Angriffe erschweren. Dank standardisierter Profile – vordefinierter Regeln für spezifische Anwendungen – lassen sich Geräte unterschiedlicher Hersteller problemlos koppeln. Beispiele sind das "A2DP-Profil" für Audio-Streaming oder das HID-Profil für Tastaturen und Mäuse \cite{Sauter:2022}.
+
+\subsection{Anwendungen}
+
+Bluetooth-Module sind heute in nahezu allen Consumer-Geräten zu finden, von Smartphones über Smart-Home-Steuerungen bis hin zu industriellen Sensornetzwerken. 
+Ihre Stärke liegt in der einfachen Integration: Über Schnittstellen wie UART oder SPI können sie direkt mit Mikrocontrollern wie Arduino oder Raspberry Pi verbunden werden, um Projekte schnell drahtlos zu machen. 
+Dennoch stößt die Technologie an Grenzen, wenn es um hohe Reichweiten, extrem hohe Datenmengen (z. B. Video-Streaming) oder komplexe Mesh-Netzwerke geht – hier sind Alternativen wie WLAN oder Zigbee oft besser geeignet.
+Zusammenfassend bilden Bluetooth-Module das technische Rückgrat für unzählige kabellose Anwendungen des täglichen Lebens. Sie kombinieren Energieeffizienz mit standardisierter Kompatibilität und bleiben dabei für Nutzer weitgehend unsichtbar. Mathematische Grundlagen wie Frequenzberechnung, Verschlüsselungsalgorithmen oder Leistungsbilanzierung sorgen im Hintergrund für Zuverlässigkeit, während Anwender lediglich die simplicity der „Plug-and-Play“-Vernetzung schätzen \cite{Sauter:2022}.
+
+\section{Bluetooth Modul: HC-05}
+
+\begin{figure}[H]
+    \centering
+    \caption{Skizze des Bluetooth Moduls HC-05}
+    \resizebox{1\textwidth}{!}{%
+        \begin{circuitikz}
+            \tikzstyle{every node}=[font=\LARGE]
+            \draw [ fill={rgb,255:red,49; green,54; blue,191} ] (10.25,-32) rectangle (-13.25,-42.75);
+            \draw [ color={rgb,255:red,59; green,176; blue,66} , fill={rgb,255:red,59; green,176; blue,66}] (-13,-33) rectangle (5.25,-41.75);
+            \draw [ fill={rgb,255:red,0; green,0; blue,0} , rounded corners = 11.4] (8.75,-32.25) rectangle (10.25,-33.75);
+            \draw [ fill={rgb,255:red,0; green,0; blue,0} , rounded corners = 11.4] (8.75,-34) rectangle (10.25,-35.5);
+            \draw [ fill={rgb,255:red,0; green,0; blue,0} , rounded corners = 11.4] (8.75,-41) rectangle (10.25,-42.5);
+            \draw [ fill={rgb,255:red,0; green,0; blue,0} , rounded corners = 11.4] (8.75,-39.25) rectangle (10.25,-40.75);
+            \draw [ fill={rgb,255:red,0; green,0; blue,0} , rounded corners = 11.4] (8.75,-37.5) rectangle (10.25,-39);
+            \draw [ fill={rgb,255:red,0; green,0; blue,0} , rounded corners = 11.4] (8.75,-35.75) rectangle (10.25,-37.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (3.75,-32.25) rectangle (4.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}, rotate around={-90:(5.375, -33.75)}] (5,-33.25) rectangle (5.75,-34.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}, rotate around={-90:(5.375, -34.75)}] (5,-34.25) rectangle (5.75,-35.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}, rotate around={-90:(5.375, -35.75)}] (5,-35.25) rectangle (5.75,-36.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}, rotate around={-90:(5.375, -36.75)}] (5,-36.25) rectangle (5.75,-37.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}, rotate around={-90:(5.375, -38)}] (5,-37.5) rectangle (5.75,-38.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}, rotate around={-90:(5.375, -39)}] (5,-38.5) rectangle (5.75,-39.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}, rotate around={-90:(5.375, -40)}] (5,-39.5) rectangle (5.75,-40.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}, rotate around={-90:(5.375, -41)}] (5,-40.5) rectangle (5.75,-41.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (2.75,-32.25) rectangle (3.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (1.75,-32.25) rectangle (2.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (0.75,-32.25) rectangle (1.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-0.25,-32.25) rectangle (0.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-1.25,-32.25) rectangle (-0.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-2.25,-32.25) rectangle (-1.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-3.25,-32.25) rectangle (-2.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-4.25,-32.25) rectangle (-3.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-5.25,-32.25) rectangle (-4.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-6.25,-32.25) rectangle (-5.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-7.25,-32.25) rectangle (-6.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-8.25,-32.25) rectangle (-7.5,-33.25);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (3.75,-41.5) rectangle (4.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (2.75,-41.5) rectangle (3.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (1.75,-41.5) rectangle (2.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (0.75,-41.5) rectangle (1.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-0.25,-41.5) rectangle (0.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-1.25,-41.5) rectangle (-0.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-2.25,-41.5) rectangle (-1.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-3.25,-41.5) rectangle (-2.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-4.25,-41.5) rectangle (-3.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-5.25,-41.5) rectangle (-4.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-6.25,-41.5) rectangle (-5.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-7.25,-41.5) rectangle (-6.5,-42.5);
+            \draw [ color={rgb,255:red,184; green,184; blue,184} , fill={rgb,255:red,184; green,184; blue,184}] (-8.25,-41.5) rectangle (-7.5,-42.5);
+            \draw [ fill={rgb,255:red,0; green,0; blue,0} ] (4.5,-33.75) rectangle (0.5,-39);
+            \draw [ fill={rgb,255:red,0; green,0; blue,0} ] (-0.5,-33.75) rectangle (-6,-39);
+            \node [font=\Huge, color={rgb,255:red,255; green,255; blue,255}] at (-3.25,-35.75) {HC-05};
+            \node [font=\Huge, color={rgb,255:red,255; green,255; blue,255}] at (-3.25,-36.75) {Bluetooth};
+            \draw [ color={rgb,255:red,136; green,136; blue,136} , fill={rgb,255:red,156; green,156; blue,156}, rounded corners = 5.4] (9.5,-32.75) rectangle (12.25,-33.25);
+            \draw [ color={rgb,255:red,156; green,156; blue,156} , fill={rgb,255:red,156; green,156; blue,156}] (12,-32.75) rectangle (12.5,-33.25);
+            \draw [ color={rgb,255:red,136; green,136; blue,136} , fill={rgb,255:red,156; green,156; blue,156}, rounded corners = 5.4] (9.5,-34.5) rectangle (12.25,-35);
+            \draw [ color={rgb,255:red,156; green,156; blue,156} , fill={rgb,255:red,156; green,156; blue,156}] (12,-34.5) rectangle (12.5,-35);
+            \draw [ color={rgb,255:red,136; green,136; blue,136} , fill={rgb,255:red,156; green,156; blue,156}, rounded corners = 5.4] (9.5,-36.25) rectangle (12.25,-36.75);
+            \draw [ color={rgb,255:red,156; green,156; blue,156} , fill={rgb,255:red,156; green,156; blue,156}] (12,-36.25) rectangle (12.5,-36.75);
+            \draw [ color={rgb,255:red,136; green,136; blue,136} , fill={rgb,255:red,156; green,156; blue,156}, rounded corners = 5.4] (9.5,-38) rectangle (12.25,-38.5);
+            \draw [ color={rgb,255:red,156; green,156; blue,156} , fill={rgb,255:red,156; green,156; blue,156}] (12,-38) rectangle (12.5,-38.5);
+            \draw [ color={rgb,255:red,136; green,136; blue,136} , fill={rgb,255:red,156; green,156; blue,156}, rounded corners = 5.4] (9.5,-39.75) rectangle (12.25,-40.25);
+            \draw [ color={rgb,255:red,156; green,156; blue,156} , fill={rgb,255:red,156; green,156; blue,156}] (12,-39.75) rectangle (12.5,-40.25);
+            \draw [ color={rgb,255:red,136; green,136; blue,136} , fill={rgb,255:red,156; green,156; blue,156}, rounded corners = 5.4] (9.5,-41.5) rectangle (12.25,-42);
+            \draw [ color={rgb,255:red,156; green,156; blue,156} , fill={rgb,255:red,156; green,156; blue,156}] (12,-41.5) rectangle (12.5,-42);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-9,-40.25) rectangle (-12.5,-39.75);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-9.5,-39.75) rectangle (-9,-39);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-12.5,-39) rectangle (-9.5,-39.5);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-12,-39) rectangle (-12.5,-38.25);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-9,-38.25) rectangle (-12,-38.75);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-9.5,-38.25) rectangle (-9,-37.5);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-12.5,-37.5) rectangle (-9.5,-38);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-12,-37.5) rectangle (-12.5,-36.75);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-9,-36.75) rectangle (-12,-37.25);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-9.5,-36.75) rectangle (-9,-36);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-12.5,-36) rectangle (-9.5,-36.5);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-12,-36) rectangle (-12.5,-35.25);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-9,-35.25) rectangle (-12,-35.75);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-9.5,-35.25) rectangle (-9,-34.5);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-12.5,-34.5) rectangle (-9.5,-35);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-12,-34.5) rectangle (-12.5,-33.75);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-8.25,-33.75) rectangle (-12,-34.25);
+            \draw [ color={rgb,255:red,234; green,238; blue,23} , fill={rgb,255:red,234; green,238; blue,23}] (-12.5,-40.25) rectangle (-12,-41);
+            \node [font=\Huge, color={rgb,255:red,255; green,255; blue,255}] at (7.25,-33.25) {\textbf{EN }};
+            \node [font=\Huge, color={rgb,255:red,255; green,255; blue,255}] at (7.5,-35) {\textbf{VCC}};
+            \node [font=\Huge, color={rgb,255:red,255; green,255; blue,255}] at (7.5,-36.75) {\textbf{GND}};
+            \node [font=\Huge, color={rgb,255:red,255; green,255; blue,255}] at (7.5,-38.5) {\textbf{TXD}};
+            \node [font=\Huge, color={rgb,255:red,255; green,255; blue,255}] at (7.5,-40.25) {\textbf{RXD}};
+            \node [font=\Huge, color={rgb,255:red,255; green,255; blue,255}] at (7,-42) {\textbf{STATE}};
+        \end{circuitikz}
+    }%
+    \label{fig:skizzeBluetooth}
+\end{figure}
+
+Das HC-05 Bluetooth-Modul, zu sehen in  \ref{fig:skizzeBluetooth}, ist ein serielles Kommunikationsmodul, das auf der Bluetooth-Spezifikation V2.0+EDR basiert und für drahtlose Datenübertragung über das Serial Port Protocol (SPP) konzipiert ist. Es ermöglicht sowohl Master- als auch Slave-Betriebsmodi und wird häufig in Embedded-Systemen zur Integration von Bluetooth-Funktionalität eingesetzt \cite{HC05Datasheet:2010}
+
+\section{Spezifikation}
+
+
+\subsection {Hardware-Spezifikation}
+
+Die Kommunikationsfähigkeiten des HC-05-Moduls bilden die Grundlage seiner Einsatzflexibilität in drahtlosen Systemen. Als Bluetooth-V2.0+EDR-Modul nutzt es das 2,4-GHz-ISM-Band, das weltweit für industrielle, wissenschaftliche und medizinische Anwendungen lizenzfrei genutzt werden kann. Die Kombination aus GFSK-Modulation (Gaussian Frequency Shift Keying) und Adaptive Frequency Hopping (AFH) gewährleistet eine robuste Datenübertragung selbst in frequenzbelasteten Umgebungen. AFH reduziert Interferenzen durch dynamische Kanalwechsel, was besonders in Umgebungen mit mehreren Funkgeräten kritisch ist.\\
+Im Detail umfassen die Leistungsmerkmale:
+
+\begin{enumerate}
+    \item Protokoll und Datenraten
+    \begin{itemize}
+        \item Bluetooth V2.0+EDR (Enhanced Data Rate) mit einer maximalen Datenrate von 3 Mbps im synchronen Modus und 2,1 Mbps im asynchronen Modus \cite{ReicheltHC05:2025}\cite{HC05Datasheet:2010}.
+        \item Unterstützung des Serial Port Profiles (SPP) für bidirektionale Master-/Slave-Kommunikation \cite{ReicheltHC05:2025}.
+    \end{itemize}
+    \item Sende- und Empfängerleistung 
+    \begin{itemize} 
+        \item Sendeleistung: +4 dBm (Klasse 2), geeignet für Reichweiten bis zu 10 m in offenen Räumen \cite{HC05Datasheet:2010}
+        \item Empfindlichkeit: -80 dBm (typisch) bzw. -84 dBm bei einer Bitfehlerrate (BER) von 0,1 \% – ein Wert, der eine zuverlässige Verbindung auch bei schwachen Signalen ermöglicht \cite{HC05Datasheet:2010}\cite{ReicheltHC05:2025}.
+    \end{itemize}
+\end{enumerate}
+
+Diese Parameter positionieren das HC-05-Modul als geeignete Lösung für Anwendungen wie Industrieautomation, IoT-Sensornetzwerke und Consumer-Geräte, bei denen Zuverlässigkeit und moderate Reichweite im Vordergrund stehen.
+
+
+
+\subsection{Elektrische Eigenschaften}
+
+Die elektrische Integration des Moduls erfordert eine präzise Abstimmung der Spannungsversorgung und Stromaufnahme, um Kompatibilität mit gängigen Mikrocontrollern zu gewährleisten. Das Modul ist speziell für Low-Power-Anwendungen optimiert, was durch folgende Merkmale erreicht wird:
+
+\begin{enumerate}
+    \item Spannungsversorgung 
+    \begin{itemize}
+        \item Betriebsspannung: +3,3 V DC (±5 \%), versorgt durch einen integrierten Linearregler, der Eingangsspannungen bis 5 V toleriert \cite{ReicheltHC05:2025}.
+        \item I/O-Spannungspegel: 1,8–3,6 V, ermöglicht die direkte Anbindung an 3,3 V- und 5 V-Systeme ohne zusätzliche Pegelwandler \cite{HC05Datasheet:2010}.
+    \end{itemize}
+    
+    \item Stromverbrauch 
+    
+    \begin{itemize}
+        \item Typischer Betriebsstrom: 50 mA im aktiven Modus \cite{ReicheltHC05:2025}.
+        \item Energiesparmodi: Programmierbare SNIFF-Modi reduzieren den Verbrauch durch intermittierende Aktivität, ideal für batteriebetriebene Geräte \cite{HC05Datasheet:2010}.
+    \end{itemize}
+\end{enumerate}
+
+Diese Eigenschaften machen das HC-05-Modul zu einer energieeffizienten Option für Projekte mit begrenzten Stromressourcen, wie tragbare Geräte oder Fernsensoren.
+
+
+
+
+\subsection{Schnittstellen und Anschlüsse}
+
+Die Flexibilität des HC-05-Moduls zeigt sich in seiner Unterstützung für mehrere Schnittstellen, die eine nahtlose Integration in bestehende Systemarchitekturen ermöglichen.
+
+\begin{figure}[H]
+    \centering
+    \caption{ Schnittstellen und Anschlüsse HC-05}
+    \resizebox{0.5\textwidth}{!}{%
+        \begin{circuitikz}
+            \tikzstyle{every node}=[font=\LARGE]
+            \draw [ color={rgb,255:red,170; green,167; blue,167} , line width=2pt ] (-5,20.75) rectangle (3.25,6.75);
+            \draw [ color={rgb,255:red,170; green,167; blue,167} , line width=2pt ] (-5,20.75) rectangle (3.25,23.5);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 18.5)}] (3,19.25) rectangle (3.75,17.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 17.5)}] (3,18.25) rectangle (3.75,16.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 16.5)}] (3,17.25) rectangle (3.75,15.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 15.5)}] (3,16.25) rectangle (3.75,14.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 14.5)}] (3,15.25) rectangle (3.75,13.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 13.5)}] (3,14.25) rectangle (3.75,12.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 12.5)}] (3,13.25) rectangle (3.75,11.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 11.5)}] (3,12.25) rectangle (3.75,10.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 10.5)}] (3,11.25) rectangle (3.75,9.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 9.5)}] (3,10.25) rectangle (3.75,8.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 8.5)}] (3,9.25) rectangle (3.75,7.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 7.5)}] (3,8.25) rectangle (3.75,6.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(3.375, 19.5)}] (3,20.25) rectangle (3.75,18.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 18.5)}] (-5.5,19.25) rectangle (-4.75,17.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 17.5)}] (-5.5,18.25) rectangle (-4.75,16.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 16.5)}] (-5.5,17.25) rectangle (-4.75,15.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 15.5)}] (-5.5,16.25) rectangle (-4.75,14.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 14.5)}] (-5.5,15.25) rectangle (-4.75,13.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 13.5)}] (-5.5,14.25) rectangle (-4.75,12.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 12.5)}] (-5.5,13.25) rectangle (-4.75,11.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 11.5)}] (-5.5,12.25) rectangle (-4.75,10.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 10.5)}] (-5.5,11.25) rectangle (-4.75,9.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 9.5)}] (-5.5,10.25) rectangle (-4.75,8.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 8.5)}] (-5.5,9.25) rectangle (-4.75,7.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 7.5)}] (-5.5,8.25) rectangle (-4.75,6.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt , rotate around={90:(-5.125, 19.5)}] (-5.5,20.25) rectangle (-4.75,18.75);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt ] (2.25,7) rectangle (3,5.5);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt ] (1.25,7) rectangle (2,5.5);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt ] (0.25,7) rectangle (1,5.5);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt ] (-0.75,7) rectangle (0,5.5);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt ] (-1.75,7) rectangle (-1,5.5);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt ] (-2.75,7) rectangle (-2,5.5);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt ] (-3.75,7) rectangle (-3,5.5);
+            \draw [ fill={rgb,255:red,185; green,177; blue,177} , line width=1pt ] (-4.75,7) rectangle (-4,5.5);
+            \node [font=\LARGE] at (-6.5,19.5) {TX};
+            \node [font=\LARGE] at (-6.5,18.5) {RX};
+            \node [font=\LARGE] at (-6.75,17.5) {  CTS};
+            \node [font=\LARGE] at (-6.75,16.5) {  RTS};
+            \node [font=\LARGE] at (-7.5,15.5) {PCM\_CLK};
+            \node [font=\LARGE] at (-7.5,14.5) {PCM\_OUT};
+            \node [font=\LARGE] at (-7.25,13.5) {PCM\_IN};
+            \node [font=\LARGE] at (-7.75,12.5) {PCM\_SYNC};
+            \node [font=\LARGE] at (-6.75,11.5) {AIO0};
+            \node [font=\LARGE] at (-6.75,10.5) {AIO1};
+            \node [font=\LARGE] at (-7,9.5) {RESET};
+            \node [font=\LARGE] at (-6.75,8.5) {3.3 V};
+            \node [font=\LARGE] at (-6.75,7.5) {GND};
+            \node [font=\LARGE] at (5.25,19.5) {PIO11};
+            \node [font=\LARGE] at (5.25,18.5) {PIO10};
+            \node [font=\LARGE] at (5,17.5) { PIO9};
+            \node [font=\LARGE] at (5,16.5) { PIO8};
+            \node [font=\LARGE] at (5,15.5) { PIO7};
+            \node [font=\LARGE] at (5,14.5) { PIO6};
+            \node [font=\LARGE] at (5,13.5) { PIO5};
+            \node [font=\LARGE] at (5,12.5) { PIO4};
+            \node [font=\LARGE] at (5,11.5) { PIO3};
+            \node [font=\LARGE] at (5,10.5) { PIO2};
+            \node [font=\LARGE] at (5,9.5) { PIO1};
+            \node [font=\LARGE] at (5,8.5) {PIO0};
+            \node [font=\LARGE] at (5,7.5) {GND};
+            \node [font=\LARGE, rotate around={90:(0,0)}] at (-4.25,4.75) {NC};
+            \node [font=\LARGE, rotate around={90:(0,0)}] at (-3.25,4) {USB\_D-};
+            \node [font=\LARGE, rotate around={90:(0,0)}] at (-2.25,4.5) {CSB};
+            \node [font=\LARGE, rotate around={90:(0,0)}] at (-1.25,4.25) {MOSI};
+            \node [font=\LARGE, rotate around={90:(0,0)}] at (-0.25,4.25) {MISO};
+            \node [font=\LARGE, rotate around={90:(0,0)}] at (0.75,4.5) {CLK};
+            \node [font=\LARGE, rotate around={90:(0,0)}] at (1.75,4) {USB\_D+};
+            \node [font=\LARGE, rotate around={90:(0,0)}] at (2.75,4.5) {GND};
+        \end{circuitikz}
+    }%
+    \label{fig:HC05Schaltplan}
+\end{figure}
+
+\begin{enumerate}
+    \item UART-Schnittstelle:
+    \begin{itemize}
+        \item Standardkonfiguration: 38400 Baud, 8 Datenbits, 1 Stoppbit, keine Parität – eine Einstellung, die mit den meisten Mikrocontrollern kompatibel ist \cite{HC05Datasheet:2010}.
+        \item Programmierbare Baudraten: Anpassbar von 2400 bis 1382400 Baud, um höhere Datenraten oder spezielle Protokolle zu unterstützen \cite{ReicheltHC05:2025}.
+        \item Pin-Details
+        \begin{itemize}
+            \item UART\_RX (Pin 2): Empfängt serielle Daten (CMOS-Eingang mit Pull-Down-Widerstand zur Vermeidung von Floating-Signalen) \cite{HC05Datasheet:2010}.
+            \item UART\_TX (Pin 1): Sendet serielle Daten (CMOS-Ausgang mit Pull-Up-Widerstand für stabile Logikpegel) \cite{HC05Datasheet:2010}.
+        \end{itemize}
+    \end{itemize} 
+    \item SPI-Schnittstelle 
+    \begin{itemize}
+        \item Ermöglicht die Anbindung an Peripheriegeräte oder Mikrocontroller mit SPI-Bus.
+        \item Pins:
+        \begin{itemize}
+            \item SPI\_CLK (Pin 19): Taktsignal für die SPI-Kommunikation \cite{HC05Datasheet:2010}.
+            \item SPI\_MISO (Pin 18) und SPI\_MOSI (Pin 17): Datenleitungen für Eingabe und Ausgabe \cite{HC05Datasheet:2010}.
+            \item SPI\_CSB (Pin 16): Chip-Select-Pin (aktiv niedrig) zur Steuerung der Geräteauswahl \cite{HC05Datasheet:2010}.
+        \end{itemize}
+    \end{itemize}
+    \item GPIO-Pins: 
+    \begin{itemize}
+        \item 12 programmierbare I/O-Pins (PIO0–PIO11):
+        \begin{itemize}
+            \item PIO10 (Pin 33) und PIO11 (Pin 34): Steuern die Status-LEDs (rot/blau), deren Blinkmuster Verbindungszustände wie Paarung oder Trennung anzeigen \cite{HC05Datasheet:2010}.
+            \item PIO0 (Pin 23) und PIO1 (Pin 24): Optional zur Ansteuerung externer RF-Komponenten wie LNA (Low-Noise Amplifier) oder PA (Power Amplifier) \cite{HC05Datasheet:2010}.
+        \end{itemize}
+    \end{itemize}
+    
+\end{enumerate}
+
+Diese Schnittstellenvielfalt ermöglicht Anwendungen von der einfachen seriellen Datenübertragung bis zur komplexen Steuerung externer Hardwarekomponenten.	
+
+\subsection {Mechanische und Umgebungsbedingungen}
+
+Die mechanische Robustheit und Umgebungstoleranz des HC-05-Moduls sind entscheidend für den Einsatz in anspruchsvollen Umgebungen.
+
+\begin{enumerate}
+    \item Abmessung:
+    \begin{itemize}
+        \item Größe: 12,7 mm × 27 mm – ein kompaktes Design, das die Integration in platzbeschränkte Gehäuse erleichtert \cite{HC05Datasheet:2010}.
+    \end{itemize}
+    \item Umgebungsbedingung 
+    \begin{itemize}
+        \item Betriebstemperatur: -5 °C bis +45 °C, was den Einsatz in den meisten Indoor-Umgebungen abdeckt \cite{ReicheltHC05:2025}.
+        \item Lagerungstemperatur: Obwohl nicht explizit spezifiziert, ist das Modul durch seine Bauweise für industrielle Anwendungen mit moderaten Temperaturschwankungen geeignet \cite{HC05Datasheet:2010}.
+    \end{itemize} 
+\end{enumerate}
+
+Diese Spezifikationen unterstreichen die Eignung des Moduls für Anwendungen in der Automatisierungstechnik, Smart-Home-Systemen und mobilen Geräten.
+
+\subsection{ Zusätzliche Hardware-Features}
+
+Neben den Kernfunktionen bietet das HC-05-Modul weitere Hardwaremerkmale, die seine Vielseitigkeit erhöhen:
+
+\begin{enumerate}
+    \item Integrierte Antenne:
+    \begin{itemize}
+        \item Eliminiert die Notwendigkeit externer Antennen und reduziert den Platzbedarf auf der Leiterplatte \cite{HC05Datasheet:2010}.
+    \end{itemize}
+    \item Reset-Funktion
+    \begin{itemize}
+        \item RESETB (Pin 11): Ein aktiver Low-Impuls (>5 ms) setzt das Modul zurück, was bei Softwarefehlern oder Neukonfigurationen nützlich ist \cite{HC05Datasheet:2010}.
+    \end{itemize}
+    %	\item USB-Anschluss:
+    %	\begin{itemize}
+        %		\item \textcolor{red}{USB (Pin 15): Optionaler Anschluss für USB v1.1/2.0, allerdings ohne detaillierte Dokumentation in den Quellen – möglicherweise für Firmware-Updates oder alternative Kommunikationswege \cite{HC05Datasheet:2010}.}
+        %	\end{itemize}
+\end{enumerate}
+Diese Features tragen zur Reduzierung externer Komponenten bei und vereinfachen die Prototypenentwicklung.
+
+
+
+\subsection{Pinbelegung (Auszug)}
+
+Die Pinbelegung des HC-05-Moduls ist entscheidend für die korrekte Verdrahtung in Schaltungen. Die folgende Tabelle fasst die wichtigsten Pins zusammen:
+
+\begin{table}[h]
+    \centering
+    \caption{Die Wichtigsten Pins des HC-05}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Pin-Nr.} & \textbf{Name} & \textbf{Funktion} 			 & 		\textbf{Anmerkung}	   \\ \hline
+        1	 		 & 	UART\_TX 	 & Serieller Datenausgang   	 &  CMOS-Ausgang mit Pull-Up   \\ \hline
+        2		 	 &	UART\_RX	 & Serieller Dateneingeng		 &  CMOS-Eingang mit Pull-Down \\ \hline
+        12   		 &	3,3\,VCC     & Spannungsversorgung (+3,3\,V) &  Integrierter Linearregler  \\ \hline
+        13,21,22		 &	GND		     & Masseanschluss				 &  Mehrere Pins zur Erdung    \\ \hline
+        
+    \end{tabular}
+    \label{tab:Pin Belegung}
+\end{table}
+
+
+\section{Bibliotheken}
+
+Um die Kommunikation zwischen Arduino und HC-05 zu ermöglichen wird die Bibliothek SoftwareSerial.h benötigt. Durch die Verwendung der Bibliothek kann der HC-05 über beliebige Pins Kommunizieren. Die Bibliothek wird hier mit der Installation der aktuellsten Version von Arduino-IDE (Version 2.3.6) mit Installiert. Falls die Bibliothek dennoch fehlen sollte kann sie wie folgt Installiert werden:
+
+\begin{itemize}
+    \item Bibliothek über Arduino Bibliotheken-Liste Herunterladen
+    \item Öffen Sie die Arduino-IDE
+    \item Gehen Sie zu \menu{Sketch > Bibliothek einbinden > .ZIP-Bibliothek hinzufügen.}
+    \item Wählen Sie die heruntergeladene ZIP-Datei aus
+    \item Die Bibliothek wird automatisch im Ordner Documents/Arduino/libraries/ installiert 
+\end{itemize}
+
+Optional kann man noch die Bibliothek HC05Libary installieren, denn mit dieser Bibliothek wird das Senden von AT-Befehlen vereinfacht.\\
+
+\subsection{Installation und Download}
+
+\begin{itemize}
+    \item GitHub: \HREF{HC05 - evankale}{https://github.com/evankale/ArduinoHC05}
+    \item Klicke auf \menu{Code > Download ZIP.}
+    \item In der Arduino-IDE: \menu{Sketch > Bibliothek einbinden > .ZIP-Bibliothek hinzufügen.}
+\end{itemize}
+
+
+\section{Tests}
+Um die grundlegende Funktionsweise des HC-05 Bluetooth-Moduls zu testen kann der folgende Code verwendet werden. Der Code überprüft ob das HC-05 mit dem Smartphone verbunden ist und ob die Übertragung von Daten Funktioniert. Um das Smartphone mit dem HC-05 zu verbinden wird ein Code benötigt dieser ist falls er nicht verändert wurde: 1234 oder 0000 falls der Code geändert wurde kann dieser über ein $I^2C $ und einem entsprechenden Programmbefehl ausgelesen werden. \ref{code:bluetoothEinfach}
+
+{
+  \captionof{code}{Code zur Überprüfung der Funktionalität}
+  \label{code:bluetoothEinfach}
+  \ArduinoExternal{}{../../Code/Arduino/Bluetooth/HC05Sample/HC05Sample.ino}
+}
+
+
+
+\section{Einfache Anwendung}
+
+Als beispielhafte Anwendung für den HC-05 kann das Modul über einen Arduino und einem Relais mit einer Stehlampe verschaltet  werden. Zu sehen in folgendem Code: \ref{code:bluetoothAnwendung}. Wenn man das System dann mit einem Smartphone verbindet kann die Stehlampe über das System mit den HC-05 ein und ausgeschaltet werden. Das System kann folgenderweise verbunden werden \ref{tab:Pin Belegung}: 
+
+\begin{center}
+    \captionof{table}{Pin Belegung}
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Arduino} & \textbf{HC-05} & \textbf{Realis}\\ \hline
+        RX(Pin 2) 		 & 		TX 		  &        -       \\ \hline
+        TX(Pin 3)		 &		RX		  &		   -	   \\ \hline
+        5 V (oder 3,3 V)   &		VCC		  &		   -	   \\ \hline
+        GND				 &		GND		  &		   -       \\ \hline
+        Pin 7			 &       -		  &IN(Steuereingang)\\ \hline
+    \end{tabular}
+    \label{tab:Pin Belegung}
+\end{center}
+
+Die Stehlampe wird dann noch mit dem Relais verbunden. Dann kann auch schon der Code für die Anwendung installiert werden.
+
+{
+    \captionof{code}{Code zur Überprüfung der Funktionalität}
+    \label{code:bluetoothAnwendung}
+    \ArduinoExternal{}{../../Code/Arduino/Bluetooth/HC05App/HC05App.ino}
+}
+
+
+
+\section{Further Readings}
+
+W. Osterhage, Sicherheitskonzepte in der mobilen Kommunikation. 5. Auflage. Springer, 2024. ISBN:  978-3-662-57903-9.\cite{Osterhage:2018}
+
+\begin{itemize}
+    \item Das Buch bietet einen guten Überblick über sicherheitsrelevante Aspekte mobiler Funktechnologien, einschließlich Bluetooth. Es behandelt grundlegende Bedrohungen und zeigt mögliche Schutzmaßnahmen auf.
+\end{itemize}
+
+W. Ewald, HC-05 und HC-06 Bluetooth Module. Wolles Elektronikkiste, 2019\\ \URL{https://wolles-elektronikkiste.de/hc-05-und-hc-06-bluetooth-module}.
+\cite{WollesElektronikkiste:2019}
+
+\begin{itemize}
+    \item Dieser online Beitrag bietet einen umfangreichen Einstieg in die Grundlagen und Nutzung von den Bluetooth Modulen: HC-05 und HC-06.
+\end{itemize}
+
+
+
+
+

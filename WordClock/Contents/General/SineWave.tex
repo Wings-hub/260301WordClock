@@ -1,0 +1,124 @@
+%%%
+%
+% $Autor: Wings $
+% $Datum: 2021-05-14 $
+% $Pfad: GitLab/MLEdgeComputer $
+% $Dateiname: SineWave
+% $Version: 4620 $
+%
+% !TeX spellcheck = de_DE/GB
+% !TeX program = pdflatex
+% !BIB program = biber/bibtex
+% !TeX encoding = utf8
+%
+%%%
+
+
+
+import tensorflow as tf
+import numpy as np
+
+with tf.name_scope('placeholders'):
+x = tf.placeholder('float', [None, 1])
+y = tf.placeholder('float', [None, 1])
+
+with tf.name_scope('neural_network'):
+x1 = tf.contrib.layers.fully_connected(x, 100)
+x2 = tf.contrib.layers.fully_connected(x1, 100)
+result = tf.contrib.layers.fully_connected(x2, 1,
+activation_fn=None)
+
+loss = tf.nn.l2_loss(result - y)
+
+with tf.name_scope('optimizer'):
+train_op = tf.train.AdamOptimizer().minimize(loss)
+
+with tf.Session() as sess:
+sess.run(tf.global_variables_initializer())
+
+# Train the network
+for i in range(10000):
+xpts = np.random.rand(100) * 10
+ypts = np.sin(xpts)
+
+_, loss_result = sess.run([train_op, loss],
+feed_dict={x: xpts[:, None],
+    y: ypts[:, None]})
+
+print('iteration {}, loss={}'.format(i, loss_result))
+
+
+Display curve to fit
+
+batch_size = 128
+nums = np.random.uniform(-10,10,batch_size)
+limit = 100
+
+# Sequence from -limit to limit
+x_data = np.arange(-limit, limit, 0.01)
+
+#Sin function
+y_data = np.sin(x_data)
+
+
+## Other data
+# x_data = np.linspace(-10, 10, num=1000)
+# y_data = 0.1*x_data*np.cos(x_data) + 0.1*np.random.normal(size=1000)
+
+
+# plt.plot(x_data, y_data, label = 'Sine function')
+# plt.show()
+
+
+
+
+
+
+# First set up the figure, the axis, and the plot element we want to animate
+fig, ax = plt.subplots()
+
+fig.set_size_inches(13, 6)
+
+ax.set_xlim(( -10, 10))
+ax.set_ylim((-1.2, 1.2))
+
+plt.plot(x_data, y_data, label = 'Sine function', c='b', linewidth=2)
+plt.grid()
+plt.legend(loc="upper left")
+
+
+Create the model Create
+the model with two 64 units hidden layers.
+
+
+
+# Trying a different model
+
+# Create the model 
+model = tf.keras.Sequential()
+model.add(tf.keras.layers.Dense(units = 1, activation = 'linear', input_shape=[1]))
+model.add(tf.keras.layers.Dense(units = 32, activation = 'relu'))
+model.add(tf.keras.layers.Dense(units = 32, activation = 'relu'))
+model.add(tf.keras.layers.Dense(units = 64, activation = 'relu'))
+model.add(tf.keras.layers.Dense(units = 1, activation = 'linear'))
+model.compile(loss='mse', optimizer="adam")
+
+# Display the model
+model.summary()
+
+
+
+#Tensorboard callbacks
+%load_ext tensorboard
+import datetime
+
+!rm -rf ./logs/
+log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback=tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=True, write_graph=True, write_grads=True)
+%tensorboard --logdir logs/fit
+
+# Custom callback for prediction
+preds = []
+class PredictionCallback(tf.keras.callbacks.Callback):    
+def on_epoch_end(self, epoch, logs={}):
+preds.append(self.model.predict(x_data))
