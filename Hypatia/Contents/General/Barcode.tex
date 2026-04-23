@@ -1,0 +1,869 @@
+%
+% barcode
+% project: barcode detection
+%
+% author: TariqAli
+%
+
+\chapter{Barcode}
+
+\section{Introduction to Barcode}
+
+The barcode was invented by the Norman Joseph Woodland and Bernard Silver and was patented in the US in 1951, the invention was based on the morse code which was extended to the to thin and thick bars \cite{Woodland:1952}.
+
+\medskip
+
+``Barcodes are the machine-readable symbols that store data about part or product to which they are associated''
+
+\medskip
+
+These are the symbols when red by the scanners or mobile phones are decoded, recoded, and processed to the extract the data for variety of purposes e.g., for pricings, sortation process, order fulfillments, shipping, storing data (dimensions, colors, shelf life etc. of the parts of equipment on which they are embossed). 
+There are four main categories of Barcode which have different purposes, different ability and they also differ in shapes.
+
+\begin{enumerate} 
+	\item 1-D Linear Bar code
+	\item 2-D Matrix Bar code 
+	\item Postal codes
+	\item Stacked Liner Code
+\end{enumerate}
+
+\subsection{1-D Linear Bar Code}
+
+As from the name it is well defined that it has only one dimension and was invented by the two school students in 1948 in USA based on morse code. It is a conventional and mostly used barcode today. One-dimensional barcode data is stored in linear, parallel lines that vary in width and spacing, scanner read the data from left to right. Different version of linear barcode store different kind of data. In a simplest form barcode contains 30 black lines and 29 white lines . The lines represent numbers, which were printed underneath. Each pattern contains 95 bit of binary code. \cite{Yun:2017}
+
+\begin{figure}
+  \begin{center}
+	\includegraphics[width=\textwidth]{Barcode/BarcodeComponents}
+	\caption{1-D Linear Bar Code}\label{fig:LinearBarCode}
+  \end{center}
+\end{figure}
+
+\subsubsection{Identifying barcodes and their structure}
+
+To understand the structure of barcode first we have to look at its picture in figure \ref{fig:LinearBarCode}.
+
+\begin{description}
+  \item [Left Hand Guard Bars:] These bars serve as a starting reference point for the scanning devices.
+  \item[Number System Character:] This digit identifies the type of manufacturer.
+  \item[Manufacturer ID Number:] Each company is assigned the unique MIN with the number system by the uniform code council.
+  \item[Tall Center Bar:] These bars serves as middle reference bar for scanning device.
+  \item[Item Number:] Companies are responsible for assigning unique 5-digit number to their product
+  \item[Module Check Character:] It is derived from a mathematical formula To check the accuracy.
+  \item[Right Hand Guard Bars:] It helps scanner to identify ending  reference point.
+\end{description}
+
+Furthermore, 
+
+Modulus Check Bar correspond to Modulus Check Character, 
+
+Manufacture ID bar correspond to Manufacture ID number,
+
+Number system bar corresponds to Number system Character,And 
+
+Item Bars corresponds to the type of item for eg. Toys , Food, Automotive and etc. 
+
+\section{Types of Barcodes}
+
+\subsection{UPC Code}
+
+Abbreviately knows and universal product code and famously known as UPC bar code are used to read the end consumer products mainly in USA, Canada and New Zealand and many others. There are two versions of the UPC code UPC-A and UPC-E It has the ability to encode 12 numerical digits of data in UPC-A and 6 numerical digits of data in UPC-E. UPC-A is used for the products with large volume size and UPC-E which is short in size as compared to the UPC-A Variant, there industry of use is retail sector mostly, an example of UPC-Code can be visualized in fig \ref{UPC}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{Barcode/UPC}
+		\caption{UPC-Code}\label{UPC}
+	\end{center}
+\end{figure}
+
+\subsection{EAN Code}
+
+Also known as European Article Number mostly used in Europe and many other countries of world including Japan. It comprises of thirteen numeric digits one extra than UPC. It also has two variants one is EAN-13 and the other is EAN-8. This code is called JAN-13 in Japan and abbreviated as Japanese Article Number. 
+ISSN and ISBN	is also made up on the same pattern but ISSN is utilized for magazines and ISBN is used for books.
+Because of the high density of this code it can hold more data at less space, normally used in retail stores. \ref{EAN}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{Barcode/EAN}
+		\caption{EAN-Code}\label{EAN}
+	\end{center}
+\end{figure}
+
+\subsection{Code 128}
+
+It is the most advanced recently introduced and robust symbol in the barcode family. The number 128 refers to the ability to hold any character of the ASCII 128 character set which includes all digits, characters and punctuation marks. Compact and Alpha Numeric data storage.
+It also comprises of the two variants: Code 128, EAN 128(two alpha characters in starting). It’s main area of application is delivery, chemical, and electrical industries etc. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=7cm]{Barcode/CODE128}
+		\caption{CODE-128}\label{Code 128}
+	\end{center}
+\end{figure}
+
+There are many other kind of barcode used for different kind of industries but as our concern is dependent on the food labels and retail we just mention the short description on the other kind of 1-D linear barcode.\ref{Code 128}
+
+\subsection{Code 39}
+
+first code to use number and letters and can encode 43 characters. widely used in Military and Automotive sectors.
+
+\subsection{Extended Code 39}
+
+It allows the use of special characters in code 39 The 128 characters according to ISO 646 are represented by a combination of two symbol characters, the first of which consists of one of the four characters (- + /) and is followed by one of the 26 letters. used in military and Auto.
+
+\subsection{Code 93}
+
+Code 93 was designed to encode data more compactly and with higher data redundancy than with older multi-length barcode types such as Code 39.used in Military, Health and automotive sector.
+
+\subsection{Coda bar}
+
+It is a discrete, self-checking barcode that allows encoding of up to 16 different characters, plus an additional four special start and stop characters, which include A, B, C and D. used in Health and Photo industry.
+
+And other types of Bar-Codes are lsted below.
+
+\begin{enumerate}
+	\item Interleaved 2 of 5
+	\item 2 of 5 data logic
+	\item 2 of 5 Industrial
+	\item 2 of 5 IATA
+	\item Post Net
+	\item Intelligent Bar code
+	\item MSI/Plessy
+	\item 4 State Bar code
+	\item GS1 data bar omni directional
+	\item GS1 data bar expanded
+\end{enumerate}
+
+\section{2-D Matrix Code}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{Barcode/2DMatrix}
+		\caption{2D Matrix}\label{2D Matrix}
+	\end{center}
+\end{figure}
+
+\textbf{Data is stored in 2-D Matrix (Longitudinal and Transverse Direction)}
+
+2-D Matrix Code is further divided into five branches named as
+
+\begin{enumerate}
+	\item QR-Code
+	\item Data Matrix 
+	\item Aztec 
+	\item Maxi Code
+	\item PDF 417	
+\end{enumerate}
+
+From the analysis we found that food labels only contain QR-Code and not the other types of 2-D Matrix code, so we try to explain the QR-Code in detail and its other types briefly to have a know-how.\ref{2D Matrix}
+
+\subsection{QR-Code}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{Barcode/QRCode}
+		\caption{QR Code}\label{QR Code}
+	\end{center}
+\end{figure}
+
+\begin{description}
+	\item [Finder Pattern:] 
+	QR (Quick Read) codes contain square blocks of black cells on a white background with finder patterns in the top left, top right, and bottom left corners. \ref{QR Code}
+\end{description}
+
+\begin{description}
+	\item [Alignment Pattern:]
+	Does not contain the data but tells the scanner the address for correcting the distortion of the QR code, the black isolated cell is placed in it.
+\end{description}
+
+\begin{description}
+	\item[Encoded Data:]
+	These are the pattern that contains the data to be stored in the code.
+\end{description}
+
+\begin{description}
+	\item[Quite Zone:] 
+	This is the white line which helps in separating the QR code from other labels or data on site.
+\end{description}
+
+\begin{description}
+	\item[Timing pattern:] 
+	It is placed between the two-finder pattern, use to identify the central coordinates 
+\end{description}
+
+\begin{description}
+	\item[Formate Informateion:]
+	The scanner comes in the contact with the QR- Code in any orientation in the retail shop and it becomes more handy for the operator and increase the speed of the process if the QR -Code can be re in any orientation
+\end{description}
+
+\subsection{How QR-Code works Technically.}
+
+working of the QR-code totally depends upon understanding the function of scanners use for decoding the code.
+•	QR scanner works bottom right and goes upwards until it hits position marker.
+•	It then goes right to left and zig-zag until all the modules are covered.
+
+\subsection{Basic steps How QR (Quick Response) Works.}
+
+\begin{enumerate}
+	\item Decoder first Recognizes the three position markers in the QR code. With a sufficient quiet area
+	\item The scanner begins at the bottom right, where it encounters the mode indicator. These four data modules indicate what data type (numeric, alphanumeric, byte, or kanji)
+	\item Next Scanner encounters the character count indicator and what are the next 8 data modules from the mode indicator this tells characters in encoded data.
+	\item Scanner then goes in zig-zag along data module until it completes it task.
+	\item Scanner then proceeds to error correction modules In these encoded modules from one of four level of error correction. \cite{Hansen:2017}
+
+\end{enumerate}
+
+\subsection{QR-Code Versions.}
+
+There are 40 different versions of QR-Code present until now. Each version has different data modules and (black and white spaces).
+Versions are directly proportional to data Modules and 	also directly proportional to data hold capacity.
+Below are shown the different version of QR-Code, with error correction system as larger the error correction is present in the QR-Code less the data stores but its advantage is that the greater the error correction is greater is the chance to restore the data from the damaged QR-Code.\ref{Version 1-3}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{Barcode/Version1-3}
+		\caption{Version 1-3}\label{Version 1-3}
+	\end{center}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{Barcode/Version38-40}
+		\caption{Version 38-40}
+		\label{Version 38-40}
+	\end{center}
+\end{figure}
+
+Where L,M,Q and H is the error correction level. In these levels 7,15,25 and 30 percent of the data can be restored, respectively.\ref{Version 38-40}
+
+\subsection{Patterns In QR-Code.}
+
+\begin{description}
+	\item[Mode Indicator] is used for the finding the type of data saved in the QR-Code data could be Numeric Mode, Alpha Numeric, Byte Mode, Kanji Mode etc.\ref{Pattern in QR Code}
+	\item [Character Count Indicator] is used for the scanner to find how many characters it should scan until it stops.
+	\item [Standard Data Modules] is used in the QR code for holding the useful data.
+	\item [Stop Indicator] tells the scanner that it has scanned all the characters in the QR-Code and it matches all the data with the data collected from the character count indicator.
+	\item [Error Correction Modules] helps the scanner to match the data if the data collected data is same or is it damaged by any means.
+\end{description}
+
+\begin{figure}
+	\begin{flushright}
+		\includegraphics{Barcode/PatternInQRCode}
+		\caption{Pattern in QR Code}\label{Pattern in QR Code}
+	\end{flushright}
+\end{figure}
+
+\subsection{Versions and Data Density:}
+
+Load time of the data(decoding of the data) is directly proportional to the data modules present in the QR-Code. Given below are the glimpse of sizes and version of the data QR-Code and their data density.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{Barcode/Version1}
+		\caption{Version 1}\label{Version 1}
+	\end{center}
+\end{figure}
+
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{Barcode/Version10}
+		\caption{Version 10}\label{Version 10}
+	\end{center}
+\end{figure}
+
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{Barcode/Version40}
+		\caption{Version 40}\label{Version 40}
+	\end{center}
+\end{figure}
+
+As we can see in the fig\ref{Version 1} in version 1 the data is less so the load time is less and gradually in the figure\ref{Version 10} and fig\ref{Version 40} the load time increases but at the same time more data can be stored.
+
+
+\subsection{Types of 2D-Code and their Features}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\textwidth]{Barcode/TypeOf2DCode}
+		\caption{Type of 2D Code}\label{Type of 2D Code}
+	\end{center}
+\end{figure}
+
+The table above shows the brief over-view of the other types of 2D-Codes as compared to the features of the QR-Code. All the other codes (Data Matrix, Maxi Code, PDF 417 and Aztec) have different applications and different structures, with different features.\ref{Type of 2D Code}
+
+\begin{description}
+	\item[ASCII]: American Standard code for Information Interchange
+	\item[ISO]: International Organization for standards
+	\item[ISBN]: International Standard Book Number
+	\item[ISSN]: International Standard Serial Number
+	\item [AIM]: Association for Automatic Identification and Mobility
+	\item[JIS]: Japanese Industrial Standards
+\end{description}
+
+
+\section{Origin}
+
+The QR code images were generated using a third-party website,  \HREF{https://www.qrcode-monkey.com/}{QRCode Monkey}. The images were captured using a mobile camera, ensuring that the dataset represents realistic usage scenarios. This approach helps in creating a robust model capable of handling real-world inputs.
+
+\subsection{Generating QR Codes}
+
+To generate QR codes for the project using \HREF{https://www.qrcode-monkey.com}{QRCode Monkey}, follow these steps:
+
+\begin{itemize}
+	\item \textbf{Step 1: Change the Tab to Text} 
+	
+	Open the website and switch to the tab ``Text''. Enter the text, e.g.  ``up'', `down'', ``right'', or ``left''in the provided field, please refer figure \ref{fig:QRGenerateText}.
+	
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{QRCode/QRGenerateText.jpg}
+		\captionof{figure}{Enter text for QR Code generation}
+		\label{fig:QRGenerateText}
+	\end{center}
+	
+	\item \textbf{Step 2: Select the Body Shape} 
+	
+	Choose the desired shape for the QR code body from the available options, please refer figure \ref{fig:QRGenerateBody}.
+	
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{QRCode/QRGenerateBody.jpg}
+		\captionof{figure}{Body for QR Code generation}
+		\label{fig:QRGenerateBody}
+	\end{center}
+	
+	\item \textbf{Step 3: Select the Body Frame} 
+	
+	Choose the frame for the QR code body to enhance its appearance, please refer figure \ref{fig:QRGenerateFrame}.
+	
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{QRCode/QRGenerateFrame.jpg}
+		\captionof{figure}{Body Frame for QR Code generation}
+		\label{fig:QRGenerateFrame}
+	\end{center}
+	
+	\item \textbf{Step 4: Generate the QR Code} 
+	
+	Click on the button ``Generate QR Code'' to create the QR code, please refer figure \ref{fig:QRCodeMonkey}.
+	
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{QRCode/QRGenerate.jpg}
+		\captionof{figure}{QR Code generation using QRCode Monkey}
+		\label{fig:QRCodeMonkey}
+	\end{center}
+\end{itemize}
+
+
+
+\section{Function}
+
+\begin{itemize}
+    \item Decodes Qr code 
+    \item Decode Barcode
+\end{itemize}
+
+\section{Limitations}
+
+The program is capable of decoding Barcode and QrCodes but other type of 2-D barcodes can also be decoded if the improvment should be made in the progarm code.
+
+Light on the code should also be good so the code is visble to the camera 
+
+\section{Output}
+
+The output we get through this program is the information encoded in the Barcodes and Qrcodes for eg. equipment or part specification in industry or website url, as shown in fig \ref{fig:qr}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Barcode/qr}
+        \caption{1-D Linear Bar Code}\label{fig:qr}
+    \end{center}
+\end{figure}
+
+
+\section{How to Run}
+
+We need Pycharm and Python installed on the system for runing the code correctly we have to install Opencv, Numpy and Pyzbar libraries then the code is executed.
+
+
+Camera can detect all the barcodes and Qr code decode them present in the visible range as shown in figures \ref{fig:Multiple QR code} and \ref{fig:Bar code}
+
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Barcode/MultipleQRCode}
+        \caption{1-D Linear Bar Code}\label{fig:Multiple QR code}
+    \end{center}
+\end{figure}
+
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Barcode/Barcode}
+        \caption{1-D Linear Bar Code}\label{fig:Bar code}
+    \end{center}
+\end{figure}
+
+
+\section{QR-Code}
+
+\subsection{QR-Code} 
+
+{Ein "Quick Response Code”, kurz QR-Code, ist ein zweidimensionaler Code, welcher aus vielen schwarzen und weißen Punkten besteht, die Daten in binärer Form darstellen (siehe Abbildung \ref{QR-Code Original}). Die quadratische Form enthält Informationen, welche mithilfe eines Scanners abgerufen werden können. Die Codes werden mit QR-Code Generatoren erstellt. Mithilfe von QR-Codes können Privatpersonen und Unternehmen kostengünstig und ohne viel Aufwand Informationen verbreiten. Durch den Aufbau der QR-Codes sind sie kaum fehleranfällig und bei geringen Ausschnitten für den Scanner noch lesbar.
+} 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5cm]{Barcode/QR-CodeOriginal.png}
+    \caption{QR-Code Original }
+    \label{QR-Code Original}
+\end{figure}
+
+
+
+\subsubsection{Positionsmarker}
+
+{Die Positionsmarker (die großen Quadrate in Abbildung \ref{Positionsmarkierungen eines Qr-Codes}) befinden sich an den Ecken eines jeden QR-Codes und zeigen an, in welcher Richtung der Code gedruckt ist. 
+    Durch sie können Scanner den Code genau erkennen und ihn ggf. drehen, dadurch wird er mit hoher Geschwindigkeit gelesen. Ihre wesentliche Funktion ist es somit, das Vorhandensein eines QR-Codes in einem Bild sowie dessen Ausrichtung schnell und einfach erkennbar zu machen.
+    Durch mögliche Ausrichtung des QR-Codes kann er in jeder Ausrichtung gescannt werden. \cite{Mishra:2017}
+}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5cm]{Barcode/QR-CodePositionMarker.png}
+    \caption{Positionsmarkierungen eines Qr-Codes}
+    \label{Positionsmarkierungen eines Qr-Codes}
+\end{figure}
+
+\newpage
+
+\subsubsection{Ausrichtungsmarker}
+
+{Bei größeren QR-Codes werden weitere Marker (das kleine Quadrat in Abbildung \ref{Positionsmarkierungen mit Ausrichtungsmarker}) in den QR-Code eingebaut, um die Ausrichtung des Codes zu erleichtern. \cite{Mishra:2017}
+}
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=5cm]{Barcode/QR-CodePositionMarkerDirection.png}
+    \caption{Positionsmarkierungen mit Ausrichtungsmarker}
+    \label{Positionsmarkierungen mit Ausrichtungsmarker}
+\end{figure}
+
+
+\subsubsection{Taktzellen / Timing-Marker (die abwechselnd schwarz-weißen Linien) }
+
+{Die Timing-Marker (siehe Abbildung \ref{Taktzelle/ Timing Marker }) dienen dem Scanner dazu, die Größe der Matrix zu identifizieren und somit 
+    auch die Größe eines „Moduls“ (ein Datenpunkt).
+    Die Synchronisationslinien bestehen aus sich abwechselnden hellen und dunklen Modulen.
+    Diese Elemente beinhalten keine Daten und werden beim Auslesen des Codes nicht benötigt. Sie 
+    sind allerdings unerlässlich, um festzustellen, 
+    ob der Code zu verzerrt ist, also das Lesen nicht möglich ist.
+    Sie helfen dem Scanner, die Zeilen der Datenmatrix zu identifizieren und bestimmen die Größe des QR-Codes.  \cite{Mishra:2017}
+}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5cm]{Barcode/QR-CodeTimingMarker.png}
+    \caption{Taktzelle/ Timing Marker }
+    \label{Taktzelle/ Timing Marker }
+\end{figure}
+
+\newpage
+
+\subsubsection{Formatinformation }
+
+{Zusätzlich existieren noch zwei Formatfelder. Dabei handelt es sich um 
+    zwei Kopien mit je 15 Bits, welche die identische Information tragen (siehe Abbildung \ref{Fachinformation }). 
+    Einmal um den linken, oberen Positionsmarker herum und einmal rechts neben dem unteren Positionsmarker (Bits 0 bis 6) und unter dem rechten Positionsmarker (Bits 7 bis 14). Diese Felder enthalten Informationen über Fehlertoleranz und die Datenmaske. Das Fehlerkorrekturlevel bestimmt, wie stark der Code beschädigt sein kann, damit er noch lesbar ist.
+    Die Formatinformationen sind wichtig für die Fehlerkorrektur. Sie geben Auskunft über den Grad der Fehlerkorrektur. Vier verschiedene Stufen sind Standard:
+    -	Als kleinste Stufe: Stufe L = 7\%.
+    -	Stufe M = bis zu 15\% bietet etwas mehr Schutz.
+    -	Bei Stufe Q = bis zu 25\%
+    -	Und schließlich die höchste, Stufe H = bis zu 30 \%.
+    Der Prozentsatz gibt an, wie stark der QR-Code beschädigt werden darf, um noch lesbar zu sein. Mit zunehmendem Grad der Fehlerkorrektur nimmt jedoch gleichzeitig die mögliche Menge der gespeicherten Daten ab.  \cite{Mishra:2017}
+}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5cm]{Barcode/QR-CodeInformation.png}
+    \caption{Formatinformation }
+    \label{Fachinformation }
+\end{figure}
+
+
+\subsubsection{Randzone }
+
+{Die Randzone, welche sich um den QR-Code befindet, stellt sicher, dass ein Abstand vom QR-Code zu anderen Objekten vorhanden ist, damit das erschwerte Erkennen des QR-Codes verhindert wird.  \cite{Mishra:2017}
+}
+
+\subsubsection{Datenbereich}
+
+{Übrig bleibt der Datenbereich. 
+    In diesem Datenbereich werden die Informationen dargestellt, die der QR-Code hauptsächlich wiedergeben soll.  \cite{Mishra:2017}
+} 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5cm]{Barcode/QR-CodeQuietZone.png}
+    \caption{Datenbereich  }
+    \label{Datenbereich}
+\end{figure}
+
+
+
+\section{Barcode/Strichcode}
+
+{Ein Barcode oder auch Strichcode genannt besteht aus einer Reihe, mehreren, verschieden hellen und dunklen Strichen. Ein Beispiel ist in Abbildung \ref{Barcode  } zu sehen. Die Anordnung der Striche enthält bestimmte Codierungen, welche mithilfe eines Barcode-Scanner gescannt und decodiert werden können. Mittels Barcode, können viele Daten auf einem kleinen Raum zur Verfügung gestellt werden. 
+}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5cm]{Barcode/TestCameraCode128.jpg}
+    \caption{Barcode Code-128 }
+    \label{Barcode}
+\end{figure}
+
+
+\subsection{Aufbau eines Barcodes}
+
+Wie bereits genannt besteht ein Barcode aus verschiedenen hellen und dunklen Strichen, die eine bestimmte Anordnung aufweisen. Durch die unterschiedliche Strichbreite und deren individuelle Anordnung kann eine große Vielfalt an unterschiedlichen Barcodes generiert werden.
+    Ein Barcode besteht aus einem Beginn- und Endzeichen, wodurch der Barcode nicht nur von links nach rechts gelesen werden kann, sondern auch von rechts nach links.
+    Die „Quite-Zone“ ist ein freierer Bereich vor dem Beginn- und Endzeichen von ¼ Zoll, wodurch der Barcode vom Scanner richtig erfasst werden kann. Zwischen den Beginn- und Endzeichen befinden sich die Datenfelder, welche die eigentlichen Informationen enthalten. Diese Felder bestehen aus schwarzen Strichen und weißen Zwischenräumen. Einige Arten von Barcodes enthalten eine Prüfziffer, die zur Überprüfung der Richtigkeit, der gescannten Daten verwendet wird. \cite{Hompel:2007} 
+
+
+\subsection{Arten eines Barcodes}
+
+{Es gibt eine Reihe an unterschiedlichen Varianten von Barcodes, die für verschiedene Aufgaben und Bereiche entwickelt wurden.
+    Oft gibt es unter dem Barcode eine Textzeile, der Dateninhalte enthält, welche auch Menschen lesen können. }
+
+
+\begin{itemize}
+    \item UPC (Universal Product Code): Weit verbreitet im Einzelhandel, speziell in den USA. Besteht aus 12 Ziffern. \cite{Hompel:2007}
+    \item EAN (European Article Number): Ähnlich wie der UPC, jedoch in Europa standardisiert und besteht aus 13 Ziffern. \cite{Hompel:2007}
+    \item Code 39: Unterstützt sowohl numerische als auch alphanumerische Zei-\\chen und wird häufig in der Industrie verwendet. \cite{Hompel:2007}
+    \item Code 128: Sehr effizient, da er eine hohe Informationsdichte ermöglicht. Er wird oft in der Logistik eingesetzt. \cite{Hompel:2007}
+\end{itemize}
+
+\subsubsection{Package \PYTHON{Pyzbar}}
+
+
+Die Bibliothek \PYTHON{Pyzbar} ist eine Python-Bibliothek, die QR-Codes und Barcodes in Bildern erkennt und decodiert. 
+
+
+\bigskip
+
+{
+\captionof{code}{Barcode und QR-Code Scanner}
+
+\begin{Python}
+while True:
+    ret, frame = cap.read()
+
+barcodes = decode(frame)
+
+for barcode in barcodes:
+    barcode\_data = barcode.data.decode("utf-8")
+    barcode\_type = barcode.type
+    print("Barcode Typ:", barcode\_type)
+    print("Barcode Daten:", barcode\_data)
+    cv2.imshow('Barcode Scanner', frame)
+\end{Python}
+}
+
+\bigskip
+
+Mithilfe einer Schleife wird jedes Kamerabild, welches Bild erfasst wird, nach Barcodes und QR-Codes durchsucht. Da es sich um eine Endlosschleife handelt, wird der Vorgang fortlaufend wiederholt. Die Funktion "decode()" von Pyzbar wird verwendet, um die Barcodes im Bild zu erkennen und zu decodieren. Danach werden die Informationen aus den Barcodes und QR-Codes decodiert und ausgegeben. Die Art des Barcodes wird mit "barcode\_type = barcode.type" identifiziert und die decodierten Daten werden mit "barcode\_data = barcode.data.decode("utf-8")" erkannt. Die Daten werden in der Konsole ausgegeben.
+
+\chapter{Lesen eines Barcodes}
+
+Diese Arbeit fokussiert sich auf die heutzutage noch gebräuchlichsten 1D-Barcodes, 
+die häufig auch als lineare Barcodes oder Strichcodes \linebreak 
+bezeichnet werden.
+Im weiteren Verlauf wird der Begriff \acs{bc} stets für den 1D-Barcode verwendet.
+Nach \cite{INFOSOFT:2023} ist ein Barcode eine grafische Darstellung von Daten in Form von parallelen Linien 
+und Zwischenräumen unterschiedlicher Breite. Die Höhe der Striche enthält keine Information. 
+Da somit nur eine Dimension zur Codierung genutzt wird, ist die Datenmenge begrenzt. 
+Weitere Varianten, wie 2D-Stapelcodes (z.B. \acs{qr}), deren farbige Variante als 
+3D- oder animierte 4D-Barcodes werden nicht betrachtet.
+
+Barcodes sind leicht und preiswert zu erzeugen. 
+Sie haben einen \linebreak geringen Platzbedarf und sind schnell, preiswert sowie sicher zu erkennen. 
+Diese Vorteile haben dazu geführt, dass der Barcode ein fester Bestandteil unseres Lebens ist. 
+Barcodes sind beispielsweise auf Produkten in Supermärkten, Lagerverwaltungen, 
+Speditionen, Bibliotheken oder der Medizin zu finden. Dort dienen sie zur Identifizierung, 
+Dokumentation, Bestandskontrolle bis hin zur Statusverfolgung von Waren.  
+
+\section{Geschichte des Barcodes}
+
+Die Geschichte der Entwicklung des Barcodes geht – nach allgemeiner Auffassung 
+– zurück ins Jahr 1948 \cite{United:2024}. In Pennsylvania, USA, wendet sich eine lokale Supermarktkette 
+an die Drexel University in Philadelphia, um eine Lösung für ihre Bestandserfassung zu finden. 
+Dort greifen die Studenten Bernard Silver und Norman Joseph Woodland 
+diese Frage\-stellung auf und entwickeln in den folgenden Jahren einen kreisförmigen Barcode (siehe Abbildung \ref{a}), 
+der 1952 als Patent angenommen aber in der Praxis nie zur Anwendung kam.
+\begin{figure}[h]
+    \centering
+    \includegraphics [scale=0.50]{Barcode/Kreiscode}
+    \caption{Kreisförmiger Barcode von Bernard Silver und Norman Joseph Woodland \cite{United:2024}}
+    \label{a}
+\end{figure}
+
+In den 1950er Jahren entwickelten die Ingenieure Raymond Alexander und Frank Stietz 
+auf Initiative von David Collins ein System aus farbigen refraktiven Streifen 
+zur Identifikation von Eisenbahnwagons (KarTrak siehe Abbildung \ref{b}). Diese erste Variante eines Barcodes, 
+die eine zehnstellige Identifikationsnummer kodierte, wurde in den 1970er Jahren 
+zunächst kommerziell eingesetzt, dann aber aus unterschiedlichen Gründen verworfen.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics [scale=0.20]{Barcode/KarTrak_ACI_codes}
+    \caption{KarTrack zur Identifikation von Eisenbahnwagons \cite{United:2024}}
+    \label{b}
+\end{figure}
+\newpage
+
+Im Jahre 1966 forderte die National Association of Food Chains (\acs{nafc}) Unternehmen auf, 
+ein universelles Kennzeichnungs- und Scansystem zu entwickeln, 
+um die Wartezeiten an Supermärkten zu verkürzen. 
+Das Unternehmen RCA entwickelte daraufhin das aufgekaufte Patent von Silver und Woodland weiter. 
+Damalige Drucker waren jedoch nicht in der Lage, 
+den kreisförmigen Code ohne Verschmieren der Farbe zu drucken. 
+Daher war der Code meistens nicht lesbar. 1972 wurde dieser Ansatz verworfen und die Tests eingestellt.
+
+Bei IBM verfolgte der Projektleiter George Laurer mit Hilfe von Woodman, 
+der dort zu dieser Zeit arbeitete, eine andere Idee. 
+Sie nahmen den rechteckigen Ansatz der vertikalen Linien auf und fügten fünf Varianten hinzu, 
+die je nach Art der Branche mit unterschiedlichen Buchstaben gekennzeichnet waren. 
+Da dieser lineare Code in der Richtung der Streifen gedruckt wurde, 
+gab es keine Lesbarkeitsprobleme in der Umsetzung. 
+Somit wurde dieser 1973 als NAFC-Standard (\textbf{U}niversal \textbf{P}roduct \textbf{C}ode, \textbf{ \acs{upc}}) ausgewählt. 
+Am 26. Juni 1974 wurde zum ersten Mal ein reales Produkt in den USA verkauft, 
+das mit einem Barcode-Lesegerät gescannt wurde. 
+
+In Europa wurde 1976 dieser amerikanische UPC-Code so zum EAN-Code erweitert, 
+dass die Kompatibilität beider Systeme erhalten blieb. 
+Im darauffolgenden Jahr wurden erstmals Scanner auf dieser EAN-Basis 
+bei einem Augsburger Einzelhandelsunternehmen installiert. 
+\textbf{EAN} ist dabei eine Abkürzung für \textbf{E}uropean \textbf{A}rticle \textbf{N}umbering System \cite{Stammbach:2015}. 
+Diese Bezeichnung wurde 2009 in \textbf{\acs{gtin}} (\textbf{G}lobal \textbf{G}rade \textbf{I}tem \textbf{N}umber) abgeändert. 
+Da dieser EAN-Code auch heutzutage noch am meisten verwendet wird, 
+wird er in den Abschnitten \ref{ZE} und \ref{CE} 
+exemplarisch analysiert.
+
+In den folgenden Jahrzehnten wurden weitere Barcodes  
+von der \linebreak globalen Organisation GS1 für spezielle Erfordernisse entwickelt. 
+Die GS1 \cite{GS1:2024} ist ein Netzwerk von Organisationen, 
+die weltweit Standards für unternehmensübergreifende Prozesse entwickeln, aushandeln und pflegen. 
+Gängige Formate sind beispielsweise (weitere siehe \cite{INFOSOFT:2023}):
+
+\begin{itemize}
+    \item \textbf{UPC} (Abbildung \ref{FUPC1})
+    in den Varianten UPC-A mit 12 Ziffern und UPC-E mit 6 Ziffern 
+    mit Anwendung in Nordamerika, UK, Australien, Neuseeland etc.
+    \begin{figure}[h]
+        \centering
+        \includegraphics [scale=0.40]{Barcode/UPC}
+        \caption{Beispiel eines UPC-A-Barcode nach \cite{United:2024}} \label{FUPC1}
+    \end{figure}
+    
+    \item \textbf{EAN} bzw. \textbf{GTIN} (Abbildung \ref{FEAN})
+    in den Varianten EAN-13 mit 13 Ziffern und EAN-8 mit 8 Ziffern 
+    mit Anwendung in Europa, Japan etc.
+    \begin{figure}[h]
+        \centering
+        \includegraphics [scale=0.10]{Barcode/EAN0}
+        \caption{Beispiel eines EAN-13-Barcode nach \cite{Wissensfabrik:2020}}\label{FEAN}
+    \end{figure}
+    
+    \item \textbf{GS1-128} 
+    in der Lieferkette und Logistik.
+    
+    \item \textbf{GS1-DataBar} 
+    in der Logistik.
+    
+    \item \textbf{GS1 Codabar} 
+    im Gesundheitswesen.
+    
+    \item \textbf{Code 2/5} 
+    (früher Reduced Space Symbology) in Industrie und Versand.
+    
+    \item \textbf{\acs{isbn}} 
+    (\textbf{I}nternational \textbf{S}tandard \textbf{B}ook \textbf{N}umber) zur Identifikation von Büchern.
+\end{itemize}
+
+\section{Barcode-Scanner}
+Zum Einlesen des Barcodes gibt es verschiedene Arten von Barcode-\linebreak 
+Scanner \cite{microtech:2024}.
+
+Beim Laserscanner wird ein Laserstrahl auf den Code projiziert und die Striche 
+durch unterschiedliche Reflektion der Schwarz- und Weiß\-farben identifiziert. 
+Bei linearen Laserscanner entsteht eine einzige Scanlinie, 
+die orthogonal auf den Barcode ausgerichtet werden muss. 
+Bei der \linebreak 
+Erweiterung des Laserscanners mit einem linearen Raster 
+werden mehrere Laserlinien parallel angeordnet, 
+um einen erweiterten Scanbereich zu erhalten. 
+Damit muss die Ausrichtung des Scanners  
+nicht so gezielt sein, um den Code zu erfassen. 
+Bei Omnidirektionalen Laserscanner ist ein Ausrichten nicht mehr erforderlich, 
+da mehrere sich überschneidende Rasterlinien verwendet werden.
+
+Bei CCD-Scanner kommen Leuchtdioden zum Einsatz. 
+Durch eine eingebaute \acs{led}-Zeile wird der gesamte Barcode gleichmäßig ausgeleuchtet. 
+Das reflektierte Licht des gesamten Bildes wird anschließend von einem CCD-Sensor aufgenommen. 
+Damit wird der Lesevorgang schneller und sicherer.
+Bei den neuesten Geräten (Kamera-Scanner) wird der \linebreak Barcode direkt mit einer Kamera aufgenommen, 
+mit Hilfe digitaler \linebreak Bildverarbeitung aufbereitet und digital erfasst. 
+
+Neben dem Einsatz verschiedener Techniken können die Geräte auch danach unterschieden werden, 
+ob der Barcode fixiert ist und der Scanner über den Barcode 
+- oder umgekehrt -
+der Scanner fixiert ist und der Barcode wird über das Gerät geführt wird (Durchzugsleser).
+
+\section{Ziffernzuordnung des EAN-13} \label{ZE}
+Unter jedem Barcode sind die codierten Ziffern nochmals dargestellt. 
+Dies ermöglicht die manuelle Eingabe des Codes für den Fall,
+dass er nicht automatisch erfasst werden kann. 
+Eine Situation, die jeder Käufer im Supermarkt sicherlich schon einmal erlebt hat. 
+Diese Ziffern ermöglichen die eindeutige Identifikation eines Produktes.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics [scale=0.15]{Barcode/EAN1}
+    \caption{EAN-Barcode mit Ziffernzuordnung \cite[S. 3]{Wissensfabrik:2020}}\label{EAN1}
+\end{figure}
+\newpage
+
+Die Abbildung \ref{EAN1} ergänzt den vorherigen Barcode der Abbildung \ref{FEAN}
+um die Unterteilung in 4 Bereiche zur Identifizierung des EAN-13-Barcodes.
+Die 3 Ziffern des ersten Bereichs stehen für die Länderkennung, dann folgend 4 Ziffern für die Hersteller-Nummer,
+5 für die Artikel-Nummer und der letzte Bereich besteht aus einer Prüfziffer. 
+
+Diese Prüfziffer dient dazu, Fehler beim Einlesen zu erkennen. 
+Bei EAN-13 wird die Prüfziffer so berechnet, 
+dass die gewichtete Summe aller 13 Ziffern immer ein Vielfaches der Zahl 10 ergibt.
+Dabei ist für die i-te Position die Gewichtung 1 zu wählen, falls i ungerade - bzw. die Gewichtung 3 falls i gerade - ist. 
+In unseren Beispiel also:
+
+\[
+\begin{array}{l|r|r|r|r|r|r|r|r|r|r|r|r|r}
+    \mbox{Position}		&   1 &   2 &   3 &   4 &   5 &    6 &   7 &    8 &   9 &  10 &  11 &  12 & 13  \\ \hline
+    \mbox{Gewichtung}	&   1 &   3 &   1 &   3 &   1 &    3 &   1 &    3 &   1 &   3 &  1  &   3 &  1  \\ \hline
+    \mbox{EAN-Ziffer}	&   5 &   2 &   6 &   3 &   2 &    6 &   4 &    6 &   2 &   7 &  6  &   2 &  7  \\ \hline
+    \mbox{Summand}		&   5 &   6 &   6 &   9 &   2 &   18 &   4 &   18 &   2 &  21 &  6  &   6 &  7 
+\end{array}
+\]
+
+Werden alle Summanden der letzten Zeile in der Tabelle addiert, so ergibt dies einen Wert vom 110. Da 110 ein Vielfaches von 10 ist,
+liefert die Prüfung also ein richtiges Ergebnis. Der Barcode wird akzeptiert.
+Diese Prüfziffer kann Fehler, wie beispielsweise die Verwendung einer einzelnen falschen Ziffer 
+oder das Vertauschen von aufeinanderfolgenden Ziffern erkennen \cite[S. 10 - 11]{Stammbach:2015}.
+
+\section{Codierung des EAN-13} \label{CE}
+
+Im weiteren Verlauf wird der EAN-13-Barcode der Abbildung \ref{EAN1} \linebreak 
+detailliert analysiert.
+Welcher Zusammenhang besteht nun zwischen den Ziffern und den darüber liegenden Balken? 
+Eine naheliegende Ver\-mutung ist, dass die Ziffern durch die darüber liegenden Balken codiert sind. 
+Allerdings gibt es die Ausnahme der ersten Zahl, über der keine Balken abgebildet sind. 
+Diese Ausnahme wird später erläutert. 
+
+Weiterhin fallen die zwei längeren Balken nebeneinander auf: einmal links, in der Mitte und rechts platziert.
+Diese werden zur Kalibrierung des Systems verwendet \cite{Stammbach:2015}. 
+Die zwei linken Balken, auf denen stets ein schmaler weißer Balken folgt, dienen dabei der Start-Kennung. 
+Während die zwei rechten Balken, die stets mit einem schmalen Balken links \linebreak 
+versehen sind,  entsprechend das Ende markieren.
+Die 2 Balken in der Mitte - mit einem linken sowie rechten schmalen weißen Balken \linebreak
+- unterteilen 
+jeden EAN-13-Barcode in einen linken und rechten Teil mit jeweils 6 Zahlen. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics [scale=0.15]{Barcode/EAN}
+    \caption{EAN Ziffern mit Balkenbereichen \cite[S. 5]{Wissensfabrik:2020}}\label{EAN}
+\end{figure}
+\newpage
+
+Zur detaillierten Analyse wird der EAN-Barcode der Abbildung \ref{EAN} betrachtet,
+bei dem die 6 linken Ziffern gelb und die 6 rechten Ziffern blau umrandet sind.
+Über diesen insgesamt 12 Ziffern ist jeweils Platz für maximal 7 weiße oder schwarze Balken gleicher Breite, 
+die neben\-einandergestellt als schmalere bzw. breitere schwarze Balken erkennbar sind. 
+Diese Balkenbereiche sind exemplarisch für die Zahl 2 nach unten verlängert und schraffiert dargestellt.
+
+Eine Interpretation der Weiß-/Schwarz-Balken als 0-/1-Information führt direkt zur binären Welt der Bits.
+Mit 7 Balken stehen somit für jede Zahl $2^7=128$ Darstellungsmöglichkeiten zur Verfügung. 
+Dies sind viel mehr Möglichkeiten, als für 10 Ziffern erforderlich wären. 
+Diese Freiheit wird in der Codegestaltung genutzt, um die erste Zahl zu codieren und 
+für die Lesbarkeit die Zifferndarstellungen der Balken möglichst unterschiedlich zu gestalten \cite{Stammbach:2015}.
+
+
+Der EAN-13-Code benutzt grundsätzlich 3 verschiedene Code-Varianten: A, B und C (siehe Abbildung (\ref{EAN3})).
+Beim Vergleich dieser Varianten fällt auf, dass die Darstellung der Ziffern von A und B vertauscht sind. 
+Weiße Balken von A werden zu schwarzen Balken von B und umgekehrt. 
+Weiterhin sind die Balken von B und C gespiegelt. 
+Schließlich beginnen die Varianten A und B immer mit einem weißen und enden mit einem schwarzen Balken. 
+Bei genauerer Betrachtung ist zu erkennen, 
+dass zwei verschiedene Ziffern sich an mindestens zwei verschiedenen Stellen unterscheiden. 
+Dies alles führt zu größeren Unterschieden in der Balken-Darstellung einzelner Ziffern 
+und somit zu geringeren Lesefehler. 
+\newpage
+
+\begin{figure}[h]
+    \centering
+    \includegraphics [scale=0.15]{Barcode/EAN3}
+    \caption{Code-Varianten A, B und C \cite[S. 6]{Wissensfabrik:2020}}\label{EAN3}
+\end{figure}
+
+
+Beim EAN-13-Barcode wird die Variante C immer im rechten Teil verwendet. 
+Die Codierung der linken Seite kann jedoch bei jeder Ziffer zwischen den Varianten A und B wechseln. 
+Um diesen Wechsel zwischen A und B zu identifizieren, wird die Anzahl der schwarzen Balken je Ziffer betrachtet. 
+Diese Kennzahl heißt Parität und entspricht in der Binärdarstellung der Anzahl der Einsen. 
+Bei B und C liegen jeweils 2 oder 4 schwarze Balken vor, die Parität ist also eine gerade Zahl. 
+Im Gegensatz dazu liegen bei A jedoch entweder 3 oder 5 schwarze Balken vor, 
+so dass die Parität von A immer eine ungerade Zahl ist. 
+Da die EAN-Nummer stets mit A, also einer ungeraden Parität links anfängt 
+und mit einer geraden Parität in C rechts aufhört, kann ein Scanner auch Rechts und Links unterscheiden. 
+Es ist also egal, ob das Produkt mit seinem EAN-Barcode von links oder von rechts über den Scanner gezogen wird \cite{Stammbach:2015}.
+
+Für das obige Beispiel \ref{EAN} gilt (mit 1 für Schwarz und 0 für Weiß) für die linke Seite:
+\[
+\begin{array}{l|c|c|c|c|c|c}
+    \mbox{Position}	 &   2 		&   3 		&   	4 	&   5 		&    6 	  	& 7			\\ \hline
+    \mbox{0/1-Balken}& 0010011 	&   0000101 &  0100001  &   0010011 & 0101111   & 0011101  \\ \hline
+    \mbox{Parität}	 &   3 		&   2 		&   2 		&   3 		&    5 		&   4 		\\ \hline
+    \mbox{Code}   	 & \mbox{A}	&   \mbox{B}&   \mbox{B}& \mbox{A}	&   \mbox{A}&   \mbox{B}\\ \hline
+    \mbox{Ziffer}  	 &   2 		&   6 		&   3 		&   2 		&    6 		&   4  		
+\end{array}
+\]
+und für die rechte Seite:
+\[
+\begin{array}{l|c|c|c|c|c|c}
+    \mbox{Position}	 &   8 		&   9 		&   10	 	&   11 		&   12 	  	& 13	 	\\ \hline
+    \mbox{0/1-Balken}& 1010000 	&   1101100 &   1000100	&   1010000 &  1101100  & 1000100 \\ \hline
+    \mbox{Parität}	 &   2 		&   4 		&   2 		&   2 		&   4 		&   2 		 \\ \hline
+    \mbox{Code}   	 & \mbox{C}	&  \mbox{C}	&  \mbox{C}	&  \mbox{C}	&   \mbox{C}&   \mbox{C} \\ \hline
+    \mbox{Ziffer}  	 &   6 		&   2 		&   7 		&   6 		&    2 		&   7  			
+\end{array}
+\]
+\newpage
+
+Der Wechsel innerhalb Code-Varianten auf der linken EAN-Seite wird nun verwendet,
+um die erste Zahl der EAN-Nummer zu codieren. Dies geschieht stets mit der Tabelle \ref{EAN4}.
+Der EAN-Code-13 des Beispiels weist auf der linken Seite die Varianten-Reihenfolge ABBAAB auf. 
+Dies liefert mit der Tabelle \ref{EAN4}
+den Wert 5 als erste EAN-Ziffer und damit den vollständigen EAN-13-Barcode.
+Die zusätzliche Codierung der ersten Ziffer wurde in Europa eingeführt, 
+um das amerikanische UPC-System kompatibel zu ergänzen.
+Im amerikanischen System ist die erste Ziffer stets 0, wird aber nie gedruckt. 
+\begin{table}[h]
+    \centering
+    \includegraphics [scale=0.20]{Barcode/EAN4}
+    \caption{Codierung der ersten EAN-Ziffer \cite[S. 7]{Wissensfabrik:2020}}
+    \label{EAN4}
+\end{table}
+
+
+
+
+
+

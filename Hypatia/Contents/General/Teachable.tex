@@ -1,0 +1,182 @@
+%%%%%%
+%
+% $Autor: Bakke $
+% $Datum: 2021-08-03 13:40:45Z $
+% $Pfad: WuSt/Skript/Produktspezifikation/powerpoint/ImageProcessing.tex $
+% $Version: 4620 $
+%
+%%%%%%
+
+\chapter{Running the Teachable Machine}
+
+We will now describe how to install and run the teachable machine program developed by Mike Tyka.
+
+\section{Install the Edge TPU Library}
+
+Enter the following command in the terminal to install the Edge TPU Python library:
+
+\begin{verbatim}
+	sudo apt-get install python3-edgetpu
+\end{verbatim}
+
+Make sure the Edge TPU library is installed by running this command:
+
+\begin{verbatim}
+	python3 -c 'import edgetpu; print("OK")'
+\end{verbatim}
+
+This command should only print $"$OK$"$. If you receive any errors, make sure the previous step is completed successfully.
+
+\bigskip
+
+Caution: The Edge TPU Python library is now depreciated. The library depends on a legacy version of the libedgetpu library, which is not compatible with the PyCoral library that is used in \autoref{chap:Setup}. So, although the following is required for the Teachable Machine project, it will break any projects that depend on the newer libraries. However, you can always switch back by running \FILE{sudo apt-get install python3-pycoral}.
+
+
+
+
+\section{Download the Teachable Machine Source Code}
+
+
+Enter the following commands to clone the project repository and install dependencies:
+
+\begin{verbatim}
+	cd /home/pi/Projects_CoralTPU
+	
+	git clone https://github.com/google-coral/project-teachable.git
+	
+	cd project-teachable
+	
+	sh install_requirements.sh
+\end{verbatim}
+
+Then reboot for changes to take effect.
+
+\begin{verbatim}
+	sudo reboot
+\end{verbatim}
+
+
+
+\section{Test the Button and LED Wiring}
+
+If the headless version is being used, make sure all the wiring is correct according to \autoref{fig:Circuit} before any code is run. If the wiring needs to be adjusted, make sure to power off the Raspberry Pi first with the co
+mmand \FILE{sudo shutdown now}.
+
+\bigskip
+
+If the wiring looks good, plug in the Raspberry Pi and log in. On the Pi, enter these commands to test the buttons and LEDs:
+
+\begin{verbatim}
+	cd /home/pi/Projects_CoralTPU/project-teachable
+	
+	python3 teachable.py --testui
+\end{verbatim}
+
+
+If everything is correctly wired, then when you press a colored button, the corresponding LED lights up. On the screen, you should also see a message that says which button was pressed.
+
+If any of the LEDs don't light up, power off the board and carefully review the wiring in \autoref{fig:Circuit}.
+
+
+
+\section{Teach the Machine}
+
+To operate your Teachable Machine, start the program as follows:
+
+\begin{verbatim}
+	cd /home/pi/Projects_CoralTPU/project-teachable
+	
+	python3 teachable.py
+\end{verbatim}
+
+\begin{notes}
+	\item If you want to run the Teachable Machine with a keyboard instead of the GPIO buttons, add the --keyboard flag.
+\end{notes}
+
+After you start the code you should see the four colored LEDs ripple a few times and then turn off. In the terminal, it will say something like \FILE{fps 30.2$;$ \#examples: 0$;$ Class ---}.
+
+\begin{notes}
+	\item You might see a warning that says $"$Could not initialize Xv output$"$. That happens if you run this command without X windows; it just means the camera image can't be displayed in the console, but everything else will still work the same, so you can ignore this warning.
+\end{notes}
+
+
+Now you need to teach the machine to recognize some new objects, so start adding class examples as follows.
+
+\begin{enumerate}
+	\item First reserve one of the classes for $"$background$"$. So pick one of the colored buttons to represent $"$background$"$ and press that button while nothing of interest is in front of the camera (the camera should simply see your ceiling). You can use any button except for white (that button clears all the learned classes).
+	
+	\item Now hold an item in front of the camera and press one of the other colored buttons. This saves a snapshot of the image's embedding, linked to the button that was pressed.
+	
+	\medskip
+	
+	Rotate the object orientation slightly and press the button again. Repeat this a few times to gather training data.
+	
+	\medskip
+	
+	For example, hold an apple in various orientations and distances, pressing the same button each time. Do not hold down the button; instead press it multiple times while holding the object still. (The example counter on the screen should go up every time you press the button.)
+	
+	
+	\item Hold a different object in front of the camera and press another colored button, repeating the process to capture multiple images.
+	
+	
+	\item Repeat the training for the fourth and final button.
+	
+	\medskip
+	
+	Now hold one of the three objects in front of the camera (without pressing a button). You should see the correct LED light up, indicating that it recognized and classified the object. When no object is shown, the $"$background$"$ LED should light up instead.
+	
+	\medskip
+	
+	If you find that an object is misclassified, hold the object still and press the correct button again to help train it further. It's easy to get a sense of whether enough examples have been added, or where more examples may be needed.
+	
+	\medskip
+	
+	To clear the memory, press the white button. All four colored buttons should return to "off" and the example counter should be 0 again.
+\end{enumerate}
+
+
+\section{Troubleshooting}
+
+\begin{itemize}
+	\item If you get the error \FILE{Failed to get TPU context}, try unplugging and replugging your USB Accelerator. This is often necessary right after installing the software for the first time.
+	
+	\item If you see the message \FILE{Cannot identify device ‘/etc/video0'} then the bcm2835-v4l2 module isn't loaded, try running \FILE{sudo modprobe bcm2835-v4l2}. Or better yet, add bcm2835-v4l2 to the end of /etc/modules and reboot.
+	
+	\item If you have trouble getting good results, your camera might not be able to see the objects clearly due to poor lighting. If the overhead lighting is too bright, the contrast the camera sees may be to high, causing the images to appear only as silhouettes. In that case, add some upward lighting, set the demo on its side, or shield the glare from above.
+\end{itemize}
+
+
+\section{Training ideas}
+
+Classification using embeddings has its limits, but for simple classification tasks it works surprisingly well. Experiment with different objects, preferably with a static background. Try with:
+
+\begin{itemize}
+	\item Hands at different heights
+	
+	\item Holding out different numbers of fingers (1, 2, 3)
+	
+	\item Fruit
+	
+	\item Chess pieces
+	
+	\item Faces (it's surprisingly good at this)
+\end{itemize}
+
+
+\section{Try the weight imprinting method}
+
+By default, Teachable Machine uses a k-nearest neighbors algorithm to perform on-device transfer-learning on a pre-trained network. Alternatively, an API by the Coral team called ImprintingEngine that also performs transfer-learning on a pre-trained network can be used, which uses a different technique called weight imprinting. This version can be run by running the script with a couple parameters:
+
+\begin{verbatim}
+	python3 teachable.py --method 'imprinting' \
+	--model 'models/mobilenet_v1_1.0_224_l2norm_quant_edgetpu.tflite'
+\end{verbatim}
+
+Depending on the situation, either the k-nearest neighbors algorithm or the weight imprinting API might work better for the user's purpose, so it’s worth experimenting with both. Just beware that the model passed for weight imprinting is a specially-designed model, so you can't change that to any ordinary classification model.
+
+
+
+
+
+
+

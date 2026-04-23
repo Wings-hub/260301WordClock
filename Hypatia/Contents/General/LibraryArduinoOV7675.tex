@@ -1,0 +1,261 @@
+\chapter{Library Arduino\_OV767X} \label{ArduinoOV767X}
+The OV7675 camera module is supported by a dedicated Arduino library that provides the necessary drivers, configuration routines, and example implementations required for integration into embedded applications. This library, along with its associated documentation and source files, offers a structured interface for initializing the camera, configuring image parameters, and accessing raw image data. The complete library repository is publicly available and can be accessed via the following link:
+\URL{https://github.com/arduino-libraries/Arduino\_OV767X}
+
+The Arduino\_OV767X library provides a interface for controlling OV7670 and OV7675 camera modules through Arduino sketches. These cameras use a combination of \ac{i2c} communication for configuration and a parallel data bus for image transfer. The library abstracts the low-level register setup, timing, and synchronization required to capture frames, allowing users to initialize and read images with minimal effort. It is designed to integrate seamlessly with supported Arduino hardware that can handle the parallel camera interface.
+
+\section{Installation}
+
+To install the Arduino\_OV767X library, open the Arduino IDE and navigate to \menu{Sketch > Include Library >  Manage Libraries}, then search for “Arduino\_OV767X” and install the official package published by Arduino SA. Alternatively, the library can be downloaded or cloned directly from its GitHub repository using
+\URL{https://github.com/arduino-libraries/Arduino_OV767X}
+
+and then placed into the local \texttt{libraries} folder of the Arduino workspace. 
+Once installed, it can be included in a sketch via \PYTHON{\#include <Arduino\_OV767X.h>}.
+
+
+
+Regarding data types, the library typically outputs image data in the form of unsigned 8-bit or 16-bit integers (\PYTHON{uint8\_t}, \PYTHON{uint16\_t}), depending on the selected pixel format such as RGB565 or YUV422. The data structure follows a linear frame buffer that stores consecutive pixel values row by row, allowing direct access to raw image bytes or pixel pairs. Data quantity depends on the chosen resolution, for instance, a \ac{qvga} frame (320 $\times$ 240 pixels) in RGB565 format requires approximately 150 kB of memory, which may exceed the limits of smaller boards and therefore must be processed in segments or transmitted immediately after capture. Finally, the data quality is determined by the camera’s configuration. Exposure, white balance, and color settings are preconfigured by the library but can be set manually aswell as visualized in chapter \ref{Calibration}.
+
+
+\section{Functions}
+
+\paragraph{Camera Library Inclusion}
+This section includes the dedicated camera library that provides direct access to the OV767X camera family. It exposes the camera abstraction and control functions required for image acquisition and sensor configuration.
+
+\begin{itemize}
+	\item \PYTHON{\#include <Arduino\_OV767X.h>} 
+	
+	This header file defines the OV767X camera interface used by the Arduino platform. It provides the \texttt{Camera} class and its associated methods for initializing the camera, configuring image parameters, and capturing raw image frames.
+\end{itemize}
+
+\paragraph{Hardware Pin Configuration}
+This section describes the configuration of the physical interface between the microcontroller and the OV767X camera module. Proper pin mapping is essential to ensure correct signal routing for data, clock, and control lines.
+
+\begin{itemize}
+	\item \PYTHON{camera.setPins()} 
+	
+	This function assigns the microcontroller’s GPIO pins to the corresponding camera interface signals. It allows the camera library to operate with custom or non-default pin layouts, ensuring compatibility with different hardware configurations.
+\end{itemize}
+
+
+\paragraph{Camera Class Usage}
+This section introduces the camera abstraction used by the Arduino OV767X library. The camera class encapsulates all functionality required to control the image sensor and to acquire image data.
+
+\begin{itemize}
+	\item \PYTHON{Camera::camera} 
+	
+	This expression refers to an instance of the camera class provided by the Arduino OV767X library. It represents the central interface through which camera initialization, configuration, and frame acquisition are performed.
+\end{itemize}
+
+
+\paragraph{Camera Lifecycle Control}
+This section describes the initialization and shutdown of the camera subsystem. These functions define the lifecycle of the camera interface and ensure that the sensor is correctly configured before use and properly released when no longer needed.
+
+\begin{itemize}
+	\item \PYTHON{camera.begin(QCIF, RGB565, 1, OV7675)} 
+	
+	This function initializes the OV7675 camera with the specified resolution and pixel format. It establishes communication with the sensor, applies the configuration parameters, and prepares the camera for frame acquisition.
+	
+	\item \PYTHON{camera.end()} 
+	
+	This function terminates the camera operation and releases associated resources. It is used to safely shut down the camera interface when image capture is no longer required.
+\end{itemize}
+
+
+\paragraph{Camera Capability Query}
+This section provides access to runtime information about the camera configuration. These queries allow the application to determine image dimensions and pixel encoding properties after the camera has been initialized.
+
+\begin{itemize}
+	\item \PYTHON{camera.width()} 
+	
+	This function returns the horizontal resolution of the camera in pixels. It is used to determine the width of captured image frames.
+	
+	\item \PYTHON{camera.height()} 
+	
+	This function returns the vertical resolution of the camera in pixels. Together with the width, it defines the spatial dimensions of each image frame.
+	
+	\item \PYTHON{camera.bitsPerPixel()} 
+	
+	This function reports the number of bits used to represent a single pixel. It reflects the active pixel format configured during camera initialization.
+	
+	\item \PYTHON{camera.bytesPerPixel()} 
+	
+	This function returns the number of bytes used per pixel. It is typically derived from the bit depth and is required for calculating buffer sizes and frame lengths.
+\end{itemize}
+
+\paragraph{Image Buffer Size Calculation}
+This section describes how the required memory size for a single image frame is determined. The calculation is based on the camera’s active resolution and pixel encoding and is essential for correct buffer allocation and data handling.
+
+\begin{itemize}
+	\item \PYTHON{width × height × bytesPerPixel} 
+	
+	This expression computes the total number of bytes needed to store one complete image frame. It combines the horizontal and vertical resolution with the number of bytes per pixel, ensuring that the allocated buffer can fully accommodate the captured image data.
+\end{itemize}
+
+
+\paragraph{Frame Acquisition}
+This section describes the core operation of retrieving image data from the camera sensor. Frame acquisition is the fundamental step that transfers visual information from the hardware into system memory.
+
+\begin{itemize}
+	\item \PYTHON{camera.readFrame()} 
+	
+	This function captures a complete image frame from the camera and writes the raw pixel data into a user-provided buffer. The data layout and size correspond to the configured resolution and pixel format.
+\end{itemize}
+
+
+\paragraph{Test Pattern Control}
+This section covers the activation and deactivation of internally generated camera test patterns. Test patterns are useful for validating signal integrity, image alignment, and data transfer without relying on external visual input.
+
+\begin{itemize}
+	\item \PYTHON{camera.testPattern()} 
+	
+	This function enables a synthetic test pattern generated by the camera sensor. It allows developers to verify camera functionality and data paths independently of real-world scene conditions.
+	
+	\item \PYTHON{camera.noTestPattern()} 
+	
+	This function disables the test pattern and restores normal image capture from the camera sensor. It is used once diagnostic or calibration procedures are complete.
+\end{itemize}
+
+
+
+\paragraph{Image Property Adjustment}
+This section describes functions used to manually adjust visual properties of the captured images. These parameters influence color representation and luminance characteristics directly at the sensor level. These functions encapsulate the registers. 
+
+\begin{itemize}
+	\item \PYTHON{camera.setSaturation()} 
+	
+	This function adjusts the color saturation of the captured image. Higher values increase color intensity, while lower values reduce color vividness.
+	
+	\item \PYTHON{camera.setHue()} 
+	
+	This function modifies the hue offset applied to the image. It shifts the overall color tone and can be used for color calibration or correction.
+	
+	\item \PYTHON{camera.setBrightness()} 
+	
+	This function controls the overall brightness of the image. It affects the global luminance level produced by the camera sensor.
+	
+	\item \PYTHON{camera.setContrast()} 
+	
+	This function adjusts the contrast of the image by modifying the difference between light and dark regions. It is used to enhance or reduce image detail visibility.
+\end{itemize}
+
+\paragraph{Image Orientation Control}
+This section describes functions that control the spatial orientation of the captured image. These operations are performed at the sensor level and allow correction or adaptation of image alignment.
+
+\begin{itemize}
+	\item \PYTHON{camera.horizontalFlip()} 
+	
+	This function enables horizontal mirroring of the captured image. It is typically used to correct left–right orientation depending on camera mounting.
+	
+	\item \PYTHON{camera.noHorizontalFlip()} 
+	
+	This function disables horizontal mirroring and restores the default left–right orientation of the image.
+	
+	\item \PYTHON{camera.verticalFlip()} 
+	
+	This function enables vertical flipping of the captured image. It is useful when the camera is mounted upside down.
+	
+	\item \PYTHON{camera.noVerticalFlip()} 
+	
+	This function disables vertical flipping and restores the default top–bottom orientation of the image.
+\end{itemize}
+
+
+\paragraph{Sensor Gain Control}
+This section describes functions that control the amplification applied to the camera sensor signal. Gain adjustment influences image brightness and noise characteristics at the sensor level.
+
+\begin{itemize}
+	\item \PYTHON{camera.setGain()} 
+	
+	This function manually sets the sensor gain to a specified value. It allows precise control over signal amplification, which can be useful in controlled lighting conditions.
+	
+	\item \PYTHON{camera.autoGain()} 
+	
+	This function enables automatic gain control. The camera dynamically adjusts the gain based on scene brightness to maintain consistent image exposure.
+\end{itemize}
+
+
+
+\paragraph{Exposure Control}
+This section covers functions that regulate the exposure behavior of the camera sensor. Exposure control determines how long light is integrated by the sensor and directly affects image brightness and motion blur.
+
+\begin{itemize}
+	\item \PYTHON{camera.setExposure()} 
+	
+	This function manually sets the exposure time of the camera sensor. It provides fine-grained control over light integration, enabling adaptation to fixed or predictable lighting conditions.
+	
+	\item \PYTHON{camera.autoExposure()} 
+	
+	This function enables automatic exposure control. The camera continuously adjusts exposure time in response to changing lighting conditions to maintain balanced image brightness.
+\end{itemize}
+
+
+\paragraph{Pixel Format Configuration}
+This section lists the pixel encoding formats supported by the OV767X camera library. The selected pixel format determines how color and intensity information is represented in memory and directly impacts memory usage and downstream processing.
+
+
+\begin{itemize}
+	\item \PYTHON{RGB565} 
+	
+	This format encodes color information using 16 bits per pixel, with separate bit allocations for red, green, and blue channels. It provides a balance between color fidelity and memory efficiency.
+	
+	\item \PYTHON{RGB444} 
+	
+	This format uses 12 bits per pixel for color representation. It reduces memory consumption compared to RGB565 at the cost of lower color precision.
+	
+	\item \PYTHON{YUV422} 
+	
+	This format separates luminance and chrominance components, allowing efficient representation of image brightness while reducing color data. It is commonly used in video processing pipelines.
+	
+	\item \PYTHON{GRAYSCALE} 
+	
+	This format represents images using a single intensity value per pixel. It is memory-efficient and well suited for computer vision and machine-learning applications that do not require color information.
+	
+	\item \PYTHON{SBGGR8} 
+	
+	This format provides raw Bayer-pattern data from the image sensor. It is primarily used for low-level image processing or custom color reconstruction pipelines.
+\end{itemize}
+
+
+\paragraph{Resolution Selection}
+This section lists the image resolutions supported by the OV767X camera library. The selected resolution defines the spatial dimensions of captured images and directly influences memory usage, data throughput, and processing complexity.
+
+\begin{itemize}
+	\item \PYTHON{QCIF} 
+	
+	This resolution provides a compact image size suitable for low-memory environments and rapid data transfer. It is commonly used for testing and embedded machine-learning applications.
+	
+	\item \PYTHON{QQVGA} 
+	
+	This resolution offers very low spatial detail and minimal memory requirements. It is useful for quick prototyping or highly resource-constrained systems.
+	
+	\item \PYTHON{QVGA} 
+	
+	This resolution provides a balance between image detail and resource usage. It is often used in embedded vision applications where moderate image quality is required.
+	
+	\item \PYTHON{CIF} 
+	
+	This resolution increases spatial detail compared to QCIF while remaining manageable for embedded platforms. It is suitable for more demanding image processing tasks.
+	
+	\item \PYTHON{VGA} 
+	
+	This resolution delivers higher image quality and detail. It requires significantly more memory and bandwidth and is typically used when system resources permit.
+\end{itemize}
+
+A Keyword list and example codes, using the different functions can be found online: \URL{https://github.com/arduino-libraries/Arduino\_OV767X/blob/master/keywords.txt}
+
+\section{Example}
+
+The CameraCaptureRawBites Example \ref{lst:TestCameraRawBites320x240x2} can be found, with the library installed correctly under \menu{File> Examples > Arduino\_OV767X> CameraCaptureRawBites}.
+The function \PYTHON{setup()} establishes the hardware and communication baseline required for continuous image acquisition. During initialization, serial communication is configured to enable high-volume data transfer to a host system, and a status LED is prepared to provide immediate visual feedback. The camera module is then initialized with a fixed resolution and pixel format, ensuring that the sensor configuration matches the expected memory layout and transmission format. Based on the active camera parameters, the total frame size in bytes is calculated once and stored for later use, allowing the runtime logic to operate without repeated configuration queries.
+
+The function \PYTHON{loop()} implements the steady-state data flow of the application. In each iteration, a complete image frame is captured from the camera and written into a preallocated frame buffer. This raw pixel data is then transmitted directly over the serial interface without intermediate processing or compression, prioritizing deterministic throughput and minimal latency. The activation of the status LED serves as a simple runtime indicator that frame acquisition and transmission are occurring as expected. 
+
+
+
+\begin{center}
+	\captionof{code}{Simple Sketch to test OV7675 Camera}
+	\lstinputlisting[style=all]{../../Code/Arduino/CAM/ov7675/TestCameraRawBites320x240x2.ino}
+	\label{lst:TestCameraRawBites320x240x2}
+\end{center}
+

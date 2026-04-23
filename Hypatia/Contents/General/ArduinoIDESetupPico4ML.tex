@@ -1,0 +1,88 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Sudhanshu Pukale $
+% $Datum: 2025-03-08 $
+% $Pfad: GitHub/ML24-EX02-Pico4ML/Pico4ML-BLE/Contents/General/OS.tex $
+% $Version: 1 $
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\chapter{Setup for a Pico4ML}
+
+\section{Introduction}
+
+In this chapter, the process of connecting the Pico4ML and Pico4ML-BLE to a computer or laptop and configuring essential settings to get started is explored. The steps for installing the necessary tools and ensuring the board is correctly set up in the Arduino IDE are detailed. Finally, a simple example sketch is demonstrated to verify that the board is working as expected and ready for further development.
+
+There are set of examples which are build in Arduino (IDE) for the testing purpose, for checking all the configuration and setting up the board we can open one of the basic example \FILE{blnik.ino} first.
+
+
+\section{Configuration}
+
+\begin{enumerate}
+	\item Open Arduino IDE.
+	\item Go to \menu{File > Preferences (Windows)}.
+    
+	\item In the Additional Board Manager URLs, add the following link:\ref{Preferences}
+    
+
+		\URL{https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json}
+
+	\begin{center}
+		\includegraphics[width=0.0\textwidth]{Pico4ML/Preferences}
+		\captionof{figure}{Preferences}\label{Preferences}
+	\end{center}
+
+	\item Click OK and restart the Arduino IDE.
+\end{enumerate}
+
+
+\subsection{Install the Pico Board in Board Manager}
+
+\begin{enumerate}
+	\item Go to \menu{Tools > Board > Board Manager}.
+	\item Search for Raspberry Pi Pico/RP2040.
+	\item Install the Raspberry Pi Pico/RP2040 by Earle Philhower package.\ref{Boards Manager}
+    
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{Pico4ML/BoardsManager}
+		\captionof{figure}{Boards Manager}	\label{Boards Manager}
+	\end{center}
+\end{enumerate}
+
+
+
+\subsection{Select Board and Port}
+
+\begin{enumerate}
+	\item In Arduino IDE, go to \menu{Tools > Board > Raspberry Pi RP2040 Boards > Raspberry Pi Pico}.
+	\item Under \menu{Tools > Port}, select the port associated with the Pico.
+    
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{Pico4ML/Port}
+		\captionof{figure}{Port}
+		\label{Port}
+	\end{center}
+
+\end{enumerate}
+
+\section{First Step}
+
+\begin{enumerate}
+	\item Download the file \FILE{magic\_wand.uf2}.
+	\item Press and hold the BOOTSEL button on the Pico.
+	\item While holding, connect the Pico to your computer via USB.
+	\item A new mass storage device RPI-RP2 should appear.
+	\item Drag the magic\_wand.uf2 file to the RPI-RP2 window.
+	\item Collect custom gesture data by using the sensor on board .
+	\item Use Google Colab to train a machine learning model with your collected data.
+	\item Once done, convert the header file to tflite file  and further quantize the model.
+\end{enumerate}
+
+\section{Program-Hello World!}
+
+{
+	\captionof{code}{Hello World Example}\label{HelloWorld:example}
+	\ArduinoExternal{}{../../Code/Pico4ML/HelloWorld/HelloWorld.ino}
+}

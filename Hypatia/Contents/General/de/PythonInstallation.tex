@@ -1,0 +1,49 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Automatisierung/Skript/Produktspezifikation/Powerpoint/AMF.tex $
+% $Version: 4250 $
+%
+%%%%%%%%%%%%
+
+
+%todo Neu
+\chapter{Installing Python}
+
+
+Häufig wird Python innerhalb von Jupyter Notebook\index{Jupyter Notebook} verwendet. Die Notebooks erlauben das sequentielle Ausführen einzelner Code-Blöcke und Visualisierungen und lassen sich im Browser öffnen und bearbeiten. Dafür muss neben Jupyter Notebook auch eine aktuelle Version von Python auf dem PC installiert sein. Empfohlen wird der Download der Anaconda-Distribution\index{Anaconda}, die Jupyter Notebook und Python zusammen mit weiteren nützlichen Software-Paketen installiert. Anschließend kann über Anaconda mit der Eingabe \textsl{Jupiter Notebook} selbiges im Browser geöffnet werden.
+
+Für Python spricht einerseits die übersichtliche Struktur mit Einrückungen zur Abgrenzung von Blöcken. Das macht den Code kompakt und gut lesbar. Gleichzeitig ist Python vielseitig einsetzbar, vom Bash-Skript-Ersatz bis zum neuronalen Netz. Besonders experimentieren und herumprobieren ist mit Python einfach und schnell möglich, da Python den Code direkt ohne Kompilieren in Maschinencode interpretiert. Zudem können viele hilfreiche Bibliotheken und Pakete  importiert und verwendet werden.
+
+Als Nachteil gilt jedoch die Rechenzeit in Python. Dennoch gilt es als die Sprache der KI-Forschung. Dieser Widerspruch erklärt sich so, dass Frameworks wie Caffe oder TensorFlow genutzt werden, die \glqq ihre Berechnungen automatisch für die vorhandene Hardware optimieren und dabei beispielsweise den CUDA-Compiler verwenden, um auf der Grafikkarte zu rechnen.\grqq \cite{Heise:2020}
+
+
+\begin{itemize}
+    \item Windows-Benutzer können das folgende Tutorial zum Einrichten der Anaconda-Distribution durcharbeiten.
+    
+    \medskip
+    
+    \PYTHON{Install Anaconda Windows}
+    
+    \item Linux-/Mac-Benutzer gehen dann zum folgenden Tutorial über, um die Anaconda-Distribution einzurichten.
+    
+    \medskip
+    
+    \PYTHON{Install Anaconda Mac/Linux}
+    
+    Verwenden Sie die Anaconda-Version von 4.6 oder neuer. Es gibt leichte Änderungen im Befehl für die vorherige Version. Wenn Sie mit älteren Versionen arbeiten, verwenden Sie den folgenden Befehl für ein Update.
+    \PYTHON{conda update conda} Bei der Erstellung der virtuellen Umgebung kann eine von zwei Möglichkeiten verwendet werden, die unten gezeigt wird. 
+    
+    \item Anaconda Prompt-It ist ein Befehlszeilen-Tool, das nach der Installation der Anaconda-Distribution zur Verfügung steht.
+    
+    \item Anaconda Navigator-It ist eine grafische Benutzeroberfläche, die als alternatives Werkzeug zum Starten und Verwalten von Paketen in Anaconda dient.
+    
+    Dieses Tutorial verwendet das Betriebssystem Windows, funktioniert aber mit jedem Betriebssystem. Es könnte einige kleinere Änderungen im Anaconda-Befehl geben, aber der gesamte Erstellungsprozess für die virtuelle Umgebung ist derselbe. Sie können "Terminal" in Mac/Linux öffnen, um das folgende Ergebnis zu erzielen. Je nach den Anforderungen, die für die Projekte benötigt werden, dienen die folgenden Anleitungen zur Erstellung einer virtuellen Umgebung im Detail.
+    
+    Siehe auch \href{https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html}{Managing environments}
+    
+\end{itemize}
+
+
+

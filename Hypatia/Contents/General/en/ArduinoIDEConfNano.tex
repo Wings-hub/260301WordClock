@@ -1,0 +1,86 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Automatisierung/Skript/Produktspezifikation/Powerpoint/ArduinoIDEConfNano.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+
+
+
+
+\chapter{Arduino IDE 1.8.x - Configuration for Arduino Nano}
+
+\section{Configuration for the Arduino Nano 33 BLE Sense}
+
+To program the Arduino Nano 33 BLE Sense in offline state, we need to install one of the latest arduino IDE on our desktop. After installation, for getting access to the Arduino nano 33 ble sense board, we need to make configuration in our IDE. By opening the IDE, go to tool which can be seen on the uper left corner in IDE, in the tool there is an option for managed board. At this point we need to write our board name in the search which is Arduino Nano 33 BLE Sense as shown in figure, \ref {fig:Arduino-Mbed-Boards Installation} select the Arduino Mbed OS Boards and install it. The Mbed OS nano board supports also other nano family boards including Arduino nano 33 ble sense, after installing simply connect the Arduino Nano 33 BLE Sense to the computer via USB cable. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/Nano Mbed}
+    \caption{Arduino Mbed OS Nano Boards Installation}
+    \label{fig:Arduino-Mbed-Boards Installation}
+\end{figure}
+
+
+
+\section{Select the Appropriate Board}
+
+At this step we need to go to the tool $\rightarrow$ Arduino board and select the connected board which is Arduino Nano 33 Ble Sense as shown in the figure \ref{fig:CheckBoard}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/Check-board}
+    \caption{Select the Connected board -here: Arduino Nano 33 BLE Sense}
+    \label{fig:CheckBoard}
+\end{figure}
+
+\section{Select the Appropriate Port}
+
+By selecting the Arduino nano 33 BLE sense board, next we need to check the connected port. For doing this, we need to set our arduino borad in boot setup by clicking the white reset button on arduino as show in figure\ref{fig:Check-Reset}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/Click-Reset}
+    \caption{Arduino Nano 33 BLE Sense: Reset Button}
+    \label{fig:Check-Reset}
+\end{figure}
+
+By clicking the white reset button, the arduino borad will be in boot setup and make sure to check the orange LED glows as shown in the figure \ref{fig:LED-Glow}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/Orange LED}
+    \caption{Arduino Nano 33 BLE Sense: Orange LED Glow}
+    \label{fig:LED-Glow}
+\end{figure}
+
+After successfully applying the above mention step, next we need to select the connected port before upload the program. For this, go to tool select arduino port and make sure to check it available port for uploading the program as shown in figure \ref{fig:Port-Selection}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Nano33BLESense/Port-Select}
+    \caption{Select Available Port for Uploading Arduino Sketch}
+    \label{fig:Port-Selection}
+\end{figure}
+
+
+
+
+In order to confirm the board is connected and to check the details of the connected board, navigate to \menu{Tools > Get Board Info} where a window is produced as shown in \ref{fig:img8}.
+
+
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{Nano33BLESense/img8.png}
+    \caption{Arduino Board Info}
+    \label{fig:img8}
+\end{figure}
+
+
+

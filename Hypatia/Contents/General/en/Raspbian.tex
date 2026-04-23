@@ -1,0 +1,84 @@
+%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-02-24 14:29:03Z $
+% $Pfad: komponenten/Bilderkennung/Produktspezifikation/CorelTPU/Ausarbeitung/Kapitel/Software.tex $
+% $Version: 1791 $
+%
+%
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\chapter{Raspberry Pi OS}
+
+\section{Installation}
+The first step when setting up the Raspberry Pi is to flash a fresh installation of Raspberry Pi OS, formally known as Raspbian, to a microSD card. \href{https://www.raspberrypi.org/software/}{\color{blue}{Raspberry Pi Imager}} is an official software from the developers of Raspberry Pi that is recommended for this purpose. When you insert the microSD card in your computer, you might get a prompt asking you to to format one of the partitions on the card, but it is very important that you \textbf{do not} choose to format the card. Just exit the prompt and open Raspberry Pi Imager. Select the desired OS and the correct disk drive, and start the imaging process. This can take a few minutes. When the imaging is finished, the microSD card is ready to be removed from the computer and inserted in the Raspberry Pi. The device is now ready for use.
+
+\begin{notes}
+	\item Raspberry Pi OS comes with python 3.7 default version preinstalled.
+\end{notes}
+
+
+\section{Setup}
+Plug a monitor into the HDMI slot and a keyboard into one of the USB ports. Connect the micro-USB power cable from the Raspberry Pi to a USB charger, that must be at least 2.6A. The Pi should boot up and you will be given a login prompt. The default username is "pi" and the password is "raspberry".
+
+If you installed a full graphical system and you find yourself in a graphical environment, plug in a mouse and open a terminal.
+To set up the Raspberry Pi, enter the following into the terminal:
+
+\medskip
+
+\SHELL{sudo raspi-config}
+
+\bigskip
+
+\subsection{Change your password}
+It is good practice to change the password after the first login, especially if you plan to enable SSH (see \autoref{chap:SSH}).
+
+\begin{enumerate}
+	\item Navigate to and select Change User Password.
+	\item Enter your new password.
+\end{enumerate}
+
+\subsection{Enable Wi-Fi}
+\begin{enumerate}
+	\item Select Network Options.
+	\item Navigate to and select WiFi.
+	\item Select your country.
+	\item Select OK.
+	\item Enter the SSID (the name) of your Wi-Fi network.
+	\item Enter the password (or press Enter for no password).
+\end{enumerate}
+
+\subsubsection{Concerning the use of "Eduroam"}
+If the Raspberry Pi is being used at an educational institution one might be tempted to try connecting it to Eduroam or a similar Wi-Fi network. This might not be in line with the terms and service, and should be checked with the appropriate institution. Connecting a Linux system to Eduroam is also a slightly complicated process that won't be described here. If no other Wi-Fi connections are available, connecting to Ethernet or a mobile hotspot from a smartphone can be attempted.
+
+
+\subsection{Change the keyboard layout to your country (optional)}
+\begin{enumerate}
+	\item Select Localization Options.
+	\item Select Keyboard Layout.
+	\item Select Generic 105-key (Intl) PC or choose the layout that most closely matches your keyboard layout.
+	\item Select your country (you may have to choose Other first to display more options). For example, for the US choose English US.
+	\item Select The default for the keyboard Layout and No compose screen on the next screen.
+\end{enumerate}
+
+\subsection{Enable the camera}
+\begin{enumerate}
+	\item Select Interfacing Options.
+	\item Navigate to and select Camera.
+	\item Choose Yes.
+	\item Select OK.
+\end{enumerate}
+
+\subsection{Finish the raspi-config setup}
+\begin{enumerate}
+	\item Choose Finish.
+	\item When prompted whether to reboot, select Yes.
+\end{enumerate}
+
+
+	
+
+

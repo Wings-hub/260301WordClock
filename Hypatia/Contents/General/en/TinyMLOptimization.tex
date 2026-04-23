@@ -1,0 +1,156 @@
+%%%
+%
+% $Autor: Wings $
+% $Date: 2024-10-31 11:15:45Z $
+% $File: TinyMLOptimization.tex $
+% $Version: 1 $
+%
+%%%
+
+\chapter{Model Optimization for TinyML}
+\label{sec:model_optimization}
+Edge devices often have limited memory or computational power. Various optimizations can be applied to models so that they can be run within these constraints. In addition, some optimizations allow the use of specialized hardware for accelerated inference.
+
+It's recommended that you consider model optimization during your application development process. This document outlines some best practices for optimizing TensorFlow models for deployment to edge hardware.
+
+\section{Why models should be optimized?}
+Over the last few years, machine learning models have seen two seemingly opposing trends. On the one hand, the models tend to get bigger and bigger, culminating in what’s all the rage these days: the large language models. Nvidia’s Megatron-Turing Natural Language Generation model has 530 billion parameters! On the other hand, these models are being deployed onto smaller and smaller devices, such as smartwatches or drones, whose memory and computing power are naturally limited by their size.
+
+How do we squeeze ever larger models into increasingly smaller devices? The answer is model optimization: the process of compressing the model in size and reducing its latency. \cite{datascienceModelOptimization:2024}
+
+There are several main ways model optimization can help with application development. \cite{tfl_Opt:2024}
+
+\subsection{Size reduction}
+\begin{itemize}
+	\item \textbf{Smaller storage size:} Smaller models occupy less storage space on your users' devices. For example, an Android app using a smaller model will take up less storage space on a user's mobile device.
+	\item \textbf{Smaller download size:} Smaller models require less time and bandwidth to download to users' devices.
+	\item \textbf{Less memory usage:} Smaller models use less RAM when they are run, which frees up memory for other parts of your application to use, and can translate to better performance and stability. \cite{tfl_Opt:2024}
+\end{itemize}
+
+\subsection{Latency reduction}
+Latency is the amount of time it takes to run a single inference with a given model. Some forms of optimization can reduce the amount of computation required to run inference using a model, resulting in lower latency. Latency can also have an impact on power consumption.
+
+Currently, quantization can be used to reduce latency by simplifying the calculations that occur during inference, potentially at the expense of some accuracy. \cite{tfl_Opt:2024}
+
+\subsection{Accelerator compatibility}
+Some hardware accelerators, such as the Edge TPU, can run inference extremely fast with models that have been correctly optimized.
+
+Generally, these types of devices require models to be quantized in a specific way. See each hardware accelerator's documentation to learn more about their requirements. \cite{tfl_Opt:2024}
+
+\subsection{Trade-offs}
+Optimizations can potentially result in changes in model accuracy, which must be considered during the application development process.
+
+The accuracy changes depend on the individual model being optimized, and are difficult to predict ahead of time. Generally, models that are optimized for size or latency will lose a small amount of accuracy. Depending on your application, this may or may not impact your users' experience. In rare cases, certain models may gain some accuracy as a result of the optimization process. \cite{tfl_Opt:2024}
+
+\section{Types of Optimization}
+TensorFlow Lite currently supports optimization via quantization, pruning and clustering.
+
+These are part of the TensorFlow Model Optimization Toolkit, which provides resources for model optimization techniques that are compatible with TensorFlow Lite.
+
+\subsection{Quantization}
+Quantization works by reducing the precision of the numbers (number of bits used to represent a number in memory) used to represent a model's parameters, which by default are 32-bit floating point numbers. This results in a smaller model size and faster computation. \cite{tfl_Opt:2024}
+
+By default, TensorFlow stores model biases, weights, and activations as 32-bit floating points. Typically, most model weights and activations are not that far away from zero; otherwise, the gradients would explode preventing us from training a model in the first place. Converting these float32s into a lighter data structure such as int8 could go a long way toward reducing the model size, while not necessarily impacting its accuracy.
+
+Quantization is very convenient to use since it operates on an already trained model and only converts its internal data structures. In TensorFlow, it can be done while converting the model to the TF Lite format by setting the optimizations attribute in the converter. \cite{datascienceModelOptimization:2024}
+
+The following types of quantization are available in TensorFlow Lite:
+\begin{enumerate}
+	\item Post-training float16 quantization
+	\item Post-training dynamic range quantization
+	\item Post-training integer quantization
+	\item Quantization-aware training
+\end{enumerate}
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[node distance=0.8cm and 0.8cm, auto, outer sep=0pt]
+		
+		\tikzstyle{block} = [rectangle, draw, text centered, minimum width=3cm, text centered, minimum height=1cm]
+		
+		% Node style
+		%	\tikzstyle{block} = [rectangle, draw=black, fill=blue!15, text width=4.5cm, text centered, minimum height=1cm]
+		
+		% Nodes
+		\node [block, xshift=1cm] (quantization) {Quantization};
+		\node [block, below left=of quantization, xshift=1.75cm] (ptq) {Post Training Quantization};
+		\node [block, below right=of quantization, xshift=-1.75cm] (qat) {Quantization Aware Technique};
+		\node [block, below=1.5cm of ptq] (float16) {Float16 quantization};
+		\node [block, below left=of ptq, xshift=1.25cm] (dynamic) {Dynamic range quantization};
+		\node [block, below right=of ptq, xshift=-1.25cm] (integer) {Integer quantization};
+		
+		% Arrows
+		\draw [->] (quantization) -- (ptq);
+		\draw [->] (quantization) -- (qat);
+		\draw [->] (ptq) -- (float16);
+		\draw [->] (ptq) -- (dynamic);
+		\draw [->] (ptq) -- (integer);
+	\end{tikzpicture}
+	\caption{Quantization Techniques}
+	\label{Quantization}
+\end{figure}
+
+\subsubsection{Post-training float16 quantization}
+In Float-16 quantization, weights are converted to 16-bit floating-point values. This results in a 2x reduction in model size. There is a significant reduction in model size in exchange for minimal impacts to latency and accuracy. \cite{opencvtensorflow:2023} \cite{tfl_Opt:2024}
+
+\subsubsection{Post-training dynamic range quantization}
+In Dynamic Range Quantization, weights are converted to 8-bit precision values. Dynamic range quantization achieves a 4x reduction in the model size. There is a significant reduction in model size in exchange for minimal impacts to latency and accuracy. \cite{opencvtensorflow:2023} \cite{tfl_Opt:2024}
+
+\subsubsection{Post-training integer quantization}
+Integer quantization is an optimization strategy that converts 32-bit floating-point numbers (such as weights and activation outputs) to the nearest 8-bit fixed-point numbers. This resulted in a smaller model and increased inferencing speed, which is valuable for low-power devices such as microcontrollers. \cite{opencvtensorflow:2023} \cite{tfl_Opt:2024}
+
+\subsubsection{Quantization Aware Training}
+Quantization reduces the precision of the weights and activations to lower bits. Quantizing a model after training once usually leads to lower performance in smaller models. For increasing its performance at lower bit width, models can be trained/finetuned with quantized weights and activations.
+
+First, the model architecture is adjusted to store the full precision and quantized copy of elements. A fake/simulated quantization is introduced to the model in the forward pass making it experience the effects of quantization.
+The gradients are calculated without loss of precision making it robust to quantization. The quantized values of weights and activations are stored in nodes and gradients are passed through them during training. The figure ~\ref{QuantizationAwareTraining} represents the Quantization Aware Training technique by simulating the effects of quantization during training.
+
+Once the model is trained only the quantized model is used for inference. \cite{MediumQuantAware:2024}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{Images/TensorFlowLite/QuantizationAwareTraining.png}
+		\caption{Quantization Aware Training Technique by introducing simulated quantization during model training}
+		\label{QuantizationAwareTraining}
+	\end{center}
+\end{figure}
+
+\subsection{Pruning}
+Pruning works by removing parameters within a model that have only a minor impact on its predictions. Pruned models are the same size on disk, and have the same runtime latency, but can be compressed more effectively. This makes pruning a useful technique for reducing model download size. \cite{tfl_Opt:2024}
+
+Simply, Pruning is an optimization technique that simplifies neural networks by reducing redundancy without significantly impacting task performance. In the figure ~\ref{Pruning}, a neural network’s structure before and after pruning. On the left is the original dense network with all the connections and neurons intact. On the right, the network has been simplified through pruning: less important connections (synapses) and neurons have been removed.
+
+Pruning is based on the observation that not all neurons contribute equally to the output of a neural network. Identifying and removing the less important neurons can substantially reduce the model’s size and complexity without negatively impacting its predictive power. It involves three key phases: identification, elimination, and fine-tuning. \cite{deeplearningOptimizationMethods:2024}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{Images/TensorFlowLite/Pruning.png}
+		\caption{Synapses and neurons in Deep Learning Model before and after pruning technique}
+		\label{Pruning}
+	\end{center}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{Images/TensorFlowLite/Clustering.png}
+		\caption{Weight Clustering Optimization technique}
+		\label{Clustering}
+	\end{center}
+\end{figure}
+
+\subsection{Clustering}
+Clustering works by grouping the weights of each layer in a model into a predefined number of clusters, then sharing the centroid values for the weights belonging to each individual cluster. This reduces the number of unique weight values in a model, thus reducing its complexity. \cite{tfl_Opt:2024}
+
+As a result, clustered models can be compressed more effectively, providing deployment benefits similar to pruning.
+
+
+Weight clustering is an optimization algorithm to reduce the storage and network transfer size of your model. The idea in a nutshell is explained in the figure ~\ref{Clustering}. For example, that a layer in your model contains a 4x4 matrix of weights (represented by the “weight matrix”). Each weight is stored using a float32 value. When you save the model, you are storing 16 unique float32 values to disk.
+
+Weight clustering reduces the size of your model by replacing similar weights in a layer with the same value. These values are found by running a clustering algorithm over the model’s trained weights. The user can specify the number of clusters (in this case, 4). This step is shown in “Get centroids” in the diagram and the 4 centroid values are shown in the “Centroid” table. Each centroid value has an index (0-3).
+
+Next, each weight in the weight matrix is replaced with its centroid’s index. This step is shown in “Assign indices”. Now, instead of storing the original weight matrix, the weight clustering algorithm can store the modified matrix shown in “Pull indices” (containing the index of the centroid values), and the centroid values themselves.
+
+In this case, we have reduced the size from 16 unique floats, to 4 floats and 16 2-bit indices. The savings increase with larger matrix sizes.
+
+Note that even if we still stored 16 floats, they now have just 4 distinct values. Common compression tools (like zip) can now take advantage of the redundancy in the data to achieve higher compression. \cite{tfBlog_ClusteringOpt:2021} \cite{BlogPaperOpt:2017}
+

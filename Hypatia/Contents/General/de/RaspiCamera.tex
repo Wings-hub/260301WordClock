@@ -1,0 +1,31 @@
+%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-02-24 14:29:03Z $
+% $Pfad: komponenten/Bilderkennung/Produktspezifikation/CorelTPU/Ausarbeitung/Kapitel/Software.tex $
+% $Version: 1791 $
+%
+%
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+\section{Einrichten der Kamera}
+
+Nach dem Systemstart kann das  Menü Raspberry Pi 
+Symbol oben links aktiviert werden. Dort kann man in den Einstellungen \menu[>]{Preferences > Raspberry Pi Konfiguration > Interfaces}. Zur Verwendung der muss dann die Kamera aktiviert (Enabled) werden. Nach der Aktivierung der Kamera muss der Rechner neugestartet werden. Ein Dialog mit einer Kammandozeile kann mittels \keys{\ctrl + \Alt + T} geöffnet werden. Dort kann man durch folgende Eingaben eine Testaufnahme eines Bildes machen:
+
+\begin{lstlisting}
+raspistill -v -o test.jpg
+xdg-open /home/pi/test.jpg
+\end{lstlisting}
+
+Das Bild wird dann in der Datei test.jpg abgelegt.
+
+
+%\begin{notes}
+%\item Das Pi-Kameraprogramm des Kameramoduls hilft bei der Durchführung der Echtzeit-Live-Identifikation von Objekten.
+%Damit das Pi-Kamera-Modul speziell für die Live-Objektidentifizierung im VNC-Viewer funktioniert, aktivieren Sie den Direktaufnahmemodus des VNC-Viewers.
+%\end{notes}

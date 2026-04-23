@@ -1,0 +1,112 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Automatisierung/Skript/Produktspezifikation/Powerpoint/AMF.tex $
+% $Version: 4250 $
+%
+%%%%%%%%%%%%
+
+%Quelle:     \href{https://www.clickworker.de/2019/05/14/realistische-trainingsdaten-fuer-maschinelles-lernen/}{Realistische Trainingsdaten für Maschinelles Lernen}
+
+%Quelle: \href{https://www.crisp-research.com/die-bedeutung-von-offentlichen-datensatzen-warum-freie-daten-wichtig-fur-die-digitale-entwicklung-eines-unternehmens-sind/}{Öffentliche Datensätze – Warum freie Daten wichtig für die digitale Entwicklung sind}
+
+%Quelle: \href{https://www.tableau.com/de-de/learn/articles/free-public-data-sets}{7 öffentliche Datensätze, die Sie sofort kostenlos analysieren können}
+
+
+% todo \item \href{http://vis-www.cs.umass.edu/lfw/}{faces}
+
+%\Ausblenden
+{
+
+%Quelle https://riptutorial.com/de/scikit-learn/example/6801/beispieldatensatze
+
+\chapter{Databases and Models for Machine Learning}
+
+Data is the basis for machine learning. The success of the models depends on their quality. This is because machine learning relies on accurate and reliable information in the training of its algorithms. This self-evident fact is well known, but unfortunately not sufficiently taken into account. Poor data leads to insufficient or incorrect results.  
+
+This goes without saying, but is often overlooked. The training data is realistic if it reflects the data that the AI system records in real use. Unrealistic data sets hinder machine learning and lead to expensive misinterpretations. If one wants to develop software for drone cameras, realistic images must also be used. In such a case, if one uses corresponding images from the web, they usually have the following characteristics:
+
+\begin{itemize}
+  \item The perspective is more like head height.
+  \item The targeted property is located in the centre.
+\end{itemize}
+
+If one wants to use data sets for one's own needs, care must be taken that only data that are also realistic are used. The data sets must also not contain any outliers or redundancies.  When checking the quality of the data, the following questions can be helpful:
+
+
+\begin{itemize}
+  \item By what means and what technique was the data generated?
+  \item Is the data source credible?
+  \item With what intention was the data collected?
+  \item Where does the data come from? Is it suitable for the intended application?
+  \item How old is the data?
+  \item In what environment/conditions was the data created?
+\end{itemize}
+
+If necessary, collect your own data or have it collected.
+
+Anyone who does data science can measure their developed algorithms against the results of others by using standardised data sets. Many databases and pre-trained models are available on the internet for this purpose. This chapter describes some of them. It should be noted that many data sets are available in different versions. Depending on the provider, the data may already have been processed and prepared for training. Here it is important to make sure that a suitable variant is used. Access to different data sets is available on the following internet sites:
+
+
+\begin{description}
+  \item [\href{https://www.kaggle.com/datasets}{Kaggle.com:}] Hier werden über 20.000 Datensätze angeboten. Dazu ist nur ein kostenloses Benutzerkonto notwendig.
+  
+  \item [\href{https://lionbridge.ai/datasets/the-50-best-free-datasets-for-machine-learning/}{lionbridge.ai:}]  The website offers a good overview of data sets from the public and commercial sectors.
+  
+  \item [\href{govdata.de}{govdata.de:}] The Data Portal for Germany offers freely available data from all areas of public administration in Germany.
+
+
+  \item [\href{https://www.data.gov}{American government database:}] The American government also operates a portal where records of the administration are available.
+  
+  \item [\href{https://riptutorial.com/de/scikit-learn/example/6801/beispieldatensatze}{scikit data sets:}] Data sets are also installed with the Python library. There are only a few datasets, but they are already pre-worked so that they are easy to load and use.
+
+  \item [\href{https://archive.ics.uci.edu/ml/datasets.php}{UCI - Center for Machine Learning and Intelligent System:}] The University of Irvine in Califonia offers around 600 data sets for its own study.
+  
+  \item [\href{}{TensorFlow:}] TensorFlow data sets: A collection provides ready-to-use datasets. All datasets are made available via the structure \PYTHON{alstf.data.Datasets} or \PYTHON{wastf.data.Datasets}. The datasets can also be retrieved individually via \href{https://github.com/tensorflow/datasets/tree/master/tensorflow_datasets}{GitHub}. 
+
+  \item [\href{https://www.opensciencedatacloud.org}{Open Science Data Cloud:}] The platform aims to create a way for everyone to access high-quality data. Researchers can house and share their own scientific data, access complementary public datasets, create and share customised virtual machines with the tools they need to analyse their data.
+  
+  \item[\href{http://aws.amazon.com/de/datasets/}{Amazon:}] Amazon also provides data sets. You have to register for this free of charge.
+  
+  \begin{code}
+    \begin{lstlisting}[language=python]
+# Construct a tf.data.Dataset
+ds = tfds.load('mnist', split='train', shuffle_files=True)
+
+# Build your input pipeline
+ds = ds.shuffle(1024).batch(32).prefetch(tf.data.experimental.AUTOTUNE)
+for example in ds.take(1):
+image, label = example["image"], example["label"]
+    \end{lstlisting}
+    \caption{Loading a dataset with TensorFlow}
+  \end{code}
+
+
+  \item [\href{https://www.kdnuggets.com/datasets}{KDnuggets.com:}] Similar to Kaggle, but links to other websites.
+  
+  \item [\href{https://paperswithcode.com/datasetss}{paperswithcode.com:}] The platform provides a possibility to exchange data sets. Here you will also find many well-known datasets with their links.
+  
+  \item [\href{https://datasetsearch.research.google.com}{Google Dataset Search:}] The website does not directly offer datasets, but rather search support. Google restricts its search engine here to data sets.
+  
+  \item \href{http://vis-www.cs.umass.edu/lfw/}{faces:} Labeled Faces in the Wild is a public benchmark for face verification, also known as pair matching. No matter what the performance of an algorithm, it should not be used to conclude that an algorithm is suitable for any commercial purpose.
+
+%  \item [\href{https://www.analyticsvidhya.com/blog/2018/03/comprehensive-collection-deep-learning-datasets/}{:}]
+%  \item [\href{}{:}]
+%  \item [\href{}{:}]
+
+\end{description}
+
+
+
+
+}
+
+
+
+
+
+
+%\Ausblenden
+{
+}

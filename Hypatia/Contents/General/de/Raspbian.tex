@@ -1,0 +1,319 @@
+%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-02-24 14:29:03Z $
+% $Pfad: komponenten/Bilderkennung/Produktspezifikation/CorelTPU/Ausarbeitung/Kapitel/Software.tex $
+% $Version: 1791 $
+%
+%
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+\section{Start mit dem Betriebssystem Raspbian}
+
+Zunächst wird mit dem Flashen  einer neuen Installation von 
+\textbf{Raspbian Stretch mit Desktop} auf eine microSD-Karte. 
+Das Betriebssyste enthält standardmäßig eine Python-Unterstützung, zur Zeit mit dfer Version 3.5. 
+
+
+\subsection{Installation der Betriebssystems Raspbian unter Windows}
+
+{\tiny Quelle: \url{file:///F:/Bilderkennung/komponenten/Bilderkennung/Produktspezifikation/Raspbian/RaspberryPiEinrichten.htm}}
+
+
+
+Das Betriebssystem des Raspberry Pi wird von der SD-Karte gebootet. Die Raspberry Foundation stellt einige Speicherabbilder (Disk-Images) verschiedener Betriebssysteme zum Download bereit, die leicht auf eine SD-Karte geschrieben werden können. Der Standard ist Raspbian (hier gehts zum Download der aktuellen Version), da es eine schlanke grafische Oberfläche bietet und alle Funktionen des Raspberry Pi unterstützt. Das Schreiben des Disk-Images kann von einem Windows- oder Linux-Rechner aus bewerkstelligt werden.
+
+
+\bigskip
+
+Unter Windows wird das Disk-Image mit Hilfe des Programms Win32 Disk Imager auf die SD-Karte geschrieben. \cite{Win32DiskImage:2020} Zuerst muss man sich das Programm installieren. Am Ende der Installation wird man gefragt, ob man den Win32 Disk Imager direkt starten möchte. Der erste Start aus der Installation heraus bricht jedoch in der Regel mit einer Fehlermeldung ab. Dies hat jedoch keine weiteren Folgen, man kann die Meldung einfach ignorieren.
+Nun navigiert man in das Verzeichnis, in dem das Image liegt und entpackt es. Das Menü zum entpacken erreicht man durch einen Rechtsklick auf die Datei und dort wählt man den Eintrag \textsf{Alle extrahieren}:
+
+\begin{figure}[!h]
+	\centering
+
+    \includegraphics[width=1.0\textwidth]{RaspberryPi/Install1}
+	
+	\caption{Extraktion aller Dateien}
+	
+\end{figure}
+
+Nun öffnet sich ein Fenster, in dem man auf den Button Extrahieren klickt:
+
+\begin{figure}[!h]
+	\centering
+	
+ 	\includegraphics[width=1.0\textwidth]{RaspberryPi/Install2}
+	
+	\caption{Extraktion aller Dateien}
+	
+\end{figure}
+
+
+
+
+Der Vorgang wird eine Weile dauern. Wenn das Image fertig entpackt ist, muss man zuerst die SD-Karte an den Kartenleser einführen und öffnet danach den Win32 Disk Imager. Da das Programm zum Formatieren von Datenträgern besondere Rechte benötigt, wird in einem Fenster noch abgefragt, ob man damit einverstanden ist. Hier bestätigt man mit Ja:
+
+\begin{figure}[!h]
+	\centering
+	
+	\includegraphics[width=1.0\textwidth]{RaspberryPi/Install3}
+	
+	\caption{Zielordner für Win32 Disk Imager}
+	
+\end{figure}
+
+Bevor man das Image auf die SD-Karte schreibt, sollte man sicherstellen, dass das richtige Laufwerk ausgewählt ist, da ansonsten Daten auf einem falsch gewählten Datenträger überschrieben werden. In unserem Falle ist F:\ korrekt. Der Laufwerksbuchstabe kann abweichen, je nachdem wie viele Speichermedien am Rechner angeschlossen sind:
+
+
+\begin{figure}[!h]
+	\centering
+	
+	\includegraphics[width=1.0\textwidth]{RaspberryPi/Install3}
+	
+	\caption{Bestätigung für Win32 Disk Imager}
+	
+\end{figure}
+
+
+Im nächsten Schritt muss man die Image-Datei in einem Datei-Browser-Fenster auswählen. Dazu klickt man das Ordner-Symbol:
+
+\begin{figure}[!h]
+	\centering
+	
+	\includegraphics[width=1.0\textwidth]{RaspberryPi/Install4}
+	
+	\caption{Win32 Disk Imager: Wahl des Laufwerks}
+	
+\end{figure}
+
+Nun muss man den Button Write klicken und die Sicherheitsabfrage (Are you sure you want to continue?) mit Yes bestätigen. Das Image wird dann auf die SD-Karte übertragen, was eine Weile dauern kann. Der Fortschritt wird angezeigt und am Ende des Schreibvorgangs erscheint ein Fenster mit der Nachricht Write Successful.
+
+\begin{figure}[!h]
+	\centering
+	
+	\includegraphics[width=1.0\textwidth]{RaspberryPi/Install5}
+	
+	\caption{Win32 Disk Imager: Ordnerwahl}
+	
+\end{figure}
+
+\subsection{Erster Start und Einstellungen nach der Installation}
+
+
+Hat man Netzteil, Monitor, Tastatur und Maus angeschlossen, kann die SD-Karte jetzt in den Raspberry Pi eingeführt und das Netzteil angeschalten werden. Die Anzahl der Himbeeren auf dem Bootbildschirm zeigt an, wie viele Prozessorkerne vom System erkannt wurden. Beim Raspberry Pi 1 ist es einer, beim Pi 2 sind es vier und beim Pi 3 werden auch nur vier erkannt, da der ARMv8 Prozessor des Pi 3 nur im ARMv7-Modus arbeitet.
+
+\begin{figure}[!h]
+	\centering
+	
+	\includegraphics[width=1.0\textwidth]{RaspberryPi/Install6}
+	
+	\caption{Ausgabe beim ersten Start}
+	
+\end{figure}
+
+\subsubsection{raspi-config}
+
+Raspbian wird mit einem Programm zur Konfiguration einiger wichtiger Einstellungen ausgeliefert.Dazu gehören die Änderung des Benutzer-Passworts, Lokalisierung, Aktivierung der Pi-Cam, Hostname, Zuweisung geteilten Speichers für den Grafikcoprozessor, Aktivierung eines SSH-Servers, Boot in die Kommandozeile oder zum Desktop und anderes. Um raspi-config aufzurufen, öffnet man ein Terminal und gibt ein:
+
+\SHELL{sudo raspi-config}
+
+\subsubsection{Partition vergrößern}
+
+Auf der SD-Karte werden beim Schreiben des Images zwei Partitionen angelegt. Eine Boot-Partition, die den Kernel und die wichtigsten Startskripte enthält, sowie eine Root-Partition, die das Linux-Betriebssystem und Platz für Benutzerdaten enthält.
+
+Die Root-Partition ist standardmäßig 2 GB groß. Verwendet man ein aktuelles Raspian-Image, wird die Root-Partition beim ersten Booten automatisch bis zur maximal möglichen Größe erweitert. Bei älteren Versionen bleibt sie 2 GB groß, was nur für die wenigsten Anwendungen ausreicht. Die Partition kann dann mit \textsf{raspi-config} auf die maximal mögliche Größe erweitert werden. Der erste Eintrag des Menüs in \textsf{raspi-config} heißt \textsf{Expand Filesystem} und erledigt die Erweiterung der Partition ohne weiteres Zutun.
+
+
+\subsubsection{Tastatur-Layout}
+
+Ein deutsches Layout der Tastatur kann auf dem Desktop-Menü eingestellt werden: 
+
+\SHELL{Menu / Preferences / Mouse and Keyboard Settings / Keyboard / Keyboard Layout...}
+
+ In dem neu geöffneten Fenster wählt man unter \textsf{Country} den Eintrag \textsf{Germany}
+  aus und unter \textsf{Variant} am besten \textsf{German (eliminate dead keys)}.
+
+
+\subsection{Spezialeinstellungen}
+
+\subsubsection{Swap}
+
+Der Raspberry Pi hat je nach Version 512 MB bis 1 GB RAM-Speicher. Für viele Anwendungen ist das ausreichend, aber in einigen Fällen benötigt man mehr Speicher, zum Beispiel für das Kompilieren großer Softwarepakete. Um für solche Aufgaben zusätzlichen Arbeitsspeicher zur Verfügung zu stellen, kann man einen Teil der SD-Karte oder eines USB-Sticks benutzen. Unter Windows wird zu diesem Zweck überlicherweise eine Auslagerungsdatei auf der Festplatte genutzt. Unter Linux nennt man diese Technik Swapping und in der Regel wird dazu eine extra Festplattenpartition eingerichtet. Raspbian ist so konfiguriert, dass dazu eine Swap-Datei auf der SD-Karte genutzt wird, die standardmäßig schon eingerichtet ist und 100 MB Speicherplatz belegt.
+
+Da die Haltbarkeit von SD-Karten im Vergleich zu Festplatten um ein Vielfaches geringer ist, sollte man möglichst sparsam mit Schreibzugriffen umgehen. Eine Swap-Datei oder -Partition auf der SD-Karte ist also keine gute Idee, wenn man viele speicherintensive Anwendungen mit dem Raspberry Pi nutzt. Die Auslastung des Arbeitsspeichers und der Swap-Datei kann mit folgendem Kommando in einem Terminal geprüft werden:
+
+\SHELL{free -h}
+
+Mit der Option \SHELL{-h} wird die Ausgabe in menschenlesbare Form gebracht, so dass je nach Größe der Speicherzahlen Byte, Kilobyte, Megabyte und so weiter angezeigt werden. In der letzten Zeile der Ausgabe von \SHELL{free} wird die Nutzung der Swap-Datei angezeigt:
+
+
+\begin{lstlisting}
+	             total       used       free      shared    buffers     cached
+	Mem:          925M       204M       721M        7.0M        12M       106M
+	-/+ buffer/chache:        84M       840M
+	Swap:          99M         0B        99M
+\end{lstlisting}
+
+
+Interessant ist die Spalte used, in der die Ausnutzung der Datei angezeigt wird. 
+
+Die geringe Größe von 100 MB der Swap-Datei wird sehr speicherhungrige Anwendungen kaum zufriedenstellen und ist für die meisten Aufgaben überflüssig. Für Echtzeitanwendungen, zum Beispiel im Audio-Bereich, empfiehlt es sich aufgrund der geringen Geschwindigkeit des Swap-Speichers generell auf diesen zu verzichten. Im Folgenden zeigen wir deshalb, wie man die Swap-Datei deaktiviert und eine große Swap-Partition auf einem USB-Stick einrichtet.
+
+Da die meisten Befehle Administratorrechte brauchen und man sich Tipparbeit spart, wenn man nicht jeder Zeile ein sudo voranstellen muss, gibt man zuerst im Terminal ein:
+
+\SHELL{sudo su -}
+
+Mit dem nächsten Kommando überprüft man den Status der Swap-Datei:
+
+\SHELL{service dphys-swapfile status}
+
+
+Die dritte Zeile der Ausgabe des Befehls liefert Auskunft darüber, ob die Swap-Datei aktiv ist oder inaktiv. Bevor man die Swap-Datei deaktiviert, muss man sie zunächst abmelden:
+
+\SHELL{swapoff -a}
+
+Nun kann die Swap-Datei deaktiviert werden:
+
+\SHELL{service dphys-swapfile stop}
+
+Und schließlich kann das Startskript, das die Swap-Datei beim nächsten Booten wieder aktivieren würde, abgeschalten werden:
+
+\SHELL{systemctl disable dphys-swapfile}
+
+Das Swapping ist jetzt permanent deaktiviert. Um eine Swap-Partition auf einem USB-Stick anzulegen, zum Beispiel für einen größeren Kompiliervorgang, sind folgende Schritte nötig. Zuerst müssen Partitionen angelegt werden, wenn nicht der gesamte USB-Stick verwendet werden soll. Das kann zum Beispiel mit \SHELL{cfdisk} erledigt werden oder einem beliebigen anderen Partitionierungsprogramm. Sofern der Stick das einzige am Raspberry Pi angeschlossene USB-Speichermedium ist, heißt die entsprechende Gerätedatei \SHELL{/dev/sda}. Sind mehrere USB-Speichermedien angeschlossen, kann dies abweichen. Um Datenverlust durch unbeabsichtigtes Löschen einer Partition zu verhindern, sollte man sichergehen, dass man die korrekte Gerätedatei benutzt. Der vollständige Befehl lautet:
+
+
+\SHELL{cfdisk /dev/sda}
+
+Da eine Änderung der Partitionsgröße mit \SHELL{cfdisk} nicht möglich ist, muss man die gewünschte Größe beim Anlegen der Partition angeben. Um Partitionsgrößen zu ändern muss man deshalb die Partitionen erst löschen und dann neu anlegen. Die Daten auf einer Partition gehen dabei immer verloren.
+
+
+\begin{figure}[!h]
+	\centering
+	
+	\includegraphics[width=1.0\textwidth]{RaspberryPi/Install7}
+	
+	\caption{Ansicht des Partitionslayouts mit cfdisk }
+	
+\end{figure}
+
+
+Hat man eine Partition angelegt, muss diese noch formatiert werden:
+
+\SHELL{mkswap /dev/sda1}
+
+Als letztes muss die Swap-Partition am System angemeldet werden:
+
+\SHELL{swapon /dev/sda1}
+
+Hat man die Arbeiten unter dem Benutzerkonto root abgeschlossen, sollte man sich wieder ausloggen und das Standardnutzerkonto verwenden:
+
+\SHELL{exit}
+
+Um das Swapping auf dem USB-Stick auszuschalten benutzt man folgenden Befehl:
+
+\SHELL{sudo swapoff /dev/sda1}
+
+Um die Swap-Partiotion auf dem USB-Stick permanent einzubinden und schon beim Booten zu aktivieren muss man der Datei \SHELL{/etc/rc}.local folgende Zeile hinzufügen:
+
+\SHELL{swapon /dev/sda1}
+
+Diese Zeile darf nicht die letzte Zeile der Datei sein, da am Ende der Datei immer \SHELL{exit 0} stehen muss, damit sie beim Booten korrekt ausgeführt werden kann. Zum Editieren der Datei kann man die textbasierten Editoren \SHELL{vi} oder \SHELL{nano} benutzen oder den grafischen Editor \SHELL{leafpad}.
+
+\subsubsection{fstab}
+
+Möchte man die SD-Karte besonders schonend behandeln, kann man die Schreibzugriffe durch die Konfiguration der Datei \SHELL{/etc/fstab} weiter einschränken. Standardmäßig werden unter Linux die Zugriffszeiten einer Datei auch beim Lesen auf dem Dateisystem gespeichert, was immer einen Schreibzugriff darstellt. Dieses Verhalten kann beim Anmelden (mounten) einer Partition durch die Mountoptionen noatime abgestellt werden. Die Datei \SHELL{/etc/fstab} ist für die Partition root schon mit der entsprechenden Option versehen:
+
+\begin{lstlisting}
+proc            /proc     proc     defaults          0  0
+/dev/mmcblk0p1  /boot     vfat     defaults          0  2
+/dev/mmcblk0p2  /         ext4     defaults,noatime  0  1
+\end{lstlisting}
+
+Teilt man seine SD-Karte in weitere Partitionen, oder nutzt einen USB-Stick um ihn unter dem Verzeichnis home zu mounten, sollte man diese Option auch für diese Partitionen verwenden, weil die Speichermedien dadurch weniger belastet werden, was sich ebenfalls in einem kleinen Performance-Schub bemerkbar macht.
+
+Nutzt man den Raspberry Pi als Desktop-Rechner, empfiehlt es sich einen USB-Stick unter dem Verzeichnis \SHELL{/home} zu mounten um Schreibzugriffe des Nutzers nicht auf dem gleichen Speichermedium auszuführen, auf dem das System installiert ist. Damit auch die Zugriffsrechte der Dateien korrekt gespeichert werden, muss man den Stick im ext4-Format formatieren:
+
+\SHELL{sudo mkfs.ext4 /dev/sda1}
+
+Die Partition kann jetzt eingebunden werden:
+
+\SHELL{mount /dev/sda1 /home}
+
+Nun muss das Home-Verzeichnis des Standardnutzers neu angelegt werden und der Besitzer des Verzeichnisses eingestellt werden:
+
+\SHELL{sudo mkdir /home/pi}
+
+\SHELL{sudo chown pi:pi}
+
+Um die neue Home-Partition permanent einzubinden, trägt man folgende Zeile in die \SHELL{fstab} ein:
+
+\SHELL{/dev/sda1 /home auto defaults,noatime 1 2}
+
+ 
+\subsubsection{Ramdisks}
+
+Auch auf andere Weise kann die SD-Karte geschont werden. Besonders viele beziehungsweise regelmäßige Schreibzugriffe gibt es in den temporären und Log-Verzeichnissen. Man kann diese Verzeichnisse ebenfalls auf einem USB-Stick unterbringen, oder aber eine Ramdisk erstellen – eine virtuelle Partition dynamischer Größe im RAM-Speicher. Beim Mounten einer Ramdisk, kann die Größe durch die Option \SHELL{size} begrenzt werden.
+
+Dieses Vorgehen ist für Verzeichnisse von Log-Dateien nur dann sinnvoll, wenn die Logs nicht dazu genutzt werden, die Ursache für einen Absturz zu finden. Denn wenn sie sich im RAM befinden, sind die Daten nach dem Absturz verloren, auch wenn sie zufällig auf einer Swap-Partition gespeichert wurden.
+
+Die folgenden zusätzlichen Einträge in der fstab binden eine Ramdisk unter \SHELL{/tmp}, \SHELL{/var/tmp}, \SHELL{/var/log} und \SHELL{/var/run} ein:
+
+
+\begin{lstlisting}
+none   /tmp      tmpfs  defaults,noatime,mode=1777  0 0
+none   /var/tmp  tmpfs  size=1M,noatime,mode=1777  0 0
+none   /var/log  tmpfs  size=1M,noatime,mode=0755  0 0
+none   /var/run  tmpfs  size=1M,noatime            0 0
+\end{lstlisting}
+
+Die Optionen müssen an das jeweilige System angepasst werden. Zum Beispiel genügt 1 MB Speicher unter \SHELL{/tmp} für einige Anwendungen nicht aus. Wer sich nicht sicher ist, sollte die vorgegebenen Einstellungen verwenden.
+
+\subsection{Alternative Installation: Noobs}
+
+Neben der Möglichkeit ein Image herunterzuladen und mit einem Hilfsprogramm auf die SD-Karte zu schreiben, kann man die vermeintlich einfachere Noobs-Installation benutzen. Diese Methode ist jedoch wesentlich langsamer, braucht mehr Speicher und gibt im Falle von Fehlern keine hilfreichen Meldungen aus. Zum Beispiel wird man bei einer SD-Karte mit zu wenig Speicher aufgrund defekter Sektoren nicht darauf hingewiesen, dass die Ursache einer fehlgeschlagenen Installation an der SD-Karte liegt. 
+
+\subsection{Alternative Installation: Raspberry Pi Imager}
+Das im vorherigen Abschnitt ausgewählte Abbild muss nun mit einem entsprechenden Tool auf die verwendete Micro-SD Karte übertragen werden. Hierfür stehen mehrere Tools zur Verfügung: neben der weit verbreiteten Software Balena Etcher (\footnote{\url{https://www.balena.io/etcher/}}) unterstützt der offizielle Raspberry Pi Imager\footnote{\url{https://www.raspberrypi.org/software/}} zusätzlich, zum Beschreiben der Micro-SD Karte,  einen automatisierten Download der gewünschten Distribution. Diese kann zu Beginn der Installationsvorgangs ausgewählt werden. Die notwendigen Schritte sind in \cref{fig:piimager} dargestellt.
+
+\begin{figure}[htb]
+  \centering
+
+  \begin{subfigure}{.5\linewidth}
+     \caption{Startseite des Imagers}\label{fig:face-input}
+     \includegraphics[width=.48\textwidth]{../Images/RaspberryPi/piimager1}
+  \end{subfigure}[b]
+  \begin{subfigure}{.5\linewidth}  
+    \caption{Auswahl der Distribution}\label{fig:face-output}
+    \includegraphics[width=.48\textwidth]{../Images/RaspberryPi/piimager2}
+  \end{subfigure}
+  \begin{subfigure}{.5\linewidth}
+    \caption{Auswahl des Images}\label{fig:face-input}\includegraphics[width=.48\textwidth]{../Images/RaspberryPi/piimager3.PNG}
+  \end{subfigure}
+  \begin{subfigure}{.5\linewidth}
+	\caption{Auswahl des Speichermediums (1)}\label{fig:face-output}\includegraphics[width=.48\textwidth]{../Images/RaspberryPi/piimager4.PNG}
+  \end{subfigure}
+  \begin{subfigure}{.5\linewidth}
+	\caption{Auswahl des Speichermediums (2)}\label{fig:face-input}\includegraphics[width=.48\textwidth]{../Images/RaspberryPi/piimager5.PNG}
+  \end{subfigure}
+  \begin{subfigure}{.5\linewidth}
+	\caption{Bestätigung}\label{fig:face-output}\includegraphics[width=.48\textwidth]{../Images/RaspberryPi/piimager6.PNG}
+  \end{subfigure}
+  \begin{subfigure}{.5\linewidth}
+	\caption{Fortschrittsanzeige}\label{fig:face-input}\includegraphics[width=.48\textwidth]{../Images/RaspberryPi/piimager7.PNG}
+  \end{subfigure}
+  \begin{subfigure}{.5\linewidth}
+	\caption{Finaler Bildschirm}\label{fig:face-output}\includegraphics[width=.48\textwidth]{../Images/RaspberryPi/piimager8.PNG}
+ \end{subfigure}
+ 
+	\caption{Automatisches Beschreiben der SD-Karte mit Pi Imager}
+	\label{fig:piimager}
+\end{figure}
+
+
