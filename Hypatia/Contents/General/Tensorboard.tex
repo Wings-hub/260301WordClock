@@ -1,0 +1,150 @@
+%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-18 11:15:45Z $
+% $Pfad: WuSt/Skript/Produktspezifikation/powerpoint/ImageProcessing.tex $
+% $Version: 4620 $
+%
+%%%%%%
+
+%https://pytorch.org/tutorials/intermediate/tensorboard_tutorial.html
+
+\chapter{Visualisierung von Modellen Daten und Training mit TensorBoard}
+
+Im 60-Minuten-Blitz zeigen wir Ihnen, wie Sie Daten laden, sie durch ein Modell leiten, das wir als Unterklasse von \PYTHON{nn.Module} definieren, dieses Modell mit Trainingsdaten trainieren und es mit Testdaten testen. Um zu sehen, was passiert, geben wir einige Statistiken aus, während das Modell trainiert wird, um ein Gefühl dafür zu bekommen, ob das Training voranschreitet. Wir können jedoch viel mehr als das tun: PyTorch lässt sich mit TensorBoard integrieren, einem Werkzeug, das für die Visualisierung der Ergebnisse von Trainingsläufen neuronaler Netze entwickelt wurde. Dieses Tutorial illustriert einige seiner Funktionen anhand des \href{../../Python/fashion-mnist}{Fashion-MNIST-Datensatzes}, der mit\Mynote{wo ist die Datei?} \PYTHON{torchvision.datasets} in PyTorch eingelesen werden kann.
+
+\bigskip
+
+In diesem Tutorium lernen wir, wie man:
+
+\begin{enumerate}
+  \item Einlesen von Daten und mit entsprechenden Transformationen.
+  \item TensorBoard einrichten.
+  \item Schreiben auf TensorBoard.
+  \item Untersuchen Sie eine Modellarchitektur mit TensorBoard.
+  \item Verwenden Sie TensorBoard, um interaktive Versionen der Visualisierungen zu erstellen
+\end{enumerate}
+
+\bigskip
+  
+Speziell zu Punkt 5: Wir werden sehen:
+
+\begin{itemize}
+    \item Es gibt mehrere Möglichkeiten, unsere Trainingsdaten zu untersuchen
+    \item So verfolgen Sie die Leistung unseres Modells während des Trainings
+    \item Wie kann die Leistung unseres Modells bewertet werden, wenn es einmal trainiert ist.
+\end{itemize}
+
+Wir beginnen mit ähnlichem Boilerplate-Code wie im CIFAR-10-Tutorial:
+
+
+%
+\lstinputlisting[firstline=1,lastline=51,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+Wir werden eine ähnliche Modellarchitektur wie in diesem Tutorial definieren und nur geringfügige Änderungen vornehmen, um der Tatsache Rechnung zu tragen, dass die Bilder nun einen statt drei Kanälen und 28x28 statt 32x32 sind:
+
+\lstinputlisting[firstline=51,lastline=71,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+Wir definieren den selben Optimierer \PYTHON{optimizer} und \PYTHON{criterion} von vorher:
+
+\lstinputlisting[firstline=73,lastline=74,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+\section{Einrichtung von TensorBoard}
+
+Jetzt werden wir TensorBoard einrichten, indem wir \PYTHON{tensorboard} aus \PYTHON{torch.utils} importieren und einen \PYTHON{SummaryWriter} definieren, unser Schlüsselobjekt zum Schreiben von Informationen in TensorBoard.
+
+\lstinputlisting[firstline=75,lastline=79,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+
+Beachten Sie, dass allein diese Zeile einen Ordner \SHELL{runs/fashion\_mnist\_experiment\_1} erstellt.
+
+\section{Schreiben auf das TensorBoard}
+
+Lassen Sie uns nun ein Bild in unser TensorBoard schreiben - genauer gesagt, ein Gitter - mit \PYTHON{make\_grid}.
+
+
+\lstinputlisting[firstline=80,lastline=93,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+Jetzt starten wir das TensorBoard:
+
+\lstinputlisting[firstline=94,lastline=95,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+Von der Befehlszeile aus und navigieren Sie dann zu \SHELL{https://localhost:6006}, sollte folgendes angezeigt werden.
+
+\GRAPHICSC{0.55}{1.0}{TensorBoard/TensorboardFirstView}
+
+Jetzt wissen Sie, wie man TensorBoard benutzt! Dieses Beispiel könnte aber auch in einem Jupyter Notebook gemacht werden - wo TensorBoard wirklich brilliert, ist die Erstellung von interaktiven Visualisierungen. Wir werden eine davon als nächstes behandeln, und mehrere weitere am Ende des Tutorials.
+
+\section{Untersuchung des Modells mit TensorBoard}
+
+Eine der Stärken von TensorBoard ist seine Fähigkeit, komplexe Modellstrukturen zu visualisieren. Lassen Sie uns das Modell, das wir gebaut haben, visualisieren.
+
+\lstinputlisting[firstline=96,lastline=98,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+Wenn Sie nun TensorBoard aktualisieren, sollten Sie eine Registerkarte "Graphen" sehen, die wie folgt aussieht:
+
+\GRAPHICSC{0.5}{1.0}{TensorBoard/TensorboardModelViz}
+
+Machen Sie einen Doppelklick auf "Net", um es zu erweitern und eine detaillierte Ansicht der einzelnen Operationen zu sehen, aus denen das Modell besteht.
+
+\bigskip
+
+TensorBoard hat eine sehr praktische Funktion zur Visualisierung von hochdimensionalen Daten wie z.B. Bilddaten in einem niedrigdimensionalen Raum; wir werden dies als nächstes behandeln.
+
+\section{Hinzufügen eines \glqq Projektor\grqq{} zu TensorBoard}
+
+Wir können die niederdimensionale Darstellung von höherdimensionalen Daten über die 
+\PYTHON{add\_embedding}-Methode
+
+\lstinputlisting[firstline=99,lastline=120,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+Im \glqq Projektor\grqq{} -Reiter von TensorBoard sehen Sie nun diese 100 Bilder - jedes davon ist 784-dimensional - in den dreidimensionalen Raum hinunterprojiziert. Außerdem ist dies interaktiv: Sie können klicken und ziehen, um die dreidimensionale Projektion zu drehen. Zum Schluss noch ein paar Tipps, um die Visualisierung übersichtlicher zu machen: wählen Sie \glqq color:label\grqq{} oben links, sowie das Aktivieren des \glqq Nachtmodus\grqq, wodurch die Bilder besser zu sehen sind, da ihr Hintergrund weiß ist:
+
+\GRAPHICSC{0.28}{1.0}{TensorBoard/TensorboardProjector}
+
+Nachdem wir nun unsere Daten gründlich inspiziert haben, wollen wir zeigen, wie TensorBoard das Training und die Auswertung von Tracking-Modellen übersichtlicher machen kann, beginnend mit dem Training.
+
+\section{Nachverfolgung eines Trainigmodells mit TensorBoard}
+
+Im vorherigen Beispiel haben wir einfach den laufenden Verlust des Modells alle 2000 Iterationen ausgegeben. Jetzt werden wir stattdessen den laufenden Verlust auf TensorBoard protokollieren, zusammen mit einem Blick auf die Vorhersagen, die das Modell über die Funktion \PYTHON{plot\_classes\_preds} macht.
+
+\lstinputlisting[firstline=121,lastline=155,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+Zum Schluss trainieren wir das Modell mit dem gleichen Trainingscode wie im vorherigen Tutorial, aber wir schreiben die Ergebnisse alle 1000 Batches auf TensorBoard, anstatt sie auf der Konsole auszugeben; dies geschieht mit der Funktion \PYTHON{add\_scalar}.
+
+\bigskip
+
+Zusätzlich wird beim Training ein Bild erzeugt, das die Vorhersagen des Modells im Vergleich zu den tatsächlichen Ergebnissen für die vier Bilder in diesem Stapel zeigt.
+
+\lstinputlisting[firstline=157,lastline=188,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+Sie können nun auf der Registerkarte Skalare den laufenden Verlust über die 15.000 Iterationen des Trainings aufgetragen sehen:
+
+\GRAPHICSC{0.6}{1.0}{TensorBoard/TensorboardScalarRuns}
+
+Außerdem können wir uns die Vorhersagen ansehen, die das Modell während des Lernens für beliebige Stapel gemacht hat. Sehen Sie sich die Registerkarte \glqq Images\grqq{} an und scrollen Sie unter der Visualisierung \glqq predictions vs. actuals\grqq{}{} nach unten, um dies zu sehen; dies zeigt uns, dass das Modell zum Beispiel nach nur 3000 Trainingsiterationen bereits in der Lage war, zwischen visuell unterschiedlichen Klassen wie Hemden, Turnschuhen und Mänteln zu unterscheiden, obwohl es nicht so sicher ist, wie es später im Training wird:
+
+\GRAPHICSC{0.3}{1.0}{TensorBoard/TensorboardImages}
+
+Im vorherigen Tutorial haben wir uns die Genauigkeit pro Klasse angesehen, nachdem das Modell trainiert wurde; hier werden wir TensorBoard benutzen, um Präzisions-Wiedererkennungskurven (gute Erklärung hier) für jede Klasse zu zeichnen.
+
+\section{Bewertung von trainierten Modelle mit TensorBoard}
+
+\lstinputlisting[firstline=190,lastline=226,firstnumber=10,language=python]
+{../Python/TensorBoard/Tutorium.py}
+
+Sie sehen nun eine Registerkarte \glqq PR-Kurven\glqq{}, die die Präzisions-Wiedererkennungskurven für jede Klasse enthält. Sie werden sehen, dass das Modell bei einigen Klassen fast 100\% \glqq Fläche unter der Kurve\grqq{} hat, während dieser Bereich bei anderen niedriger ist:
+
+\GRAPHICSC{0.4}{1.0}{TensorBoard/TensorboardPrCurves}
+
+Und das ist eine Einführung in TensorBoard und die Integration von PyTorch mit diesem. Natürlich könnten Sie alles, was TensorBoard macht, in Ihrem Jupyter Notebook machen, aber mit TensorBoard bekommen Sie Visualisierungen, die standardmäßig interaktiv sind.

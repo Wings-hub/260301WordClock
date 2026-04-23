@@ -1,0 +1,686 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Memory.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+\chapter{Memory}
+
+
+%source: Make Magazin 1/2024, S. 104, Daniel Bachfeld
+\section{Überblick: Speicherarten}
+
+Wir werfen oft mit Fachbegriffen rund um Speicher um uns: RAM, ROM, Flash, EEPROM, SRAM, PS- und SPI-RAM. Dieser Artikel führt Neulinge in das Gebiet ein.
+
+Ohne Speicher geht nichts: Kein modernes, digitales Gerät kommt ohne ihn aus. Weder PCs noch Smartphones, Smart-TVs oder WLAN-Router funktionieren ohne. Programme beziehungsweise Apps müssen irgendwo dauerhaft (nichtflüchtig) abgelegt und temporäre Daten wie ein Film- oder Daten-Stream müssen zur Verarbeitung zwischengespeichert werden. Damit es nicht zu unübersichtlich wird, konzentrieren wir uns hier vorerst auf das, was man etwa auf beziehungsweise in einem Raspberry Pi, in einem Arduino UNO und einem ESP32 vorfindet.
+
+\subsection{Stromlos}
+
+Generell unterscheidet man zwischen nichtflüchtigem und flüchtigem Speicher. Nichtflüchtiger Speicher gruppiert sich wiederum in permanenten und semi-permanenten Speicher. In einem nichtflüchtigen Speicher bleiben die Inhalte auch ohne Versorgungsspannung erhalten. Permanenter Speicher ist nur lesbar, also Read Only Memory (ROM). Er ist ideal als Befehlsspeicher geeignet, lässt sich aber nur einmalig programmieren – in der Regel über die sogenannte Maskenprogrammierung schon im Halbleiterwerk.
+    
+Solch einen ROM findet man etwa in den SoCs der Raspberry Pis. Darin ist der erste Bootloader einprogrammiert, der dann den zweiten Bootloader von SD-Karte (bis Pi 3) oder aus einem EEPROM lädt (ab Pi 4). Fun Fact: Für den Bootprozess ist die Grafikeinheit (GPU) des Pi zuständig, die die ARM-Kerne erst nach dem Kopieren des Linux-Kernels in den DRAM aufweckt, um den Staffelstab zu übergeben. Ok, EEPROM, SD-Karte und DRAM erklären wir gleich.
+
+\subsection{ROM}
+
+Der ESP32 hat ebenfalls einen unveränderlichen ROM an Bord, in dem ein Bootloader ab Werk gespeichert ist. Der Nachteil von ROMs ist, dass man sie nicht mehr umprogrammieren kann. Man muss sich also seiner Sache sicher sein. Im Unterschied dazu erlaubt semi-permanenter Speicher auch das Schreiben in die Speicher. Dazu gehören Erasable Programmable ROMs (EPROMS) und Erasable Electrically Programmable ROMs (EEPROMS).
+
+
+Ältere Leser unter ihnen werden sich noch an EPROMS erinnern. Seine übersetzten Programme schrieb man mit einem speziellen Gerät, dem Eprommer oder EPROM-Brenner, in einem Zug in das EPROM. Der Begriff „Brennen“ wird bereits im Patent zu den nur einmalig beschreibbaren PROMs erwähnt und geht auf das irreversible, gezielte Durchbrennen der haarfeinen Verdrahtungen interner Dioden durch einen hohen Stromstoß zurück. Im englischen nennt man die feinen Drähte Cat's Whisker oder einfach nur Whisker, also Schnurrhaar. Bei EPROMs brennt aber nichts mehr durch. Stattdessen werden mit einer hohen Programmierspannung Elektronen auf die eigentlich isolierten Floating Gates von Feldeffekttransistoren (MOSFETs) geladen. Damit ist die Speicherzelle programmiert. Den Begriff „Brennen“ hat man beibehalten.
+
+\subsection{EPROM}
+
+Das EPROM ist ein physischer Chip im DIP/DIL-Gehäuse mit einem Quarzglas-Fensterchen im Deckel. Will man ein Update seines Programmes brennen respektive installieren, so muss man das EPROM aus seinem Sockel hebeln und den gesamten Inhalt löschen. Dazu beleuchtet man das Fensterchen im EPROM einige Zeit mit UV-Licht, was die Floating Gates wieder entlädt. Anschließend ist das EPROM neu beschreibbar. Natürlich hatte man früher bei der Entwicklung immer mehrere EPROMs parat, um nicht jedes Mal den Löschzyklus abwarten zu müssen.
+
+\begin{center}
+  \includegraphics[width=\textwidth]{Arduino/Memory/eprom}
+
+ \captionof{figure}{PROM und EPROM (oben): Das Fenster dient zum Zurücksetzen der Speicherzellen auf logisch 1.}
+    
+\end{center}
+
+
+Ein EEPROM benötigt kein spezielles Programmiergerät und lässt sich elektrisch löschen – praktischerweise jedes Bit in ihm einzeln. Sein Aufbau ist aber erheblich komplexer, weshalb klassische EEPROMs langsamer und teurer sind. In der Regel speichert man in ihnen nur kleinere Datenmengen und selten Programme. Für Seriennummern oder MAC-Adressen gibt es auf dem ESP32 und den SoCs der Raspberry Foundation einmalig programmierbaren Speicher (One Time Programmable, OTP). Dort werden gezielt elektronische Sicherungen (eFuse) durchgebrannt. Dazu liefern die Hersteller spezielle APIs, um den OTP im laufenden Betrieb zu programmieren.
+
+Prinzipiell fallen unter den Begriff des EEPROMs auch Flash-Speicher, die mittlerweile so ziemlich alle anderen Arten von nichtflüchtigen Speichern verdrängt haben. Man findet sie in USB-Sticks, auf SSDs und in SoCs von eingebetteten Systemen wie in Telefonen, Routern, Druckern, TVs, Smartphones und Smarthome-Geräten, also eigentlich in so gut wie allem.
+
+
+
+\subsection{NOR-, NAND-Speicher und RAM}
+
+Flash-Speicher wurde in den 1980er Jahren von Toshiba entwickelt und diente zunächst als Alternative zu herkömmlichen Massenspeichermedien wie Festplatten und optischen Datenträgern. Die Legende besagt, dass der Begriff Flash-Speicher von einem Toshiba- Entwickler geprägt wurde, weil ihn der schnelle Löschvorgang an das Blitzen eines Kamera-Blitzes erinnerte. Daran lehnte auch der Men-in-Black-Regisseur 1997 den Begriff „Blitzdingsen“ (engl. flashy-thing) zum Löschen menschlicher Erinnerungsspeicher an.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/flash}
+    
+    \captionof{figure}{Links ein NAND-Gatter (invertierendes AND) mit drei Eingängen, rechts ein NOR-Gatter. Der Aufbau von Flash-Speicher ähnelt dem Aufbau von Logik-Gattern.}
+    
+\end{center}
+
+Zum Aufbau von Flash-Speicher gibt es zwei Techniken: NAND und NOR. Beim NAND-Flash sind mehrere Einzel-Speicherzellen (mit Floating-Gate-Transistoren) seriell verschaltet, was an die serielle Anordnung der Transistoren in einem logischen NAND-Gatter erinnert, wenn man dies um 90 Grad kippen würde (Bild 2). NAND-Speicher sind nur halb so groß wie NOR-Speicher, da nicht jede Zelle (Bit) dedizierte Leitungen zum Adressieren und Auslesen der Bits hat. Stattdessen werden NAND-Speicher immer page- bzw. blockweise ausgelesen. Eine Page umfasst zwischen 512 Bytes bei kleineren Speicherchips und 16 kByte bei großen. Mehrere Pages bilden einen Block. Linuxer kennen den Begriff der blockbasierten Geräte (Block Devices), zu denen Festplatten, CD-ROMs und DVD gehören.
+
+Um einen NAND-Flash zu beschreiben, muss man immer mindestens eine komplette Page schreiben. Auch das Auslesen funktioniert nur über komplette Pages. Das Löschen hingegen erfolgt über den Block, in dem die Page liegt. Das macht die Sache aufwändig: Auch wenn man nur ein Byte im NAND ändern will, muss man den gesamten Block einlesen, das eine Byte ändern, den Block im NAND löschen und den Block neu schreiben.
+
+NAND wird häufig in USB-Sticks, Speicherkarten und Solid-State-Drives (SSDs) verwendet. Er bietet schnelle Schreibgeschwindigkeiten, jedoch langsamere Lesezugriffe im Vergleich zu NOR. NAND-Speicher ist aufgrund seines Aufbaus anfälliger für Fehler und Ausfälle, weshalb im Hintergrund noch eine spezielle Hardware arbeitet, die Fehler korrigiert und Schreiboperationen verteilt, Lesern ist das womöglich schon als Wear Leveling vor die Augen gekommen.
+
+
+Beim NOR-Speicher kann man über dedizierte Leitungen beliebige einzelne Bytes adressieren und auslesen. Das ist insbesondere für den Befehlsspeicher von Mikrocontrollern und seinen Program Counter wichtig, der auf den jeweils nächsten Befehl zeigt. Nur mit beliebig wählbaren Adressen sind Sprünge und Verzweigungen (genau genommen Aufrufe) zu anderen Befehlen im Speicher möglich. In diesem Zusammenhang fällt auch der Begriff Execute in Place (XiP), der das Auslesen eines Befehls und seine sofortige Ausführung bedeutet, ohne Umwege über Caches oder RAM. Der ATmega 328 im Arduino hat beispielsweise 32 kByte internen NOR-Flash, aus denen er seine Befehle liest.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/serial}
+    
+    \captionof{figure}{Die Pinbelegung eines seriellen NOR-Flashes mit QSPI-Schnittstelle.}
+    
+\end{center}
+
+Bei NAND-Speicher muss eine CPU zur Befehlsausführung erst die komplette Page in einen RAM kopieren und dann einzelne Bytes auslesen. Genauso macht es auch der PC mit seiner blockbasieren Festplatte oder SSD. Beim Beschreiben und Löschen arbeitet der NOR-Flash jedoch ähnlich wie NAND, nämlich blockbasiert – allerdings erheblich langsamer.
+
+Eine wichtige Gemeinsamkeit haben NOR und NAND und auch die anderen (E)EPROMs: Im Normalzustand sind ihre Zellen immer auf 1 gesetzt. Man kann also keine 1 in eine Speicherzelle schreiben, sondern immer nur eine 0. Beim Löschen werden Zellen von 0 wieder auf 1 gesetzt.
+
+uf die Speicherstellen (Bytes) eines Random Access Memory, kurz RAM, kann man sowohl lesend als auch schreibend zugreifen, ohne den Umweg, ganze Pages laden zu müssen. Und das auch noch rasend schnell. Das Random in RAM steht für wahlfreie oder beliebige Adressen und nicht für zufällig – was keinen Sinn ergeben würde, aber womöglich interessant zu beobachten wäre.
+
+Während bei anderen Speicherarten meist der Schreibzugriff mit den einhergehenden Löschungen ein Riesenaufwand ist und zusätzliche Logik erfordert, ist bei RAM lesen und schreiben mehr oder minder gleichwertig. Der große Nachteil von RAM: Sein Inhalt überlebt nur solange, wie eine Versorgungsspannung anliegt.
+
+RAM findet man in Geräten als statischen RAM (SRAM) und dynamischen RAM (DRAM). SRAM ist aus mehreren Transistorzellen aufgebaut (meist sechs), die sogenannte bistabile Kippstufen (engl. Flip Flop) ergeben. Eine gespeicherte 1 bleibt solange darin erhalten, bis man ein 0 hineinschreibt – oder den Strom abschaltet. Man findet diese Speicherart in Mikrocontrollern. Der Arduino Uno mit seinem ATmega 328 hat beispielsweise 2 kByte SRAM, der RP2040 immerhin 264 kByte, der ESP32 sogar 520 kByte.
+
+DRAM verbraucht mit einem Transistor und einem Kondensator erheblich weniger Platz auf einem Silizium-Die. Eine Spannung auf dem Kondensator bedeutet eine 1, keine Spannung eine 0. Leider muss die Ladung des Kondensators regelmäßig aufgefrischt werden, weil der sich sonst selbstständig entlädt. Eine integrierte Hardware sorgt dafür, dass die Ladung regelmäßig aufgefrischt wird – aber auch nur, bis man den Strom abschaltet.
+
+DRAM ist erheblich günstiger in der Herstellung und wird überall da eingesetzt, wo viel RAM vonnöten ist, etwa PCs oder Spielekonsolen. Allerdings ist DRAM um einiges langsamer als SRAM. Hinweis am Rande: Der Hersteller Espressif verwendet den Begriff DRAM etwas anders: Das interne SRAM lässt sich in Bereiche für Befehle (Instruction RAM, IRAM) und Daten aufteilen. DRAM steht hier für Data RAM.
+
+\subsection{Cache}
+
+Modernen CPUs ist eine besondere Art des SRAM zu Seite gestellt: der Cache. Dorthin kopiert die CPU ganze Programmsequenzen aus dem DRAM, um Befehle schneller lesen und abarbeiten zu können. ARM, Intel und AMD haben bis zu drei Ebenen von Caches in ihre Prozessoren integriert, um Programmabläufe zu beschleunigen. Um immer den richtigen Code im Cache parat zu haben, gibt es aufwändige Techniken zur Vorhersage, welchen Abzweig der Prozessor als Nächstes nehmen wird. In der Regel kommt man damit beim Programmieren jedoch nicht in Berührung.
+
+Die ESP32-Prozessoren haben ebenfalls einen kleinen Cache (32 kByte und mehr), in dem Teile des Codes beim Lesen aus dem langsameren (NOR-)Flash zwischengespeichert werden. Es ist beim ESP32 sogar möglich, Teile des großen internen SRAM als Befehlsspeicher zu nutzen, indem man Code-Sequenzen der Anwendung aus dem Flash dorthin kopiert und danach vom SRAM schneller ausliest. Dann heißt es IRAM. Auch ARM-CPUs wie beim Pi haben Caches, ATmega jedoch nicht.
+
+Heutzutage bringen viele Mikrocontroller alle zum Betrieb wichtigen Komponenten wie CPU, RAM, Flash und sogar EEPROM gleich auf einem Chip in einem Gehäuse mit. Man muss nicht mal mehr einen Quarz zur Takterzeugung anschließen. Die ATmegas und PICs von Microchip sind genauso konzipiert. Einzige größere Hürde sind die speziellen Programmiergeräte, um die „nackten“ ICs zu programmieren. Seit dem Arduino Uno ist sogar das weggefallen: Dem ATmega wird ein spezieller Bootloader per Programmiergerät eingeflasht. Dieser Bootloader übernimmt die Kommunikation über seine serielle Schnittstelle (USB-zu-seriell) mit der Außenwelt. Beim Start des Mikrocontrollers bzw. Reset nimmt er kurzzeitig Befehle entgegen, mit denen man ihm ein Programm senden kann. Dieses schreibt er im laufenden Betrieb in den Flash und startet es.
+
+Mit der „Alles drin“-Lösung fährt man aber nicht immer gut. Oft wird der Speicher knapp, weil das Programm mit der Entwicklungszeit an Funktionsumfang dazu gewinnt. Bei den ATmegas muss man dann auf ein größeres Modell wechseln. Das wäre dann beispielsweise der ATmega1284, der aber gleich mehr Beinchen hat und vermutlich nicht mehr in die vorhandene Schaltung passt.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/bg_kit_ohne_deckel_digital}
+    
+    \captionof{figure}{Die meisten ESP32-Devkits sind mit Modulen ausgestattet, in denen ein externer NOR-Flash das Programm enthält. Rechts ein herkömmliches Devkit, links ein Audiokit mit zusätzlichem Audio-IC und RAM-IC. Normalerweise ist der Aufbau unter einer Metallkappe verborgen.}
+    
+\end{center}
+
+\subsection{Nachrüstbare Speicher}
+
+Espressif geht einen anderen Weg. In vielen seiner IC-Varianten (ESP32, S1, S2, S3, C2, C3, C6) ist noch kein Flash-Speicher enthalten. Er muss extern nachgerüstet werden und zwar in Form eines sogenannten SPI-Flash (Bild 3 und 4). Per serieller Schnittstelle werden Adressen an den Flash übertragen, der die Daten seriell zurückliefert. SPI ist bereits in den Espressif-ICs integriert. Mit einer speziellen Logik wird der SPI-Flash in den Adressraum der CPU eingeblendet, sodass man sich als Programmierer nicht um das Abholen der Befehle per SPI kümmern muss.
+
+Der serielle NOR-Flash des Pi Pico nimmt 16 MBit auf, also 2 MByte. Sein SPI-Bus kann mit maximal 133 MHz getaktet werden (Bild 5). Bei 4 Bits parallel kommt man auf einen theoretischen Datenstrom von 66 MByte/s.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/pico}
+    
+    \captionof{figure}{Auch der RP2040 auf dem Pi Pico nutzt einen externen QSPI-Flash als Befehlsspeicher. Wer einen größeren Speicher bräuchte, kann ihn theoretisch ersetzen. Allerdings muss man dann unter Umständen die Timing-Parameter in der PICO-SDK anpassen.}
+    
+\end{center}
+
+SPI benötigt vier Leitungen: Clock (CLK), Master Out Slave In (MOSI), Master In Slave Out (MISO) und Chip Select (CS), um jeweils ein Bit zu übertragen. Die ESP32-ICs unterstützen aber noch die schnelleren Varianten Dual und Quad SPI mit mehr Leitungen. Bei Letzterem werden vier Bits parallel übertragen. Die Begriffe QIO und QOUT findet man auch in der Arduino IDE im Board Manager (Bild 6) für Übertragungen mit vier Leitungen, DIO und DOUT für zwei Leitungen. Der schnellste Mode ist der standardmäßig eingestellte QIO-Mode.
+
+Auch der Pi Pico mit seinem RP2040 hat dedizierte QSPI-Ports, um seinen externen, 2 MByte großen Flash (W25Q16) anzusteuern (Bild 5). Maximal unterstützt er 16 MByte.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/arduino}
+    
+    \captionof{figure}{Wer sich schon immer gefragt hat, was das alles im Arduino-Board Manager zu bedeuten hat, dürfte nach der Lektüre dieses Artikels die Antworten haben.}
+    
+\end{center}
+
+ESP32-Modelle unterstützen zudem zusätzlichen externen RAM, der ebenfalls per QSPI angesteuert und nahtlos in den virtuellen Adressraum eingeblendet wird. Dabei kommt meist von Espressif zertifizierter Pseudostatic RAM (PSRAM) zum Einsatz. Pseudostatic RAM heißt er, weil er intern als DRAM aufgebaut ist, aber von außen wie ein SRAM wirkt. Auf vielen ESP32-CAMs ist PSRAM mit 8 MByte Speicher verbaut, obwohl der ESP32 nur 4 MByte davon adressieren kann (Bild 7). Über die HIMEM API von Espressif kann man aber zwischen Speicherbänken umschalten, sodass der Zugriff auf die „höheren“ 4 MByte möglich ist. Das PSRAM arbeitet mit maximal 133 MHz.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/espcam}
+    
+    \captionof{figure}{Die ESP32-CAM bringt zusätzlichen RAM in Form eines seriellen ICs mit (links unten).}
+    
+\end{center}
+
+
+
+\subsection{Wie alles zusammenhängt}
+
+Wenn nun alle wichtigen Speicherarten erklärt sind, wie hängt dann nun alles zusammen? Im Kern geht es bei digitalen Systemen immer darum, eine CPU mit einer Folge von Befehlen zu füttern, um irgendeine Aufgabe zu erledigen. Das ist im PC ebenso wie im kompakten Mikrocontroller, in dem CPU, Flash und RAM gleich in einem Gehäuse untergebracht sind. Um etwa eine profane Aufgabe wie das Blinken einer LED zu bewerkstelligen, benötigt ein ATmega (wie im Arduino) einen Befehlsspeicher. Daraus ruft die CPU die Befehle nacheinander ab und führt sie aus. Aber wie kommt sie an die Befehle?
+
+Dazu legt die CPU die Adresse der Speicherstelle des Befehls auf ihren Adressbus (Bild 8). Welche die richtige Speicherstelle ist, weiß der interne Program Counter. An den Adressbus ist der NOR-Flash angeschlossen, in Bild 9 ist ein dedizierter IC in einem DIL/DIP-Gehäuse mit 128 kByte abgebildet. Das ist nur ein Serviervorschlag, in ATmegas ist der natürlich so nicht verbaut, aber man bekommt einen Eindruck von den Anschlüssen respektive Schnittstellen.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/bus}
+    
+    \captionof{figure}{Die CPU wickelt den Transport von Daten zwischen sich, Speicher und I/O über Bus-Systeme ab.}
+    
+\end{center}
+
+Über die Leitungen A0 bis A16 adressiert der Program Counter die Speicherstelle. Soll es etwa Speicherstelle 66666 sein, so muss er an seine Adressleitungen folgendes Bitmuster anlegen: 10000010001101010 (ganz links A16, ganz rechts A0).
+
+An den Datenausgängen des ICs DQ0 bis DQ7 erscheint darauf das Byte der gewünschten Speicherstelle als Bitmuster. Das ist der Lesevorgang. Die Kontroll-Leitungen WE\#, OE\#, CE\# steuern, ob die Daten-Pins des ICs Ein- oder Ausgang oder hochohmig sein sollen. Im Prinzip macht sich das IC dann quasi unsichtbar.
+
+Das gelesene Datenbyte landet vereinfacht gesagt im Instruction Register der CPU und wird dekodiert und ausgeführt. Anschließend wird der Programm Counter erhöht und das nächste Byte aus dem Flash gelesen.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/memory}
+    
+    \captionof{figure}{Ein RAM-Baustein mit statischem Speicher im großen DIL/DIP-Gehäuse}
+    
+\end{center}
+
+Analog dazu wird auch RAM über Adress- Daten- und Kontrollleitungen gesteuert. Will die CPU Daten temporär in einem RAM speichern, etwa berechnete Werte in Variablen, so legt sie an ihren Adressbus die Adresse des gewünschten Speicherortes (den weiß das Programm durch die Initialisierung). Auf den 8 Bit breiten Datenbus legt sie den Wert der Variablen. Über den Kontrollbus (WE, Write Enable) signalisiert sie dem RAM, dass dieser Daten speichern soll. Will die CPU Daten stattdessen aus dem Speicher auslesen, so signalisiert sie dies dem RAM über den Pin OE (Output Enable). Damit sich mehrere Speicherchips am gleichen Adressbus nicht ins Gehege kommen, steuert eine zusätzliche Logik den Pin CE (Chip Enable).
+
+
+Hängen Datenspeicher (RAM), Befehlsspeicher (ROM; hier der Flash-Speicher) und auch die Peripherieeinheiten wie GPIO, UART etc. am gleichen Adress- und Datenbus (Bild 8), so spricht man von der Von-Neumann-Architektur. Einige kennen das womöglich von älteren Prozessoren wie Z80, 6502/10, 8085, 80486. Aber auch aktuelle x64-kompatible Desktop-Prozessoren von Intel und AMD beruhen darauf. Der Vorteil: Der CPU ist es im Prinzip egal, woher ihre Befehle kommen, sie kann sie sowohl aus dem ROM als auch aus dem RAM lesen. Alle Bausteine und I/Os liegen in einem durchgehenden Adressraum. Logisch kann man sich das wie eine lange Straße vorstellen, in der die ICs an unterschiedlichen Hausnummern wohnen.
+
+Gibt es für RAM und ROM jeweils eigene Busse, spricht man von Harvard-Architektur. Es gibt getrennte Straßen für Befehle und Daten und getrennte Adressräume. Das bietet Geschwindigkeitsvorteile, macht aber die Verwaltung der Adressen unübersichtlich. Reine Harvard-Architekturen findet man nur selten.
+
+Viele CPUs in Mikrocontrollern arbeiten nach dem Modified-Harvard-Prinzip, was die strikte interne Trennung von Befehls- und Datenspeicher aufhebt. Allein die Integration von Caches macht dies erforderlich. Hinzu kommt, dass die zwei getrennten Straßen der puren Harvard-Architektur durch ein Speichermanagement zusammengeführt werden, sodass es für den Programmierer wie zwei oder mehr hintereinander liegende Straßen aussieht (Unified Memory). Die ATmegas sind unter anderem Vertreter dieser Architektur, ebenso die LX6/7 in den ESPs sowie einige ARM-CPUs. Auch die seriellen Speicher SPI-Flash und PSRAM werden über spezielle Logiken in die Adressräume eingeblendet, sodass es für die CPU transparent ist.
+
+Darüber, ob ein System eine Harvard-, von-Neumann oder Modified-Harvard-Architektur ist, gibt es in Foren immer wieder Streit. Die Unterscheidung ist aber meist nur dann relevant, wenn man sich aus Gründen beim Programmieren mit den internen Bussen beschäftigen muss.
+
+
+
+\section{Memory Maps verstehen}
+%source: Make Magazin 2/2024, S. 122, Daniel Bachfeld
+
+Die Verknüpfung von CPU, RAM und Flash ist in Mikrocontrollern oft trickreich, mitunter verwirrend. Wir helfen, die interne Verdrahtung und die Memory Maps besser zu verstehen.
+
+In diesem Abschnitt erklären wir die Anordnung der Speicherbereiche und unter welchen Adressen Flash, RAM und die I/O-Bausteine zu erreichen sind.
+
+Sowohl im PC als auch im Mikrocontroller dreht sich alles um die CPU: Sie benötigt Befehle aus dem Flash, RAM zum Ablegen von Daten und Peripherieeinheiten (aka I/O) zur Kommunikation mit der Außenwelt.
+
+Als Maker kennt man bereits viele Kommunikationsbusse wie I2C, 1-Wire, SPI, I2S, CAN, UART, HDMI. Das sind aber nur die seriellen Busse für „nach draußen”, zum Anschluss von Geräten, Sensoren, Displays usw.
+
+Mit den Bussen zur Kommunikation mit den Speichern (mal abgesehen von den extern angeschlossenen QSPI-Flashs) und Peripherie-Einheiten kommt man als Maker nur noch selten in Berührung. Dennoch ist ein Grundverständnis der internen „Verdrahtung” und des Datentransports hilfreich, insbesondere wenn man sich mal etwas tiefer in Embedded Systeme einarbeiten will oder sei es nur, die An- und Ausgaben in der Arduino IDE besser zu verstehen.
+
+\subsection{Transportwesen}
+
+Früher war zwar nicht alles besser, aber vieles war übersichtlicher. Boomer erinnern sich gerne an die aus heutiger Sicht lachhafte Simplizität der 8-Bit-Heimcomputer der 80er Jahre. Deren Aufbau kam im Kern der Von-Neumann-Architektur im Bild 1 sehr nahe: Eine CPU ist mit ROM (heute eher Flash), RAM und I/O-Bausteinen über einen Adressbus, einen Datenbus und einen Steuerbus verbunden.
+
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/pasted_image_20240312185837}
+    
+    \captionof{figure}{Der Klassiker! Ein Mikrocontroller nach der von-Neumann-Architektur}
+   
+\end{center}
+
+Startet die CPU, weil jemand gerade den Strom angeschaltet hat, so geht es bei Adresse 0x0000 los. Das kleine x steht hier für die in solchen Fällen übliche hexadezimale Darstellung. Zur Erklärung oder als Erinnerung: Ein Nibble, also ein halbes Byte (mit den Werten 0 bis 15), lässt sich über die Ziffernfolge 0 bis F darstellen (A = 10, F = 15). Damit kann man 16-Bit-Adressen mit 4 Ziffern darstellen!
+
+Die CPU legt das Bitmuster der Adresse auf seine 16 parallelen Leitungen des Adress-Busses. Erreicht die CPU unter dieser Adresse jetzt das ROM, den RAM oder die I/Os? Es kommt darauf an! Und zwar darauf, wie der Entwickler sein System aufgebaut hat. Eine nicht in Bild 1 eingezeichnete Steuerlogik (dazu gleich mehr) entscheidet, welchen Baustein die CPU zu sehen bekommt. Üblicherweise baut man sein System so auf, dass bei Adresse 0x0000 das ROM oder der Flash liegt. Ist das ROM beispielsweise 32 kByte groß, so kann die CPU einzelne Zellen zwischen 0x000 und 0x7FFF (32766) abfragen und über den Datenbus jeweils 8 Bit, also ein Byte, auslesen.
+
+Geschickterweise beginnt der sogenannte Adressraum des RAMs direkt daran anschließend bei 0x8000 (32769). Wäre das RAM nun ebenfalls 32 kByte groß, würde man seine Speicherstellen von 0x8000 bis 0xFFFF (65535) erreichen. Leider wäre nun keine Adresse mehr für I/O frei. Deshalb wählt man das RAM beispielsweise nur 16 kByte groß (0x8000 bis 0xBFFF). Die I/O-Bausteine wären dann ab 0xC000 erreichbar.
+
+Im Unterschied zu ROM und RAM dienen die I/O-Bausteine in der Regel nicht zum Speichern von Daten oder Lesen von Befehlen, sondern zum Konfigurieren von Registern und der Ein- und Ausgabe. Die Konfigurationsregister legen beispielsweise fest, ob GPIOs als Ein- oder Ausgang arbeiten sollen, ob intern Pull-Down-Widerstände geschaltet werden sollen usw. Man kennt das vom Arduino und Raspberry Pi. Die einzelnen Register sind über Adressen erreichbar, in die die CPU schreibt oder aus denen sie liest, etwa den Status eines Pins oder den Wert eines ADC-Wandlers.
+
+Aneinandergereiht sieht dann die sogenannte Memory Map wie in Bild 2 aus. Insgesamt kann die CPU 65536 (216) Speicherstellen adressieren.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/pasted_image_20240313203605.png}
+    
+    \captionof{figure}{Die Übersicht der Speicherstellen (Memory Map) des Mikrocontrollers aus Bild 1.}
+    
+\end{center}
+
+
+\subsection{Weichenstellung}
+
+Mit welchem Baustein (RAM, ROM, I/O) bei welcher Adresse die CPU gerade sprechen darf, entscheidet ein sogenannter Adress-Dekoder. Er besteht aus einer Logikschaltung (früher gerne der TTL-IC 74LS138) der anhand der Bitkombinationen auf den Adressleitungen den richtigen IC ein- und ausschaltet. Wir erinnern uns: die Leitung Chip Select oder Chip Enable veranlasst einen (diskreten) IC, virtuell seine Beinchen zu heben und quasi nicht mehr am Adress- und Datenbus zu hängen. So können mehrere ICs den gleichen Bus nutzen, ohne sich ins Gehege zu kommen.
+
+Schaut man sich die Adressbits in Bild 2 an, so fällt auf, dass die Bits A0 bis A13 wiederkehrende Muster annehmen, A14 und A15 aber hochzählen und zwar 00, 01, 10, 11 also isoliert betrachtet von 0 bis 3. Das entspricht 4 × 16 kByte, unserem Adressraum von 64 kByte. Die Logiktabelle und die Zuordnung der IC ist in Bild 3 zu sehen.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/pasted_image_20240313204454.png}
+    
+    \captionof{figure}{Je nach Kombination der Adress-Bits werden einzelne ICs aktiviert oder deaktiviert.}
+    
+\end{center}
+
+Diese Art der Weichenstellung ist bei 16-Bit-Systemen noch ähnlich, wenn auch mit größerem Adressraum. Bei modernen Systemen mit einer Memory Management Unit (MMU), etwa dem Raspberry Pi, ist die Lage erheblich komplexer, weil dort virtuelle Adressen ins Spiel kommen, die erst in echte physische Adressen übersetzt werden müssen.
+
+Übrigens: Bei 16-Bit-Computern sind die internen Datenregister der ALU der CPU echte 16 Bit breit. NOR-Flash-Chips gibt es mit 8, 16 und 32 breitem Datenbus. Man könnte also 2 ICs mit je 8 Bit oder 1 IC mit 16 Bit anschließen. Analog gilt das für 32-Bit- und 64-Bit-Systeme.
+
+Prinzipiell kann man die Reihenfolge der Speicherbereiche in einem System oder einem SoC beliebig festlegen und in der Praxis unterscheiden sich Mikrocontroller verschiedener Hersteller auch erheblich in der Abfolge der Bereiche. Das ROM kann beispielsweise bei 0x2000 beginnen, während das RAM bei 0x0000 anfängt. Wichtig ist nur, dass erstens die CPU beim Start (oder Reset) die richtige Adresse auf den Bus legt, um Befehle abzuholen und zweitens der Compiler und der Linker wissen, wo das RAM liegt, um Daten dort abzulegen. Ersteres müssen die Chip-Designer sicherstellen, zweiteres die Compiler-Bauer.
+
+\subsection{Busse}
+
+Das in Bild 1 gezeigte Bussystem besteht aus drei Einzelbussen für Adressen, Daten und Steuerleitungen und es kann jeweils nur ein IC gerade über einen Bus mit der CPU kommunizieren. Gibt es jeweils Bussysteme für RAM und ROM, so spricht man von Harvard-Architektur. Tauchen die dennoch im gleichen Adressraum auf, so spricht man von modifizierter Harvard-Architektur, wie bei den ATmegas. Dort wird es aber noch spezieller: Denn diese als 8-Bit-Architektur angepriesenen Mikrocontroller sind eigentlich 16-Bitter. Die internen Register sind zwar nur 8 Bit breit. Dafür ist der interne Flash über einen 16 Bit breiten Bus angebunden, über den die CPU ihre 16 und 32 Bit breiten Befehle einliest. Das macht ATmega im Vergleich zu anderen 8-Bit-Mikrocontrollern schneller.
+
+Genau genommen ist der Flash etwa beim ATmega328 zwar 32 kByte groß. Aber man kann nur 16384 Adressen aufrufen, weil immer zwei Byte (16 Bit) ausgegeben werden. Das SRAM im ATmega ist hingegen nur mit einem 8 bittigen Datenbus verbunden. Die I/O-Peripherie ist ebenfalls über einen separaten Bus angebunden.
+
+\subsection{Wildwuchs: ARM-CPUs}
+
+Bei ARM-CPUs ist es etwas komplexer. Das gesamte Bussystem nennt sich Advanced Microcontroller Bus Architecture (AMBA) und wird auf SoCs zur Verbindung der vielen internen Komponenten verwendet. Ein typisches AMBA-basiertes System besteht aus einem Hochgeschwindigkeits-Bus ASB (Advanced System Bus) bzw. AHB (Advanced High-performance Bus) in neueren Systemen und einem Peripherie-Bus (APB), die über eine Bridge miteinander verbunden sind. In der dritten Generation der ARM-SoCs gibt es sogar vier Busse: Neben AHB und APB kommen noch Advanced eXtensible Interface (AXI) und der Advanced Trace Bus (ATB) hinzu.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/dab.ahb_asb.mbr_ig.png}
+    
+    \captionof{figure}{Die Advanced Microcontroller Bus Architecture (AMBA), wie sie ARM in seinen SoCs einsetzt.}
+    
+\end{center}
+
+Im RP2040 des Pi Pico kommen AHB-Lite und APB zum Einsatz. In Bild 5 sieht man, wie fragmentiert die innere Struktur des SoC ist. Diverse SRAMs in diversen Größen hängen am AHB und am APB sind die I/Os angeschlossen.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/pasted_image_20240314140030}
+    
+    \captionof{figure}{Am Beispiel des RP2040 im Pi Pico sieht man, wie kleinteilig der innere Aufbau ist.}
+    
+\end{center}
+
+Eine typische Memory Map für ARM-Systeme, also der Speicherplan, sieht dann ähnlich aus wie in Bild 6 für einen Prozessor vom Type ARM Cortex M3. Im Adress-Bereich des SRAM und der Peripherie ist ein kleiner Bereich für Bit Banding reserviert. Dort sind einzelne Bits, etwa I/O-Register der Peripherie, gegen eine 32-Bit-Adresse gemappt. So lassen sich einzelne Bits ohne weitere Operationen lesen und setzen. Beim ATmega etwa muss man immer das ganze I/O-Register und dessen bereits gesetzte Werte berücksichtigen. Um ein Bit zu verändern, muss man dann das ganze Register lesen, ein Bit setzen (OR) und alles zurückschreiben. Wie man das Feature nutzt, erklärt der Kasten „Bit-Banding-Berechnung“.
+
+\subsection{Bit-Banding-Berechnung}
+
+    Die Bit-Banding-Adresse berechnet sich nach der Formel
+    
+    \SHELL{bit\_word\_addr = bit\_band\_base + (byte\_offset × 32) + (bit\_number × 4)}
+    
+    Um beispielsweise Pin 9 des bei Adresse 0x40006040 liegenden Port-Eingangsregister B auszuwerten, liest man (per Pointer) folgende Adresse ein:
+    
+   \SHELL{ 0x420c0824 = 0x4200000 + (0x40006040 - 0x40000000) × 32 + (9 × 4)}
+    
+    Auf den ersten Blick ist das etwas aufwändig in der Berechnung. Gießt man die Formel aber in C in ein Makro (per \#define), wird der Einsatz von Bit Banding zum Kinderspiel.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/pasted_image_20240314172121.png}
+    
+    \captionof{figure}{Die Memory Map eines ARM Cortex M3.}
+    
+\end{center}
+
+\subsection{Unübersichtlich}
+
+Beim ESP32 ist die Memory Map ziemlich lückenhaft, wie in Bild 7 zu sehen ist. Die grauen Bereiche sind die nicht genutzten, für spätere Zwecke reservierten Bereiche, die weißen sind die benutzten. Eine Memory Management Unit (MMU) führt zumindest die externen Speicherbereiche für die beiden CPU-Kerne zusammen. Nebenbei benutzt der ESP32 (und alle anderen Modelle) getrennte Busse für Instructions und Daten, die aber in einem linearen Adressraum zusammengeführt sind.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/pasted_image_20240319093023.png}
+    
+    \captionof{figure}{Der Speicheraufbau des ESP32 ist ähnlich komplex wie bei ARM. Es gibt diverse reservierte Speicherbereiche.}
+    
+\end{center}
+    
+Spannend wird es, wenn der ESP32 Teile des Codes, zum Beispiel einzelne Funktionen, aus dem Flash in seinen internen SRAM kopiert. Denn dann bezieht er seine Instruktionen ja theoretisch über den Datenbus. Espressif hat dem ganzen die Krone aufgesetzt und hat Teile des SRAMs (und auch des Flash) sowohl über den Datenbus als auch über den Instruction-Bus (I-bus) angebunden und das ganze jeweils in unterschiedliche Adressregionen gemappt. Um über den I-bus Befehle aus dem SRAM1 (siehe Bild 8) auszulesen, legt die CPU die Adresse 0x400A0000 auf den Bus. Will sie hingegen Daten aus der gleichen Speicherstelle auslesen, legt sie 0x3FFFFFFFF auf den Bus.
+
+Glücklicherweise muss man sich nur in Extremfällen mit der genauen Adressierung beschäftigen. Um Funktionen gewollt in den schnelleren SRAM zu verlagern, insbesondere für Interrupt-Routinen wichtig, stellt man ihr IRAM\_ATTR voran. Der Linker sorgt dann später dafür, dass alles an den richtigen Adressen liegt.
+
+Auch die Flashing-Tools wie esptool.py und idf.py wissen, wohin neue Programme gehören. In der Anzeige beim Flashen tauchen die in Bild 7 gezeigten Adressen nie auf. Aber der Offset zur Start-Adresse des Flash wird angezeigt: 0x00010000.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/pasted_image_20240319130454.png}
+    
+    \captionof{figure}{SRAM und (externer) Flash lassen sich sowohl über den Instruction- als auch den Data-Bus ansprechen.}
+    
+\end{center}
+
+
+\section{Speicherverbrauch in Mikrocontrollern}
+
+% Source: Make Magazin 3/2024, S. 92 Daniel Bachfeld
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/aufmacher_digital}
+    
+    \captionof{figure}{}
+    
+\end{center}
+
+Nun erklären wir, wo im RAM Programme welche Art von Daten ablegen.
+
+\bigskip
+Wenn man in der Arduino IDE einfache Anwendungen wie LED-blinken-lassen und Servo-Motor-ansteuern programmiert, muss man sich in der Regel nicht mit Speicheraufteilungen beschäftigen. Bei längeren und komplexeren Programmen kann es aber passieren, dass die Ressourcen des gewählten Mikrocontrollers nicht ausreichen. Passt mein Programm in den Flash? Reicht der RAM, um Bilddaten zur Laufzeit zwischenzuspeichern? Nicht selten stürzt ein Programm erst nach einer gewissen Zeit ab, weil sein RAM voll ist.
+
+Manche Programmierer probieren dann einfach einen Mikrocontroller mit mehr Flash und/oder RAM, manche optimieren hingegen den Speicherverbrauch ihres Programms. Bei Letzterem muss man verstehen, in welchem Teil des Speichers das Programm und die statischen oder dynamischen Daten abgelegt werden.
+
+\subsection{Segment}
+Wir beschäftigen uns hier zunächst mit der Speicheraufteilung des RAM. Übersetzt man in der Arduino IDE für den Arduino UNO den unter den Beispielen mitgelieferten Blink-Sketch,
+
+\begin{lstlisting}
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+}    
+
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000); 
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(1000); 
+}
+\end{lstlisting}
+
+meldet die IDE (respektive der Linker) einen Platzverbrauch im Flash von 924 Byte und 9 Byte im „Dynamischen Speicher“ durch globale Variablen. Mit dynamisch ist hier nicht ein dynamischer RAM-Baustein gemeint, sondern ein freier Speicherbereich im RAM selbst, der wachsen und schrumpfen kann.
+
+Der Hinweis „Leaving 2039 bytes for local variables“ bezieht sich auf Variablen im RAM innerhalb von Funktionen. Er besagt, dass wir zur Laufzeit des Programms noch 2039 Byte der insgesamt 2048 Byte des ATmega-SRAM für Variablen innerhalb von Funktionen nutzen können, dazu gleich mehr.
+
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/arduino_niwe}
+    
+    \captionof{figure}{Die Arduino IDE macht nur rudimentäre Angaben zum Speicherverbrauch eines Sketches.}
+    
+\end{center}
+
+Die Formulierungen der Arduino IDE sind im Prinzip leichter verständlichere Übersetzungen aus der Informatikwelt. Dort teilt man Speicher in die Segmente Text, BSS, Data, Stack und Heap auf. Damit sind Adressbereiche gemeint, die eine spezielle Bedeutung haben.
+
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/memorymap_niwe}
+    
+    \captionof{figure}{Die Aufteilung des RAM in Segmente, Heap und Stack. Auf dem PC liegt unterhalb von Data das Text-Segment für den Code.}
+    
+\end{center}
+
+
+Das Text-Segment bezeichnet den Speicherbereich des eigentlichen Codes, also das Programm, plus aller später zu kopierenden Konstanten und Variablen, dazu gleich mehr. Text liegt üblicherweise im Flash, also einem separaten Bereich im Mikrocontroller. In BSS sind Variablen abgelegt, die zwar im Programm deklariert sind, aber denen anfangs noch kein Wert zugewiesen wurde oder der Wert 0. BSS bedeutet in ausgeschriebener Form Block Starting Symbol und stammt aus der Frühzeit der Softwareentwicklung. Leichter zu merken ist zwar better save space, was aber leider nicht auf den Platz im RAM zutrifft, sondern nur auf die vom (Compiler und) Linker erzeugte Objekt-Datei (.elf). In Kasten „Urknalltheorie“ erklären wir kurz die ELF-Datei und was im Mikrocontroller eigentlich passiert, bevor der Sketch im Arduino gestartet wird.
+
+Im Segment Data liegen alle Variablen (und Konstanten), die mit einem anderen Wert als 0 initialisiert wurden. Auch Zeichenketten liegen dort.
+
+\subsection{Global}
+
+Bei den in BSS und Data abgelegten Variablen handelt es sich um sogenannte globale Variablen. Das bedeutet, jeder Programmteil, auch Funktionen, können diese Variablen „sehen“. Man spricht in diesem Zusammenhang auch von Scope. Zudem sind diese Variablen während der gesamten Laufzeit des Programms vorhanden, das nennt man Lifetime. Globale Variablen und Konstanten (zumindest beim Arduino) belegen immer Speicherplatz im RAM.
+
+Globale Variablen werden beim Arduino vor den Funktionen setup() und loop() deklariert (und ggfs. definiert). In normalen C-Programmen schreibt man globale Variablen vor main(). Zwar handelt es sich bei der Programmierung mit Arduino eigentlich auch um ganz normale C/C++-Programme, ihnen fehlt aber offenbar die main()-Funktion? Nein, denn im Hintergrund gibt es sie trotzdem, versteckt vor den Augen des Anwenders in den Untiefen der Arduino-Pfade in der Datei main.cpp:
+
+\begin{lstlisting}
+int main(void)
+{ init();
+    initVariant();
+    #if defined(USBCON)
+    USBDevice.attach();
+    #endif
+    setup();
+    for (;;) {
+        loop();
+        if (serialEventRun) \
+        serialEventRun();
+    }
+    return 0;
+}
+\end{lstlisting}
+
+
+Sie initialisiert die serielle Schnittstelle, ruft einmalig die setup()-Funktion auf und dann in einer Dauerschleife loop(). Zudem checkt sie regelmäßig, ob Daten über die serielle Schnittstelle rein- und rausgehen sollen. Das erklärt zum einen, warum selbst minimalistische Sketche vergleichsweise lahm sind: Die Überwachung der seriellen Schnittstelle bremst. Zudem erklärt es, warum sogar ein leerer Sketch immer 9 Byte verbraucht: Drei Variablen für den Timer0 und die Funktion millis() belegen den Platz.
+
+Mit der Befehlszeilen-Toolchain des Arduino kann man sich genauer anschauen, in welchem Bereich das Programm seine Variablen ablegt. Die Toolchain liegt in der Regel unter
+
+\SHELL{C:/Users/Anwender/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin}
+
+wobei hier die Versionsnummer abweichen kann. Die Sketches liegen unter
+
+\SHELL{C:/Users/Anwender/AppData/Local/Temp/arduino/sketches}
+
+gefolgt von einer kryptischen Zeichenkette. Liegen dort mehrere Ordner, findet man anhand des Datums und der Uhrzeit schnell heraus, welche der aktuell übersetzte Sketch ist.
+
+Mit dem Befehl avr-size kann man sich die Verteilung der Segmente in der ELF-Datei anschauen, wie im Kasten „Speicherverbrauch Blink.ino“ zu sehen. Die ELF-Datei beschreibt den Aufbau des Speichers, wie er im laufenden Betrieb des Arduino aussehen soll (siehe auch Kasten „Urknalltheorie“).
+
+\begin{verbatim}
+    Speicherverbrauch Blink.ino
+    avr-size.exe Blink.ino.elf
+    text    data     bss     dec     hex filename
+    924       0       9     933     3a5 Blink.ino.elf
+\end{verbatim}
+
+Die Größe der ELF-Datei ergibt sich aus der Summe von Text, Data und BSS. Hier sehen wir, dass die Variablen in BSS liegen und in der Tat werden sie in den eingebundenen Bibliotheken mit 0 initialisiert.
+
+
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/atmega_niwe.png}
+    
+    \captionof{figure}{Der RAM im ATmega beginnt erst ab Adresse 0x0100. Davor liegen noch diverse I/O-Register.}
+    
+\end{center}
+
+
+
+Will man die Verteilung der Variablen im BSS genauer aufdröseln, nimmt man das Tool avr-objdump. Als Argumente gibt man -C für decode, -t zum Anzeigen der Symbol Table und -j .bss zur Anzeige nur des BSS-Segments an.
+
+
+\begin{verbatim}
+    BSS-Segment Blink.ino
+    avr-objdump.exe -C -t -j .bss Blink.ino.elf
+    
+    Blink.ino.elf:     file format elf32-avr
+    
+    SYMBOL TABLE:
+    00800100 l    d  .bss   00000000 .bss
+    00800105 l     O .bss   00000004 timer0_overflow_count
+    00800101 l     O .bss   00000004 timer0_millis
+    00800100 l     O .bss   00000001 timer0_fract
+    00800109 g       .bss   00000000 __bss_end
+    00800100 g       .bss   00000000 __bss_start
+\end{verbatim}
+
+Im Kasten „BSS-Segment Blink.ino“ sieht man prima die drei Variablen und wie ihr Speicherplatz zusammen 9 ergibt. Und man sieht, dass der BSS-Bereich bei Adresse 0x100 startet (das Prefix 00800 ignorieren wir hier mal) und bei 0x109 endet! Das liegt daran, dass der SRAM im ATmega328 hardwaretechnisch erst bei 0x100 beginnt (Vergleich Bild 3).
+
+Fügt man in den Blink-Sketch vor setup() die Zeile int global = 1; ein, so erscheint die Variable mit ihren 2 Byte im Datensegment. Hinweis am Rande: Man muss mit der Variable im folgenden Code noch irgendwas anstellen, etwa inkrementieren. Andernfalls optimiert der Compiler sie einfach weg, weil sie augenscheinlich keine Funktion hat.
+
+Das Data-Segment liegt vor dem BSS-Segment, sodass sich nun alles verschiebt. BSS beginnt nur erst ab 0x102 und geht bis 0x010b (siehe Kasten „Datensegment Blink.ino“).
+
+
+\begin{verbatim}
+    Daten-Segment Blink.ino
+    \avr-objdump.exe -C -t -j .data Blink.ino.elf
+    
+    Blink.ino.elf:     file format elf32-avr
+    
+    SYMBOL TABLE:
+    00800100 l    d  .data  00000000 .data
+    00800100 l     O .data  00000002 global
+    00800102 g       .data  00000000 __data_end
+    00800102 g       .data  00000000 _edata
+    00800100 g       .data  00000000 __data_start
+    
+    avr-objdump.exe -C -t -j .bss Blink.ino.elf
+    
+    Blink.ino.elf:     file format elf32-avr
+    
+    SYMBOL TABLE:
+    00800102 l    d  .bss   00000000 .bss
+    00800107 l     O .bss   00000004 timer0_overflow_count
+    00800103 l     O .bss   00000004 timer0_millis
+    00800102 l     O .bss   00000001 timer0_fract
+    0080010b g       .bss   00000000 __bss_end
+    00800102 g       .bss   00000000 __bss_start
+\end{verbatim}
+
+\subsection{Lokal}
+So weit zu den beim Start in den Speicher eingemeißelten Variablen. Platzsparender als globale Variablen sind lokale Variablen. Sie haben eine begrenzte Sichtbarkeit und Lebensdauer und werden innerhalb von Funktionen deklariert. Sie werden erst beim Aufruf der jeweiligen Funktion angelegt, und zwar auf dem sogenannten Stack. Der Stack ist der dynamische Teil des Speichers und wächst vom oberen Ende gegen das untere Ende des Speichers wie ein Stalaktit an der Decke einer Tropfsteinhöhle. In unserem Arduino-Beispiel beginnt der Stack bei 0x8FF (dezimal 2023), also der letzten Zelle des 2048 Byte kleinen RAM des ATmega328.
+
+Anders als bei globalen Variablen kann man schwer voraussagen, wie groß der Stack zur Laufzeit wird. Sein Füllstand hängt vom Programmablauf ab und der kann ja durchaus verschlungen sein.
+
+Nehmen wir mal an, wir rufen eine C-Funktion eins() ohne weitere Parameter auf. Das Programm legt zuerst die Rücksprungadresse auf den Stack, also quasi den Weg zurück ins Hauptprogramm. Im Hintergrund sichert das Programm zwar noch andere Daten auf den Stack, aber zum besseren Verständnis lassen wir das mal weg.
+
+Nun deklarieren wir in eins() eine Variable der Länge uint16\_t, also 2 Byte. Die Variable legt das Programm auf dem Stack ab. Anschließend erniedrigt es den Stack Pointer um 2. Genau genommen subtrahiert es die Größe der Variablen vom Stack Pointer, was 2301 respektive 0x8FD ergibt. Ab dieser Adresse können weitere Daten gespeichert werden.
+
+Deklarieren wir eine weitere Variable, so wächst der Stack immer weiter nach unten in Richtung Heap. Innerhalb der Funktion lassen sich alle lokalen Variablen ändern. Auch die globalen Variablen lassen sich von eins() aus ändern.
+
+Die in main() deklarierten (lokalen) Variablen sind indes für die Funktion eins() nicht sichtbar. Wichtig zu wissen ist, dass auch main() in C-Programmen eine Funktion ist. Das heißt, in ihr deklarierte Variablen sind auch lokale Variablen, auf die nur main() selbst zugreifen kann. Aus main() heraus aufgerufene Funktionen können nicht auf sie zugreifen.
+
+Endet die Funktion, so addiert das Programm die Größe aller zuvor angelegten Variablen wieder zum Stack Pointer dazu, der Stack schrumpft. Prinzipiell liegen die Werte der Variablen allerdings noch im Speicher, da sie ja nicht wirklich gelöscht wurden. Aber das stört nicht weiter.
+
+Zuletzt liegt noch die Rücksprungadresse auf dem Stack, die nun eingelesen und angesprungen wird, womit der Stack Pointer abermals um 2 Byte (so lang ist die Adresse) verändert wird und man wieder in main() landet.
+
+Würde aus der Funktion eins() eine andere Funktion zwei() aufgerufen, so würde es gleich ablaufen: Rücksprung sichern, Variablen erzeugen, Stack Pointer erhöhen. Und bei Ende der Funktion rollt sich quasi alles wieder auf.
+
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/stack_neu_niwe.png}
+    
+    \captionof{figure}{Der Stack im Detail}
+    
+\end{center}
+
+Zwar sind lokale Variablen platzsparender, weil sie nach der Rückkehr aus einer Funktion gelöscht sind. Wenn sie allerdings in main() bzw. in loop() deklariert sind, liegen sie zur gesamten Laufzeit des Programms auf dem Stack. Erst wenn main(), also das ganze Programm, beendet wird, würde auch dieser Platz freigegeben. Nur interessiert das dann keinen mehr. Insofern macht es letztlich keinen Unterschied, ob die Variablen in BSS bzw. Data oder dem Stack liegen.
+
+\subsection{Haufen}
+
+Praktischerweise muss man sich um die Verwaltung der Daten auf dem Stack keine Gedanken machen, sie kommen und gehen. Allerdings ist der Stack unpraktischer, wenn es um zusammenhängende Speicherbereiche geht, deren Größe sich erst zur Laufzeit des Programms ergibt, beispielsweise der Image-Buffer der ESP32-CAM. Man kann diverse Auflösungen und Farbtiefen einstellen, deren Speicherbedarf sich erst im Betrieb ableiten lässt. Für die dynamische Belegung oder Allozierung (engl. Allocation) dient im Speicher der Heap.
+
+Benötigt man einen Speicherbereich (Block) auf dem Heap, kann man ihn mittels der C-Funktion malloc() zur Laufzeit anfordern. Dazu muss man ihr sagen, wie viel Platz man benötigt. Im Beispiel
+
+uint8\_t *heap = (uint8\_t *)malloc(10);
+
+fordern wir 10 Byte an. malloc() liefert eine Adresse für einen C-Pointer auf den Datentype uint8\_t zurück, hier heap. Ein Pointer ist ein Konstrukt der Sprache C, um gezielt auf Speicheradressen und ihre Inhalte zugreifen zu können. Die Zeichenkette (uint8\_t *) vor malloc() passt dabei den Typen des übergebenen Werts an, man spricht hier auch von Casting. Ohne die Zeichenketten geht es auch, allerdings warnt die Arduino IDE stets, die Typen würde nicht zueinanderpassen.
+
+Der Pointer heap zeigt auf das erste Element und könnte nun beispielsweise wie ein Array behandelt werden. Über die Array-Elemente heap[0] bis heap[9] ließen sich Daten auf den Heap schreiben. Leider wird es hier für viele Programmierer unübersichtlich, weil man sich neben Arrays noch etwas tiefer mit Pointern und Pointerarithmetik auseinandersetzen muss, wenn man alles selber programmieren will. Alternativ kann man in C++ mit dem new-Operator Speicher für Objekte anfordern.
+
+Bei Projekten für kleinere Arduinos wie dem UNO wird man Code mit malloc() eher selten begegnen. Der ESP32 ermöglicht mit seinem viel größeren Speicher erheblich komplexere Anwendungen, in denen Rege Gebrauch von malloc() gemacht wird.
+
+\subsection{Freigeben}
+
+Um den mit malloc() reservierten (allozierten) Speicher wieder freizugeben, ruft man die Funktion free() auf. Benötigen wir die im obigen Beispiel angelegten 10 Byte nicht mehr, so löscht free(heap) den Eintrag in der Verwaltung. Das Problem: Der Speicher ist zwar freigegeben (dealloziert), der Pointer heap zeigt aber immer noch dahin. Nutzt man den Pointer später fälschlicherweise, kann er Daten überschreiben. Man spricht hier auch von Dangling Pointern. Sie gefährden die Zuverlässigkeit und Sicherheit von Systemen.
+
+Das Programm verwaltet die belegten Bereiche im Heap über verkettete Listen. Jeder Block hat einen Header mit Größe sowie vorhergehendem und folgendem Bereich. Denkt man genauer darüber nach, kommt man schnell darauf, dass man bei unserem 10-Byte-Beispiel insgesamt mehr Speicher verbraucht. Erstens benötigen wir einen 16-Bit-Pointer, um die Adresse des jeweiligen Blocks im Heap zu speichern. Zweitens enthält der Block noch 2 Byte für die verkettete Liste: Größe, Zeiger auf vorherigen Block und folgenden Block. Insgesamt kommt man so auf 14 Byte. Das ganze lohnt sich also nur, wenn man größere Blöcke reserviert.
+
+Es gibt noch einen weiteren Nachteil des Heaps: Wiederholtes Allozieren und Deallozieren führt in der Regel zu einer Fragmentierung des Heaps: Bestimmte Bereiche sind freigegeben, andere sind noch belegt. Man erinnere sich an die nach einer gewissen Nutzungszeit fragmentierten Festplatten unter alten Windows-Versionen, die keinen größeren, zusammenhängenden Speicherplatz mehr anbieten konnten.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/heap_niwe.png}
+    
+    \captionof{figure}{Werden Speicherbereiche dealloziert, entstehen Lücken im Heap.}
+    
+\end{center}
+
+\subsection{Speicherlecks}
+
+Ein noch viel größeres Problem in Zusammenhang mit Heaps in der Praxis ist aber, dass Programmierer vergessen, die free()-Funktion einzusetzen, wenn der Speicher nicht mehr benötigt wird. So wird etwa bei wiederholtem Aufruf einer Funktion immer wieder neuer Speicher reserviert, aber vor Verlassen der Funktion nicht freigegeben. Nach und nach wächst der Heap wie ein Stalagmit in der Tropfsteinhöhle von unten dem Stack (Stalaktit) entgegen. Berühren sich beide, ist der Speicher voll. Das Programm stürzt in der Regel ab bzw. macht seltsame Dinge. Da man über die Zeit den Speicher schwinden sieht, spricht man auch von einem Speicherleck (Memory Leak), als würde er auslaufen.
+
+Praktischerweise kann man zur Laufzeit seinen Speicherverbrauch kontrollieren. Die Arduino-Lib MemoryUsage hilft, Speicherlecks auf die Spuren zu kommen. Sie zeigt Anfang und Ende von Stack und Heap an, sodass sich Speicherfresser aufspüren lassen.
+
+\subsection{Verschieben}
+
+Wenn so wenig RAM in Mikrocontrollern vorhanden und der Flash eher üppig ist, lohnt es sich, zu überlegen, welche Teile vielleicht im Flash verbleiben sollen und nicht ins RAM kopiert werden! Wir erinnern uns: Im Flash liegt sowieso alles, vom Code bis zu den später benutzten Variablen, Konstanten und Zeichenketten. Man muss dem Compiler bzw. dem Linker eigentlich nur sagen, welche Teile beim Start NICHT ins RAM kopiert werden sollen.
+
+Warum aber kopiert der Startup-Code beim Arduino dann überhaupt Konstanten in den RAM? Weil der Compiler und Linker den einfachsten Weg wie auf einem PC nehmen und alle Daten gleich behandeln, egal ob Variable oder Konstante. Technisch gesehen ist ein Zugriff auf Daten im Flash zur Laufzeit für ein Programm nämlich erheblich aufwendiger. Der ATmega beruht auf der Harvard-Architektur und bringt für das Lesen und Speichern von Flash-Daten dedizierte Assembler-Befehle Load Programm Memory (LPM) und Store Program Memory (SPM) mit. Die laufen aber langsamer als die normalen Befehle Load Direct From SRAM (LDS) und Store Direct to SRAM (STS). Funfact: PIC16-Mikrocontroller haben gar keinen dedizierten Befehl zum direkten Lesen von Daten aus dem Flash.
+
+Man muss dem Compiler in der Arduino IDE also explizit mitteilt, dass er Konstanten und insbesondere speicherplatzfressende Zeichenketten für Text auf Displays oder das Debuggen über die serielle Schnittstelle nicht ins RAM kopieren soll. Vielmehr soll er auf die ohnehin schon im Flash vorhandenen Daten zugreifen.
+
+\subsection{PROGMEM}
+
+\URL{https://www.arduino.cc/reference/de/language/variables/utilities/progmem/}
+
+\URL{https://docs.arduino.cc/learn/programming/memory-guide/}
+
+Die Arduino-Entwickler haben dafür den Modifizierer PROGMEM (Program Memory) eingeführt, den man seinen Konstanten hinzufügt. Abhängig von der Version des Compilers funktionieren folgende Kombinationen, wobei {} die Zeichenkette enthält:
+
+\PYTHON{const char Text[] PROGMEM = \{\};}
+
+\PYTHON{const PROGMEM char Text[]  = \{\};}
+
+Sobald eine Konstante auf diese Weise modifiziert wurde, kann man nur noch mit speziellen Funktionen auf sie zugreifen, die in den Program Space Utilities (pgmspace.h) der Arduino-Bibliothek zu finden sind. Um auf Teile der Zeichenkette in Text[] zuzugreifen, würde etwa die Funktion
+
+\PYTHON{pgm\_read\_byte(\&Text[i]);}
+
+dienen. Für Insider: Genau genommen handelt es sich um Makros, hinter denen eingebetteter Assemblercode für den LPM-Befehl steckt.
+
+Achtung: Derart modifizierte Konstanten müssen als globale Konstanten definiert sein! Sie funktionieren nicht innerhalb von Funktionen, es sei denn, man stellt ihnen den Schlüsselwert static voran, also const static char.
+
+Bei aktuelleren Boards mit ARM-Mikrocontrollern muss man seinen Sketches in der Arduino IDE nicht mehr explizit mitteilen, dass Konstanten aus dem Flash gelesen werden sollen. Gleiches gilt für ESP-Prozessoren. PROGMEM ist nur für AVR-Prozessoren noch sinnvoll.
+
+\subsection{Das F()-Makro}
+
+Um den Umgang mit Zeichenketten bei der Ausgabe über die serielle Schnittstelle zu vereinfachen, gibt es zusätzlich das F()-Makro. Es kapselt das ganze PROGMEM-Geraffel rund um eine Zeichenkette, sodass der Befehl Serial.print(F("Hello World")); ausreicht, um RAM zu sparen.
+
+An dieser Stelle gibt es oft das Missverständnis, F() würde Zeichenketten vom RAM in den Flash kopieren. Nein, sie sind bereits im Flash und die Binärdatei, die man auf den Arduino flasht, wird durch PROGMEM und F() auch nicht größer – mal abgesehen von wenigen Bytes durch die aufwendigeren Lesebefehle.
+
+Mit dem Tool avr-size kann man sehr gut beobachten, welchen Effekt der Einsatz von PROGMEM hat. Im Kasten „PROGRAM MEMORY“ sieht man die Belegung des Listings in Bild 6 vor und nach dem Einsatz von PROGMEM.
+
+Mit PROGMEM vor Text[] verschwindet die Zeichenkette aus dem Data-Segment, das um 10 Byte kleiner wird. Die 2 Byte mehr im Program-Segment rühren von der zusätzlichen Leseoperation her.
+
+\begin{verbatim}
+PROGRAM MEMORY
+avr-size.exe -C Patchwork.ino.elf
+AVR Memory Usage
+----------------
+Device: Unknown
+
+Program:    1612 bytes
+(.text + .data + .bootloader)
+
+Data:        201 bytes
+(.data + .bss + .noinit)
+
+
+Mit PROGMEM
+
+
+avr-size.exe -C Patchwork.ino.elf
+AVR Memory Usage
+----------------
+Device: Unknown
+
+Program:    1614 bytes
+(.text + .data + .bootloader)
+
+Data:        191 bytes
+(.data + .bss + .noinit)
+\end{verbatim}
+
+
+\subsection{Patchwork}
+
+Den Abschluss dieses Artikels soll das Bild 6 bilden, in dem zu sehen ist, an wie vielen Stellen Daten verteilt im Speicher liegen können.
+
+
+\begin{center}
+    \includegraphics[width=\textwidth]{Arduino/Memory/waswohntwo_niwe.png}
+    
+    \captionof{figure}{An diesen Stellen landen die Variablen, Konstanten und Zeichenketten im Speicher. Im Listing ist ein klassischer Fehler versteckt, der zu einem Speicherleck führt!}
+    
+\end{center}
+
+Mit avr-objdump und der ELF-Datei kann man sich die künftige Verteilung im Speicher anschauen. Im Kasten „Patchworkspeicher“ sieht man die über die Segmente verteilten Daten. Die Zeichenkette Text[] liegt in Data, genauso wie die Konstante. Die mit PROGMEM modifizierte Zeichenkette[] liegt im Text-Segment.
+
+Die mit 0 definierte Variable landet in BSS, zusammen mit der Variable i\_will\_survive. Müsste sie aber als lokale Variable der Funktion setup() nicht eigentlich auf dem Stack landen? Nein, da ihr das Schlüsselwort static vorangestellt ist, landet sie in BSS und überlebt dort das Ende der Funktion. Der in loop() mit malloc() reservierte Speicher zeigt auf den Heap und die Variable test liegt auf dem Stack. —dab
+
+\begin{verbatim}
+Patchworkspeicher
+avr-objdump.exe -C -t -j .data Patchwork.ino.elf
+
+Blink2.ino.elf:     file format elf32-avr
+
+SYMBOL TABLE:
+00800100 l    d  .data  00000000 .data
+00800112 l     O .data  00000001 Konstante
+00800113 l     O .data  0000000b Text
+00800100 l     O .data  00000012 vtable for HardwareSerial
+0080011e g       .data  00000000 __data_end
+0080011e g       .data  00000000 _edata
+00800100 g       .data  00000000 __data_start
+
+
+SYMBOL TABLE:
+0080011e l    d  .bss   00000000 .bss
+0080012c l     O .bss   0000009d Serial
+00800128 l     O .bss   00000004 timer0_millis
+00800127 l     O .bss   00000001 timer0_fract
+00800123 l     O .bss   00000004 timer0_overflow_count
+0080011e l     O .bss   00000004 setup::i_will_survive
+00800122 l     O .bss   00000001 Variable
+008001c9 g       .bss   00000000 __bss_end
+0080011e g       .bss   00000000 __bss_start#
+
+
+SYMBOL TABLE:
+...
+00000072 l     O .text  0000000c Zeichenkette
+....
+\end{verbatim}
+
+\subsection{Urknalltheorie}
+
+Versorgt man den ATmega328 im Arduino UNO mit Strom, so ist der einprogrammierte Sketch nicht das Erste, was ausgeführt wird. Denken wir uns den Bootloader mal weg, so übernimmt anfangs die C Runtime Zero (crt0) die Kontrolle. Sie ist kein Teil des Mikrocontrollers, sondern wird für den Anwender unsichtbar in jeden Arduino-Sketch eingebunden. Sie initialisiert nicht nur wichtige Register, sondern kopiert auch alle Variablen und Konstanten an die richtigen Stellen im RAM (Data und BSS) und ruft dann die Funktion main() auf, also das eigentliche Programm. Der Prozess wird mitunter auch C Copy Down genannt.
+
+Woher weiß die Runtime, wohin was im RAM kommt? Beim Upload schreibt man nicht nur seinen Sketch in den Flash, sondern eine Datei im Executable and Linkable Format, kurz ELF. Sie ist quasi ein Abbild des gewünschten Aufbaus des Speichers und den Sektionen Text, Data, BSS. Die ELF-Datei wird vom Linker in der Arduino IDE aus dem Sketch und den Variablen und Konstanten zusammengebaut. Aus ihr heraus kann die Runtime nach dem Start die definierten Variablen aus dem Flash in Data kopieren und die nur deklarierten Variablen in BSS in das RAM kopieren.
+
+
+
+
+
+
+

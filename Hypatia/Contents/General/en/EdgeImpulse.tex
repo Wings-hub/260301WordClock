@@ -1,0 +1,234 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad:  Wings-hub\210520PortentaH7\PortentaH7\$
+% $Name: PortentaH7$
+% $Version: 4250 $
+%
+%%%%%%%%%%%%
+
+
+\section{Edge Impulse}
+
+Edge Impulse is a platform which makes the process of machine learning easier by choosing reasonable defaults  for the parameters to be set when creating a model. It was founded in 2019 by Zach Shelby and Jan Jongboom. It provides a user friendly interface and we can train, test and deploy the model.Edge Impulse uses the TensorFlow ecosystem for training , optimizing and deploying deep learning models in to the embedded devices for example Arduino Portenta H7 \cite{EdgeImpulsedocs:2021}. The TensorFlow ecosystem provides a set of standards and integration points that can be used to make our own improvements in the model.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Arduino/edgeimpulse}
+	\caption{Edge Impulse process \cite{EdgeImpulse:2021}}
+	\label{figure 9.2.1}
+\end{figure}
+
+
+The process involves collecting  the data from the devices and creating a training data set in the Edge Impulse cloud. Then it will undergo the training process for the model and after the training process is completed, the model is tested using the testing data provided or the model can also be validated using live classification by loading the testing sample directly from a device. Then finally after the model is tested, it is deployed back in the device. 
+In the background, Edge Impulse generates a python implementation of the model using TensorFlow ‘s Keras APIs. By switching into the expert mode we can edit the code and make changes in the parameters. The TensorFlow libraries and APIs are used by Edge Impulse and hence it makes it easy to extend the built-in training code with our own logic. The training process is done in the cloud and the trained model are automatically optimized for deployment to the microcontrollers.
+
+\textbf{Data Acquisition format :}
+In order to send data from any sensor to the Edge Impulse platform we need to send the data in data acquisition format. If the data we have is in CSV or WAV then we can directly upload in the Edge Impulse platform. For images,the input image formats accepted by the Edge impulse platform are JPG and PNG. Images can be in RGB or Grayscale. There is also an option available if we need to convert the input image into grayscale. 
+
+\textbf{Image Processing Block : } In this processing block, preprocessing and normalization of image data is done. In addition, color depth can also be reduced. After the input image is loaded, this processing block is responsible for extracting features from the image.
+
+\textbf{Learning Block : } In this learning block we have options to choose between classification and object detection.  The object detection model is a pre-trained model and we can use this pre-trained model and do fine tuning to obtain desired results. This pre-trained model is based on MobileNetV2-SSD FPN-lite architecture which is designed for mobile and embedded vision application. This model is trained on images of 320X320 resolution.
+
+
+\textbf{Advantages }
+\begin{itemize}
+	\item 	Connect multiple devices to the platform. Even a mobile phone can also be used as a device.
+	\item	Multiple options to upload our input data from different devices.
+	\item	Drag and drop UI makes it user friendly for training, testing and deploying the model with little to no coding.
+	
+	\textbf{Disadvantages}
+	\item	Difficult for fine grain customization of the model.
+	\item	Data security issues.
+	
+	
+\end{itemize}
+
+
+
+
+\section{Edge Impulse}
+\label{sec:edge_impulse}
+
+Edge Impulse is an integrated cloud platform designed that enables end-to-end development and deployment of machine learning models for edge devices, particularly those with limited computational resources. It provides tools for data collection, model training, testing, verification and deployment specifically tailored for microcontrollers and other edge devices. \cite{edgeimpulse:2024} \cite{edgeimpulse_docs:2024} 
+
+The figure ~\ref{EdgeWorkFlow} gives the workflow of Edge Impulse Platform from Data Collection, Training, Testing and Deployment to Edge Devices.
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[node distance=2cm, thick, every node/.style={draw, minimum height=1.2cm, minimum width=2cm, align=center}, 
+		>=Stealth]
+		
+		% Nodes
+		\node (edge) {EDGE \\ DEVICE};
+		\node (collect) [below left=1.5cm and 4.5cm of edge] {COLLECT};
+		\node (train) [right=of collect, xshift=0.2cm] {TRAIN};
+		\node (test) [right=of train, xshift=0.2cm] {TEST};
+		\node (deploy) [right=of test, xshift=0.2cm] {DEPLOY};
+		
+		% Arrows
+		\draw[->] (edge) -- (collect);
+		\draw[->] (collect) -- (train);
+		\draw[->] (train) -- (test);
+		\draw[->] (test) -- (deploy);
+		\draw[->] (deploy) -- (edge);
+		
+	\end{tikzpicture}
+	\caption{Workflow of Edge Impulse Platform}
+	\label{EdgeWorkFlow}
+\end{figure}
+
+\subsection{Features of the Edge Impulse Platform}
+This section explore the key steps involved in building a machine learning model using Edge Impulse. This includes methods for gathering data, processing techniques, model training options, testing strategies, and deploying the model to edge devices.  \cite{edgeimpulse_docs:2024}
+\begin{enumerate}
+	\item \textbf{Data Collection:} Edge Impulse platform can perform gathering of data from devices like cameras, microphones, or other sensors. We can collect data for the machine learning model directly from your device or upload it from files to Edge Impulse or through mobile app.
+	\item \textbf{Data Pre-Processing:} Using Edge Impulse, pre-processing of data can be done, helps improve the quality of the data used for training. This includes Filtering, Feature Extraction, Signal Analysis.
+	\item \textbf{Model Training:} Once the data is ready, Edge Impulse helps to train machine learning models without requiring deeper programming languages. It acts as a platform to build and train models without the need of deep programming knowledge. The platform supports various types of models such as classification of models, convolutional neural networks (CNNs), recurrent neural networks (RNNs) and transfer learning, depending on the type of data and the specific needs of the project.
+	\item \textbf{Model Testing:} After training, Edge Impulse allows you to test the model to ensure it performs well. We can use test data to evaluate the model's accuracy, or perform live testing by feeding real-time data from sensors. This helps in identifying any issues and fine-tuning the model for better results.
+	\item \textbf{Model Deployment:} After training, we can deploy the model directly onto edge devices like microcontrollers, IoT devices and other mobile phones. It provides code and libraries to run your trained model on these devices. It also generates and flash firmware that includes the trained model to edge devices.
+\end{enumerate}
+
+\subsection{Edge Impulse Framework Installation}
+The steps for installing and setting up the edge impulse platform, \cite{edgeimpulse_cli:2024}
+
+\begin{enumerate}
+	\item Go to the Edge Impulse website \href{https://www.edgeimpulse.com.}{EdgeImpulse} and click on Sign Up and create a new account.
+	\item Install the latest version of python from the official website \href{https://www.python.org/}{Python}.
+	\item Download and install Node.js from the official website \href{https://nodejs.org/en/}{Nodejs}. Ensure to include the necessary tools during installation by selecting the check box as shown in figure ~\ref{NodejsInstallation}
+	\item After installation, verify that Python, Node.js and npm are installed by running the following commands in your terminal \SHELL{python --version, node --version, npm --version} as shown in figure ~\ref{version}.
+	\item Then, install Edge Impulse CLI which allows us to collect data from the hardware, train models locally, and upload datasets to the platform. Open a terminal and run the following command to install the CLI globally \SHELL{npm install -g edge-impulse-cli
+	}.
+	\item Verify the Edge Impulse CLI by using the command \SHELL{edge-impulse-daemon --version} as shown in the figure ~\ref{edgeImpulseCLIversion}.
+\end{enumerate}
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{EdgeImpulse/Nodejs.png}
+		\caption{Node.js Installation}
+		\label{NodejsInstallation}
+	\end{center}
+\end{figure}
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{EdgeImpulse/version.png}
+		\caption{CLI commands for Version}
+		\label{version}
+	\end{center}
+\end{figure}
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{EdgeImpulse/edgeImpulseCLIversion.png}
+		\caption{Edge Impulse CLI version}
+		\label{edgeImpulseCLIversion}
+	\end{center}
+\end{figure}
+
+\subsection{Configuring Arduino Portenta H7 to Edge Impulse}
+These steps includes how to connect Arduino Portenta H7 along with Vision Shield to be connected to Edge Impulse. \cite{edgeimpulse_portenta:2024}
+
+\begin{itemize}
+	\item To setup Portenta H7, we need to ensure Edge Impulse CLI and Arduino IDE are installed. Install Arduino IDE from the official website \href{https://www.arduino.cc/en/software}{Arduino IDE}
+	\item Open Arduino IDE and navigate to \SHELL{Tools > Board > Board Manager} and type Portenta H7 in search bar and install the \PYTHON{Arduino Mbed OS Portenta} board package as shown in figure ~\ref{BoardPortenta}.
+	\item After installation, go to \SHELL{Tools > Board} and select \PYTHON{Arduino Portenta H7}.
+	\item Attach the Vision Shield to the Portenta H7 by alighning the pins, providing camera and microphones for image and audio data collection as shown in the figure ~\ref{PortentaH7VisonShield}.
+	\item Use a USB-C cable to connect the development board to your computer. Then, double-tap the RESET button to put the device into bootloader mode. You should see the green LED on the front pulsating.
+	\item Update the Firmware onto Portenta H7 board
+	\begin{enumerate}
+		\item Download the latest Edge Impulse firmware for Portenta H7 from the following website \href{https://docs.edgeimpulse.com/docs/edge-ai-hardware/mcu/arduino-portenta-h7}{PortentaH7 Firmware} and unzip the file.
+		\item Double press on the RESET button on your board to put it in the bootloader mode.
+		\item Open the flash script for the operating system which is in windows bat file \FILE{flash\_windows} to falsh the firmware as shown in ~\ref{Firmware}.
+		\item Wait until flashing is complete, and press the RESET button once to launch the new firmware.
+	\end{enumerate}
+	\item After flashing the firmware, to connect Portenta H7 with the Vision Shield to Edge impulse, run the command \SHELL{edge-impulse-daemon}.
+	\item Now, we will be prompted to log into the Edge Impulse account.
+	After logging in, create a new project and select the Project to which the Portenta H7 to be connected.
+\end{itemize}
+
+\begin{figure}
+	\begin{center}		\includegraphics[width=0.7\linewidth]{EdgeImpulse/PortentaBoard.png}
+		\caption{Installing Portenta H7 board in Arduino IDE}
+		\label{BoardPortenta}
+	\end{center}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{EdgeImpulse/PortentaVisionShield.png}
+		\caption{Vision Shield connected to Portenta H7}
+		\label{PortentaH7VisonShield}
+	\end{center}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{EdgeImpulse/FirmwareFile.png}
+		\caption{Edge Impulse Firmware}
+		\label{Firmware}
+	\end{center}
+\end{figure}
+
+\subsection{Edge Impulse GUI Description}
+The Edge Impulse user interface (UI) includes the following sections as shown in the figure ~\ref{UIEdgeImpluse}:
+\begin{itemize}
+	\item \textbf{Dashboard}: Provides a summary of the project, showing its current status and recent activities.
+	\item \textbf{Devices}: Lists the device which are connected to the Edge Impulse Platform for data transfer and deployment.
+	\item \textbf{Data Acquisition}: Offers tools to collect and organize the data for use.
+	\item \textbf{Impulse Design}: Allows us to set up the machine learning process, including steps like preparing your data (pre-processing), feature extraction and training the model.
+	\item \textbf{Model Testing}: Provides tools to evaluate the performance of trained model and make any necessary improvements.
+	\item \textbf{Deployment}: Provide options to deploy and run our model on different edge devices.
+\end{itemize}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\linewidth]{EdgeImpulse/UI.png}
+		\caption{Edge Impulse User Interface}
+		\label{UIEdgeImpluse}
+	\end{center}
+\end{figure}
+
+
+
+
+\section{edge-impulse-sdk, Version 1.3.0}
+\subsection{Introduction}
+The \SHELL{edge-impulse-sdk} is a versatile library designed to run machine learning inferences on edge devices like the Portenta H7. In our face recognition project, this SDK allows us to deploy the model trained using Edge Impulse, simplifying the integration of AI into our system for real-time facial recognition tasks. \cite{edgeimpulse_cpp_library:2024}
+
+\subsection{Installation}
+
+To install the ‘edge-impulse-sdk‘, follow these steps:
+\begin{itemize}
+	\item Download the C++ library from the Edge Impulse Studio.
+	\item Unzip the library into your project directory.
+	\item Ensure you have a C compiler, a C++ compiler, and Make installed on your system.
+\end{itemize}
+
+For detailed instructions, refer to the \HREF{https://docs.edgeimpulse.com/doc}{Edge Impulse Documentation}.
+
+\subsection{Example - Description}
+This example demonstrates how to set up and use the ‘edge-impulse-sdk‘ to perform inference on raw sensor data. The setup involves creating a C++ project, integrating the SDK, and running the impulse to get the model’s output.
+
+
+\subsection{Example - Manual}
+
+\begin{enumerate}
+	\item \textbf{Create a Project:} Set up a directory for your project and unzip the C++ library.
+	
+	\item \textbf{Write Code:} Create a main application file (\texttt{main.cpp}) that includes the necessary headers and defines the main function to run the classifier.
+	
+	\item \textbf{Build the Project:} Use \texttt{Make} to compile the project and generate the executable.
+	
+	\item \textbf{Run Inference:} Execute the program to run inference on the test data.
+\end{enumerate}
+
+\subsection{Example - code}
+Here is a simple example ~\ref{ExampleCode_EdgeImpulseSDK.ino} of a main.cpp file:
+
+
+{
+	\captionof{code}{Package exmaple code}\label{ExampleCode_EdgeImpulseSDK.ino}
+	\ArduinoExternal{}{../../Code/EdgeImpulse/Packages/ExampleCodeSDK.ino}
+}
+
+
+\subsection{Future Reading}
+For more information on deploying your model as a C++ library, check the \href{https://docs.edgeimpulse.com/docs/run-inference/cpp-library/deploy-your-model-as-a-c-library}{Edge Impulse Documentation}

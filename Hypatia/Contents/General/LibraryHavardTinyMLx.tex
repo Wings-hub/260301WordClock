@@ -1,0 +1,148 @@
+%%%
+%
+% $Autor: Malena Wilken $
+% $Date: 2026-01-20 $
+% $File: FlowchartDeployment.tex$
+% $Version: 1 $
+% !TeX spellcheck = en_US
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+\chapter{Library Harvard\_TinyMLx} \label{HarvardTinyMLx}
+The Arduino library Harvard\_TinyMLx is a combination of the libraries Arduino\_OV767X \ref{ArduinoOV767X} and \ref{TensorFlowLiteMicroInstall}. It adds configuration functions for the TinyML Shield and the onboard button. It provides source code and example implementations for operating and evaluating the Tiny Machine Learning Kit in combination with the TinyML Shield, the Arduino Nano 33 BLE Sense and the Camera OV7675. It is intended to support experimentation and validation of TinyML workflows by offering ready-to-use reference code tailored to the associated hardware platform. The library bundles modified versions of key components such as support for the OV767X camera module and integration with the TensorFlow Lite for Microcontrollers framework, enabling projects that involve sensors, audio, images, and other real-world inputs to be processed with machine-learning models directly on the device. \cite{Harvard:2025} 
+
+\section{Installation}
+To install the Arduino Library Harvard\_TinyMLx, open the Arduino IDE and navigate to \menu{Sketch > Include Library >  Manage Libraries}, then search for “Harvard\_TinyMLx” and install the official package published by TinyMLx Authors. Alternatively, the library can be downloaded or cloned directly from its GitHub repository onto the host device using this link: \URL{https://github.com/tinyMLx/arduino-library}.
+
+The location used by the Arduino IDE to store external libraries depends on the underlying operating system. In general, each platform provides a user-specific directory in which additional libraries are maintained and automatically detected by the development environment. Once a library is placed within this designated directory, it is integrated into the Arduino IDE and can be referenced in sketches like any other available library. On systems where no libraries have previously been installed, the corresponding directory structure may not yet exist. In such cases, installing any library via the Arduino Library Manager initializes the required folders automatically, after which additional repositories, such as Harvard\_TinyMLx, can be added manually to the newly created libraries location.
+
+\section{Functions} \label{FunctionsHavard}
+
+The following section introduces the specialized functionality provided by the TinyML Shield library. Its core capabilities arise from the integration of TensorFlow Lite for Microcontrollers and the hardware-level control of the OV7675 camera module. The functions related to TensorFlow Lite, which enable model execution, memory management, and inference control on the embedded platform, are described in detail in Section \ref{FunctionsTensorFlow}. The camera-related functions, responsible for image acquisition, configuration, and data handling, are explained in this section and are further illustrated by a dedicated example code that demonstrates their practical use.
+
+
+\paragraph{TinyML Shield and Camera Library Inclusion}
+
+This section includes the primary header required to access the TinyML Shield hardware abstraction layer and its associated peripherals. It enables communication with onboard components such as the camera, pushbutton, and LEDs.
+
+\begin{itemize}
+	\item \FILE{\#include <TinyMLShield.h>} 
+	
+	This header provides the interface for initializing and controlling the TinyML Shield. It exposes functions and classes for hardware setup, camera access, and user input, forming the foundation for camera-based TinyML experiments.
+\end{itemize}
+
+
+\paragraph{Runtime Control Flags}
+
+This section defines global state variables that control the execution flow of the application. These flags are used to manage user interaction, command processing, and the current operating mode of the camera system.
+
+\begin{itemize}
+	\item \PYTHON{commandRecv} 
+	
+	This flag indicates whether a complete command has been received via the serial interface. It is used to trigger command interpretation once input parsing is finished.
+	
+	\item \PYTHON{liveFlag} 
+	
+	This flag selects between live streaming mode and single-capture mode. When set to true, camera frames are continuously streamed over the serial interface.
+	
+	\item \PYTHON{captureFlag} 
+	
+	This flag signals that a single image capture should be performed. It is typically set in response to a user command or button press and reset after the image has been acquired.
+\end{itemize}
+
+
+\paragraph{Image Buffer Definition}
+
+This section defines the memory structures used to store raw image data captured from the camera. The buffer size and related parameters are derived from the selected image resolution and pixel format.
+
+\begin{itemize}
+	\item \PYTHON{byte image[176 * 144 * 2]} 
+	
+	This statically allocated array stores a single camera frame in RGB565 format. The buffer size corresponds to the QCIF (176 x 144) resolution with two bytes per pixel, ensuring sufficient memory to hold the complete image.
+	
+	\item \PYTHON{bytesPerFrame} 
+	
+	This variable holds the total number of bytes per captured frame. It is computed at runtime based on the camera’s width, height, and bytes per pixel and is used to control image transfer and output operations.
+\end{itemize}
+
+
+\paragraph{TinyML Shield Initialization}
+
+This section covers the initialization of the TinyML Shield hardware. Proper setup is required before any onboard peripherals, such as the camera or user input elements, can be accessed reliably.
+
+\begin{itemize}
+	\item \PYTHON{initializeShield()} 
+	
+	This function initializes the TinyML Shield and configures its onboard components. It prepares the hardware abstraction layer, ensuring that peripherals such as the camera interface and control inputs are correctly set up for subsequent operation.
+\end{itemize}
+
+
+\paragraph{Camera Initialization and Configuration}
+
+This section configures and initializes the onboard OV7675 camera module. It defines the image resolution, pixel format, and camera type, and retrieves runtime parameters required for correct image handling.
+
+\begin{itemize}
+	\item \PYTHON{Camera.begin(QCIF, RGB565, 1, OV7675)} 
+	
+	This function initializes the camera with QCIF resolution and RGB565 pixel encoding. The call establishes communication with the OV7675 sensor and prepares it for image capture.
+	
+	\item \PYTHON{Camera.width()} 
+	
+	This function returns the horizontal resolution of the initialized camera. It is used to calculate the total image buffer size at runtime.
+	
+	\item \PYTHON{Camera.height()} 
+	
+	This function returns the vertical resolution of the initialized camera. Together with the width, it defines the spatial dimensions of the captured image.
+	
+	\item \PYTHON{Camera.bytesPerPixel()} 
+	
+	This function reports the number of bytes used to represent a single pixel. It allows the application to correctly compute frame sizes for memory allocation and data transfer.
+\end{itemize}
+
+
+
+\paragraph{User Interaction via Shield Button}
+This section describes how user input is captured through the physical pushbutton on the TinyML Shield. The button provides a direct hardware-based mechanism to trigger actions without requiring serial commands.
+
+\begin{itemize}
+	\item \PYTHON{readShieldButton()} 
+	
+	This function reads the current state of the TinyML Shield’s onboard pushbutton. It returns a boolean value indicating whether the button has been pressed, enabling the application to initiate image capture or mode changes based on user interaction.
+\end{itemize}
+
+
+\paragraph{Frame Acquisition from Camera}
+
+This section covers the process of capturing image data from the camera and storing it in the predefined image buffer. Frame acquisition is the central operation that enables both live streaming and single-image capture modes.
+
+\begin{itemize}
+	\item \PYTHON{Camera.readFrame(image)} 
+	
+	This function captures a complete image frame from the camera and writes the raw pixel data into the provided image buffer. The data is stored sequentially in memory according to the configured resolution and pixel format.
+\end{itemize}
+
+
+\section{Example}
+
+The given Arduino sketch \ref{lst:OV7675Test} can be found, when the library is installed correctly in the Arduino IDE, in \menu{File > Examples >Harvard\_TinyMLx > test\_camera} and implements a camera test application for the TinyML Shield with an attached OV7675 image sensor. The code can be uploaded to the Arduino as explained in chapter \ref{ArduinoIDE2}.
+
+During the initialization phase in the \PYTHON{setup()} function, serial communication is established to enable user interaction and data transfer to a host system. The TinyML Shield is then initialized, followed by the configuration of the OV7675 camera with a fixed resolution (QCIF) and RGB565 pixel format. Based on these parameters, the required frame size is calculated to ensure that captured images can be stored and transmitted correctly. Informational messages are sent over the serial interface to inform the user about the available operating modes and commands. At runtime, in the function \PYTHON{loop()}, the application operates as an event-driven system that reacts to both hardware input and serial commands. User input is provided either through the onboard pushbutton of the TinyML Shield or via textual commands sent from the serial monitor. These inputs control the internal state flags that determine whether the camera operates in live streaming mode or in single-capture mode. The pushbutton provides a direct trigger for image capture, while serial commands allow explicit switching between operating modes.
+
+In live mode, the system continuously captures frames from the camera and immediately streams the raw image data over the serial interface. The output in this case consists of unprocessed RGB565 byte sequences representing successive camera frames, intended for real-time visualization or external processing on the host side.
+
+In single-capture mode, the system waits for a capture trigger, acquires exactly one frame, and then outputs the image data in a formatted hexadecimal representation. This mode is particularly suited for inspection, debugging, or dataset generation.
+
+
+\begin{center}
+	\captionof{code}{Camera OV7675 Test}
+	\lstinputlisting[style=all]{../../Code/CameraOV7675Test/CameraOV7675Test.ino}
+	\label{lst:OV7675Test}
+\end{center}
+
+
+
+
+

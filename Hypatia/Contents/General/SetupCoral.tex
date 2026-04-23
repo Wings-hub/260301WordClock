@@ -1,0 +1,117 @@
+%%%%%%
+%
+% $Autor: Bakke $
+% $Datum: 2021-08-02 15:57:45Z $
+% $Pfad: WuSt/Skript/Produktspezifikation/powerpoint/ImageProcessing.tex $
+% $Version: 4620 $
+%
+%%%%%%
+
+\chapter{Setting Up the USB Accelerator}
+\label{chap:Setup}
+
+For these next steps, disconnect the USB Accelerator from the Raspberry Pi by pulling out the USB-C connector.
+
+\section{Install the Edge TPU Runtime and PyCoral Library}
+
+The first step is to add Coral's Debian package repository to the system. To do so, enter these lines in the terminal:
+
+
+
+\begin{verbatim}
+	echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
+	
+	curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+	
+	sudo apt-get update
+\end{verbatim}
+
+
+The next step is to install the PyCoral library with the following command:
+
+\begin{verbatim}
+	sudo apt-get install python3-pycoral
+\end{verbatim}
+
+\begin{notes}
+	\item This command also installs the library libedgetpu1-std automatically.
+\end{notes}
+
+
+ Now connect the USB Accelerator to your computer using the provided USB 3.0 cable. If you already plugged it in, remove it and replug it so the newly-installed udev rule can take effect.
+
+\subsection{TensorFlow Lite Runtime}
+
+If TensorFlow is not installed on the device, a simplified package called \FILE{tflite$\_$runtime} containing just the TensorFlow Lite interpreter can be installed, which is all that's required for this step. Enter the following commands in the terminal to install the package:
+
+\begin{verbatim}
+	echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
+	
+	curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+	
+	sudo apt-get update
+	
+	sudo apt-get install python3-tflite-runtime
+\end{verbatim}
+
+\section{Testing Object Classification and Object Detection}
+
+\subsection{Setup}
+
+It is recommended to create a directory for the projects
+
+\begin{verbatim}
+	mkdir Projects_CoralTPU
+\end{verbatim}
+
+\subsubsection{Step 1: Clone Repository}
+
+
+\begin{verbatim}
+	cd /home/pi/Projects_CoralTPU
+	
+	mkdir google-coral && cd google-coral
+	
+	git clone https://github.com/google-coral/examples-camera --depth 1
+\end{verbatim}
+
+
+\subsubsection{Step 2: Download Models}
+
+\begin{verbatim}
+	cd examples-camera
+	
+	sh download_models.sh
+\end{verbatim}
+
+
+\subsubsection{Step 3: Install the GStreamer Libraries}
+
+\begin{verbatim}
+	cd gstreamer
+	
+	bash install_requirements.sh
+\end{verbatim}
+
+\subsection{Run the Demos}
+
+\subsubsection{classify.py}
+
+\begin{verbatim}
+	python3 classify.py
+\end{verbatim}
+
+
+By default, this uses the \FILE{mobilenet$\_$v2$\_$1.0$\_$224$\_$quant$\_$edgetpu.tflite} model.
+
+You can change the model and the labels file using flags \FILE{---model} and \FILE{---labels.}
+
+\subsubsection{detect.py}
+
+\begin{verbatim}
+	python3 detect.py
+\end{verbatim}
+
+Likewise, you can change the model and the labels file using \FILE{---model} and \FILE{---labels}.
+
+\clearpage
