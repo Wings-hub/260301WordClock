@@ -1,0 +1,36 @@
+%%%
+%
+% $Autor: Wings $
+% $Datum: 2021-05-14 $
+% $Pfad: GitLab/MLEdgeComputer $
+% $Dateiname: SigFox
+% $Version: 4620 $
+%
+% !TeX spellcheck = de_DE/GB
+% !TeX program = pdflatex
+% !BIB program = biber/bibtex
+% !TeX encoding = utf8
+%
+%%%
+
+
+\chapter{SigFox}
+
+\section{LSM100A}
+
+\cite{LSM100A:2023}
+
+GitHub project: \URL{https://github.com/Support-SJI/LSM100A/}
+
+
+\section{Pins}
+
+\begin{tabular}{llll}
+  Pin ESP32 &  Pin LSM100A & Function Sigfox & Description \\ \hline
+  GPIO 11   &  30          & Sigfox.RST      & NRST \\
+  GPIO 12   &  6           & Sigfox-GPIO     & RF-BUSY \\  
+  GPIO 13   &  14          & Sigfox-TX       & USART2\_TX \\
+  GPIO  14  &  13          & Sigfox-RX       & USART2\_RX \\  
+\end{tabular}
+
+
