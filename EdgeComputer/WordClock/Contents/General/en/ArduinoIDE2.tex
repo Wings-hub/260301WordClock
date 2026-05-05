@@ -231,69 +231,69 @@ The full command can be seen in Figure \ref{fig:cmdSynthax}.
 
 
 
-
-
-\subsection{MacOS Command \SHELL{ln -s} to Create Symbolic Links}
-
-
-\begin{enumerate}
-	
-	\item Open Terminal: Open the \menu{Terminal} application by searching for it in \menu{Applications}, go to \menu{Utilities}.
-	
-	\item Execute the Command \SHELL{ln -s} : The command for creating a symbolic link is: 
-	
-	\SHELL{ln -s "SourcePath" "TargetPath"}
-	
-	
-	
-	
-	\begin{itemize}
-		\item 	\textbf{TargetPath:} The location where the Arduino IDE expects the library to be, here \FILE{libraries}.
-		\item 	\textbf{SourcePath:} The actual location of the library.
-	\end{itemize}
-	
-\end{enumerate}
-		
-		
-		
-\bigskip
-
-		
-For this example, the library is located at: 
-
-
-{\small\SHELL{C:/Users/MSRLabor/Documents/GitHub/241031ArduinoNano33BLESense/report/Code/Nano33BLESense/Nano33BLESenseLED}}
-
-\medskip
-
-
-
-The target path in the Arduino IDE’s libraries folder is: 
-
-
-{\small\SHELL{C:/Users/MSRLabor/Documents/Arduino/libraries/Nano33BLESenseLED}}
-
-\medskip
-
-The full command would be: 
-
-{\small\SHELL{ln -s "/Users/username/Documents/GitHub/241031ArduinoNano33BLESense/report/Code/Nano33BLESense/Nano33BLESenseLED" "/Users/username/Documents/Arduino/libraries/Nano33BLESenseLED"}}
-
-
-\medskip
-
-
-Verifying the Symbolic Link: After executing the command, navigate to the folder \FILE{libraries}. A folder named \FILE{Nano33BLESenseLED} should be present, acting as a symbolic link pointing to the actual library location.
-
-\bigskip
-
-\Mynote{here are some pictures necessary as in 1.5.4}
-
-
-
-
-
-\bigskip
+%
+%
+%\subsection{MacOS Command \SHELL{ln -s} to Create Symbolic Links}
+%
+%
+%\begin{enumerate}
+%	
+%	\item Open Terminal: Open the \menu{Terminal} application by searching for it in \menu{Applications}, go to \menu{Utilities}.
+%	
+%	\item Execute the Command \SHELL{ln -s} : The command for creating a symbolic link is: 
+%	
+%	\SHELL{ln -s "SourcePath" "TargetPath"}
+%	
+%	
+%	
+%	
+%	\begin{itemize}
+%		\item 	\textbf{TargetPath:} The location where the Arduino IDE expects the library to be, here \FILE{libraries}.
+%		\item 	\textbf{SourcePath:} The actual location of the library.
+%	\end{itemize}
+%	
+%\end{enumerate}
+%		
+%		
+%		
+%\bigskip
+%
+%		
+%For this example, the library is located at: 
+%
+%
+%{\small\SHELL{C:/Users/MSRLabor/Documents/GitHub/241031ArduinoNano33BLESense/report/Code/Nano33BLESense/Nano33BLESenseLED}}
+%
+%\medskip
+%
+%
+%
+%The target path in the Arduino IDE’s libraries folder is: 
+%
+%
+%{\small\SHELL{C:/Users/MSRLabor/Documents/Arduino/libraries/Nano33BLESenseLED}}
+%
+%\medskip
+%
+%The full command would be: 
+%
+%{\small\SHELL{ln -s "/Users/username/Documents/GitHub/241031ArduinoNano33BLESense/report/Code/Nano33BLESense/Nano33BLESenseLED" "/Users/username/Documents/Arduino/libraries/Nano33BLESenseLED"}}
+%
+%
+%\medskip
+%
+%
+%Verifying the Symbolic Link: After executing the command, navigate to the folder \FILE{libraries}. A folder named \FILE{Nano33BLESenseLED} should be present, acting as a symbolic link pointing to the actual library location.
+%
+%\bigskip
+%
+%\Mynote{here are some pictures necessary as in 1.5.4}
+%
+%
+%
+%
+%
+%\bigskip
 
 
 
@@ -414,17 +414,6 @@ This guide provides an overview of key features in Arduino IDE 2, along with ref
 \end{figure}
 
 
-%
-\section{To-Do}
-
-
-\begin{itemize}
- \item \textcolor{red}{Mac Instalation nochmal durchführen und aktualisieren (gilt auch für die Bilder)}
-  \item \textcolor{red}{In Discription: Item-Punkte anpassen mit den Bildsymbolen} 
-  \item \textcolor{red}{MyNote Kommentare beachten}
-\end{itemize}
-
-%
 
 
 
