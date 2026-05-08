@@ -1,17 +1,23 @@
-
-%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
 %
-% $Autor: Gerken $
-% $Pfad: GDV/Vortraege/latex - Ausarbeitung/Kapitel/Einleitung.tex $
-% $Version: 1 $
+% $Autor: Wings $
+% $Datum: 2021-05-14 $
+% $Pfad: GitLab/MLEdgeComputer $
+% $Dateiname: ESP32WiFi
+% $Version: 4620 $
 %
-%%%%%%%%%%%%%%%%%%%%%%%%
+% !TeX spellcheck = de_DE/GB
+% !TeX program = pdflatex
+% !BIB program = biber/bibtex
+% !TeX encoding = utf8
+%
+%%%
 
-\chapter{\textcolor{red}{Introduction}
+\chapter{Einführung: Wordclock}
 
 \section{Allgemeines}
 Die Messung der Zeit ist schon seit Jahrtausenden ein Thema für uns Menschen. Dabei hat sich die Art der Anzeige immer wieder verändert – von den ersten Sonnenuhren über mechanische Uhrwerke bis hin zu den heutigen digitalen Anzeigen. Eine besondere Form der Zeitanzeige ist die Wordclock.\Mynote{Uhrentechnik}
-
+\smallskip
 Im Vergleich zu den klassischen analogen oder digitalen Uhren, die wir aus dem Alltag kennen und die meistens mit Zeigern oder Zahlen arbeiten \Mynote{uhren:technik Luebke, Anton, \textit{Die Uhr: Von der Sonnenuhr zur Atomuhr}, (Standardwerk zur Uhrentechnik/Geschichte).}
 , zeigt eine Wordclock die Zeit in ganzen Worten an. Anstatt also Zahlen wie „10:15“ zu lesen, sieht man Sätze wie „Es ist viertel nach zehn“. Der große Unterschied ist hierbei die Lesbarkeit: Man muss nicht erst die Position der Zeiger interpretieren oder Zahlenwerte im Kopf umwandeln, sondern bekommt die Information direkt so, wie man sie auch aussprechen würde \Mynote{heisse}. Technisch wird das meistens so gelöst, dass hinter einer Platte mit Buchstaben eine Matrix aus LEDs sitzt, die genau die passenden Wörter beleuchtet \Mynote{heisse c't Magazin, \textit{Projekt: Word Clock}, \url{https://www.heise.de/select/ct/2016/24/1479984391777972}}.
 
@@ -23,7 +29,7 @@ Damit die Wordclock am Ende richtig funktioniert, muss die Hardware bestimmte Au
 	\item \textbf{Stromversorgung:} Da die vielen LEDs zusammen recht viel Strom verbrauchen können, nutzen wir einen Stepdown-Konverter. Dieser sorgt dafür, dass die Spannung stabil bleibt und die Bauteile nicht beschädigt werden.
 \end{itemize}
 
-\subsection{Herausforderungen}
+\section{Herausforderungen}
 Bei der Planung und dem Bau gibt es ein paar Punkte, die man im Blick behalten muss:
 \begin{itemize}
 	\item \textbf{Die richtige Uhrzeit:} Da wir ohne eine Real Time Clock arbeiten, muss die Uhrzeit über das WLAN per NTP-Protokoll regelmäßig abgefragt werden. 
@@ -35,3 +41,6 @@ Bei der Planung und dem Bau gibt es ein paar Punkte, die man im Blick behalten m
 \section{Aufbau des Berichtes} \Mynote{muss ausfürlicher}
 Dieser Bericht ist in mehrere Teile gegliedert, um den gesamten Weg vom Konzept bis zur fertigen Uhr zu zeigen:
 Nach dieser \textbf{Einleitung (Part 1)} geht es in \textbf{Part 2} um die Tools, wie zum Beispiel die Arduino IDE. In \textbf{Part 3} wird die Hardware genau beschrieben – angefangen beim Prozessor bis hin zu den Sensoren und dem ersten Testcode. Die Software und der finale Code werden in \textbf{Part 4} erklärt. Danach folgt in \textbf{Part 5} ein Überblick über das Gehäuse und in \textbf{Part 6} die eigentliche Anwendung mit den Abläufen. Zum Schluss ziehen wir in \textbf{Part 7} ein Fazit und schauen in der Evaluation nach, ob wir alle Anforderungen und Herausforderungen aus der Einleitung erfolgreich gemeistert haben.
+
+
+
